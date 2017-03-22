@@ -4,19 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.enums.TypeWalk;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 
 public class MovementUtils {
 	
-	public static List<PositionChessboard> movementAvailableFront(int limit, PositionChessboard position, Square[][] squares, boolean capture, Player playerCurrent){
+	private static List<PositionChessboard> movementAvailableGeneric(int limit, PositionChessboard myPosition, 
+			Square[][] squares, boolean capture, Player playerCurrent, TypeWalk walk){
 		
-		List<PositionChessboard> list = new ArrayList<>();		
-		Square myPosition = squares[position.getLetter()][position.getNumber()];
-		PositionChessboard current = myPosition.getPosition();	//position current
+		List<PositionChessboard> list = new ArrayList<>();
+		PositionChessboard current = myPosition;	//position current
 		int cont = 0;
 		while(cont < limit){
-			Square squareWalk = squares[current.getLetter()][current.getNumber()+1];	//walk front + 1
+			Square squareWalk;
+			try {
+				squareWalk = Square.requiredNextWalk(squares, current, walk);
+			} catch (IndexOutOfBoundsException e) {
+				return list;
+			}
 			if(squareWalk.isAvailable()){
 				if(!capture){
 					//TODO validation king in check
@@ -36,6 +42,10 @@ public class MovementUtils {
 		return list;
 	}
 	
+	public static List<PositionChessboard> movementAvailableFront(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.FRONT);
+	}
+	
 	public static List<PositionChessboard> movementAvailableBack(){
 		return null;
 	}
@@ -48,12 +58,12 @@ public class MovementUtils {
 		return null;
 	}
 	
-	public static List<PositionChessboard> movementAvailableLeftUp(int limit, boolean capture, Player playerCurrent){
-		return null;
+	public static List<PositionChessboard> movementAvailableLeftUp(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.LEFT_UP);
 	}
 	
-	public static List<PositionChessboard> movementAvailableRightUp(int limit, boolean capture, Player playerCurrent){
-		return null;
+	public static List<PositionChessboard> movementAvailableRightUp(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.RIGHT_UP);
 	}
 	
 	public static List<PositionChessboard> movementAvailableLeftDown(){
