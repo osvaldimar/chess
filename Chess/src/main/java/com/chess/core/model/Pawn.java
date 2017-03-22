@@ -23,17 +23,11 @@ public class Pawn extends Piece implements BehaviorChess {
 	}
 
 	@Override
-	public List<PositionChessboard> movementAvailableToTakePieces() {
+	public List<PositionChessboard> movementAvailableToTakePieces(PositionChessboard position, Square[][] squares) {
 		List<PositionChessboard> list = new ArrayList<>();
-		list.addAll(MovementUtils.movementAvailableLeftUp(1, Boolean.TRUE, this.getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRightUp(1, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftUp(1, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightUp(1, position, squares, Boolean.TRUE, this.getPlayer()));
 		return list;
-	}
-	
-	@Override
-	public void defend() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

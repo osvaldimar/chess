@@ -27,7 +27,7 @@ public class MovimentTest {
 	@Before
 	public void setUp(){
 		this.jogador1 = new Player("Joao", 100L);
-		this.jogador1 = new Player("Maria", 100L);
+		this.jogador2 = new Player("Maria", 100L);
 	}
 	
 	@Test
@@ -57,7 +57,15 @@ public class MovimentTest {
 		Assert.assertEquals(listMovement.get(0), B3);
 		Assert.assertEquals(listMovement.get(1), B4);
 		Assert.assertEquals(listMovement.size(), 2);
+		board.printChessboard(board);
 		
+		board.squaresChessboard()[D3.getLetter()][D3.getNumber()].addPiece(board.squaresChessboard(D7).getPiece());
+		board.squaresChessboard(D7).removePiece();
+		board.squaresChessboard()[B3.getLetter()][B3.getNumber()].addPiece(board.squaresChessboard(B7).getPiece());
+		board.squaresChessboard(B7).removePiece();		
+		listMovement = pawn.movementAvailableToTakePieces(C2, board.squaresChessboard());
+		listMovement.forEach(p->System.out.println(p));
+		board.printChessboard(board);
 		
 /*		
 		board.clickedByHand(){
