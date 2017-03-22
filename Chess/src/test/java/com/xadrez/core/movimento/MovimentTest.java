@@ -7,6 +7,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
+import com.chess.core.enums.TypePiece;
 import com.chess.core.model.Chessboard;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
@@ -26,9 +27,7 @@ public class MovimentTest {
 	@Test
 	public void testMovimentoDoPeaoParaFrente(){
 		
-		Pawn pawn = new Pawn();
-		pawn.setCor(TypeColor.WHITE);
-		pawn.setJogador(jogador1);
+		Pawn pawn = new Pawn(TypePiece.PEAO, TypeColor.WHITE, this.jogador1);
 		
 		Chessboard board = new Chessboard(TypeColor.BLACK, TypeColor.WHITE);;
 		board.positionPiece(A2, pawn);
@@ -40,13 +39,6 @@ public class MovimentTest {
 			board.printSquaresAvailableToPiece(pawn);			
 		}
 		
-		//Tabuleiro tabuleiro = new Tabuleiro();
-		//tabuleiro.posicionarPeca(PosicaoTabuleiro.A2, peao);
-		
-		PositionChessboard[] pos = PositionChessboard.values();
-		for (PositionChessboard p : pos) {
-			System.out.println(p);
-		}
 		
 	}
 	

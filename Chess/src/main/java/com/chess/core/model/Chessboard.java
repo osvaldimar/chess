@@ -42,13 +42,16 @@ public class Chessboard {
 		
 	}
 	
-	
+	public Square[][] squaresChessboard() {
+		final Square[][] squares = this.squares.clone();
+		return squares;
+	}
 
 	private static Square square(TypeColor color, PositionChessboard position){
 		return new Square(color, position);
 	}
 	
-	public void positionPiece(PositionChessboard a2, Piece piece) {
+	public void positionPiece(PositionChessboard pos, Piece piece) {
 		
 	}
 	
