@@ -69,8 +69,8 @@ public class Chessboard {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
-	public void printChessboard(Chessboard board){
-		System.out.println("*** layout chess ***");
+	public void printChessboard(Chessboard board, String message){
+		System.out.println("\n*** layout chess *** - " + message);
 		for(int y = 7; y >= 0; y--){
 			for(int x = 0; x <= 7; x++){
 				System.out.print(this.squares[x][y]);

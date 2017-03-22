@@ -8,8 +8,7 @@ import com.chess.core.model.Square;
 public interface BehaviorChess {
 
 	List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares);
-	List<PositionChessboard> movementAvailableToTakePieces();
-	void defend();
+	List<PositionChessboard> movementAvailableToTakePieces(PositionChessboard position, Square[][] squares);
 	
 	
 }
