@@ -8,34 +8,31 @@ import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 
 public class MovementUtils {
-
-
-	private static boolean movementAvailableAndCapture(List<PositionChessboard> list, Square square, 
-			boolean capture, Player playerCurrent) {
-		if(square.isAvailable()){
-			if(!capture){
-				//TODO validation king in check
-				list.add(square.getPosition());
-			}
-		}else{
-			if(capture && PieceUtils.isPieceOfEnemy(square, playerCurrent)){
-				//TODO validation king in check
-				list.add(square.getPosition());
-				return Boolean.TRUE;
-			}
-		}
-		return Boolean.FALSE;
-	}
 	
 	public static List<PositionChessboard> movementAvailableFront(int limit, PositionChessboard position, Square[][] squares, boolean capture, Player playerCurrent){
 		
-		List<PositionChessboard> list = new ArrayList<>();
-		boolean loop = true;
-		
-		Square sq = squares[0][0];
-		loop = movementAvailableAndCapture(list, sq, capture, playerCurrent);
-		
-		
+		List<PositionChessboard> list = new ArrayList<>();		
+		Square myPosition = squares[position.getLetter()][position.getNumber()];
+		PositionChessboard current = myPosition.getPosition();	//position current
+		int cont = 0;
+		while(cont < limit){
+			Square squareWalk = squares[current.getLetter()][current.getNumber()+1];	//walk front + 1
+			if(squareWalk.isAvailable()){
+				if(!capture){
+					//TODO validation king in check
+					list.add(squareWalk.getPosition());
+				}
+			}else{
+				if(capture && PieceUtils.isPieceOfEnemy(squareWalk, playerCurrent)){
+					//TODO validation king in check
+					list.add(squareWalk.getPosition());
+				}
+				break;
+			}
+			cont++;
+			current = squareWalk.getPosition();	//current position now is square walked front
+		}
+			
 		return list;
 	}
 	

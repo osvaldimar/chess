@@ -8,8 +8,6 @@ public class Square {
 	private Piece piece;
 	private TypeColor color;
 	private PositionChessboard position;
-	private int x;
-	private int y;
 	
 	public Square(TypeColor color, PositionChessboard position){
 		this.color = color;
@@ -23,49 +21,31 @@ public class Square {
 	}
 
 	public boolean isAvailable(){
-		return this.piece != null;
+		return this.piece == null;
+	}
+	
+	public void addPiece(Piece piece){
+		this.piece = piece;
 	}
 	
 	public Piece getPiece() {
 		return piece;
 	}
 
-	public void setPiece(Piece piece) {
-		this.piece = piece;
+	public void removePiece() {
+		this.piece = null;
 	}
 
 	public TypeColor getColor() {
 		return color;
 	}
 
-	public void setColor(TypeColor color) {
-		this.color = color;
-	}
-
 	public PositionChessboard getPosition() {
 		return position;
 	}
 
-	public void setPosition(PositionChessboard position) {
-		this.position = position;
+	@Override
+	public String toString() {		
+		return "[" + this.getPosition() + "-" + this.getPiece() + "]";
 	}
-
-	public int getX() {
-		return x;
-	}
-
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	public int getY() {
-		return y;
-	}
-
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	
-	
 }

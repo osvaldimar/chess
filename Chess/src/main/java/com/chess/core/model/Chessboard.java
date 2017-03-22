@@ -1,44 +1,54 @@
 package com.chess.core.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
-
-import static com.chess.core.enums.TypeColor.*;
-import static com.chess.core.enums.PositionChessboard.*;
+import com.chess.core.enums.TypePiece;
 
 public class Chessboard {
 
 	private Square[][] squares;
 	private TypeColor whiteSquares;
 	private TypeColor blackSquares;
-	private Map<PositionChessboard, Square> map;
+	private TypeColor blackPieces;
+	private TypeColor whitePieces;
+	private Player player1;
+	private Player player2;
 	
-	public Chessboard(TypeColor blackSquares, TypeColor whiteSquares){
+	public Chessboard(TypeColor blackSquares, TypeColor whiteSquares, 
+			TypeColor blackPieces, TypeColor whitePieces, Player player1, Player player2){
 		this.blackSquares = blackSquares;
 		this.whiteSquares = whiteSquares;
-		this.init();
+		this.blackPieces = blackPieces;
+		this.whitePieces = whitePieces;
+		this.player1 = player1;
+		this.player2 = player2;
+		startChessboad();
 	}
 	
-	private void init(){
-		int contX = 0;
-		int contY = 7;
+	public void startChessboad(){
 		int cor = 0;
-		this.map = new HashMap<>();
+		this.squares = new Square[8][8];
 		PositionChessboard[] posicoes = PositionChessboard.values();
-		for (PositionChessboard p : posicoes) {
+		for (PositionChessboard p : posicoes) {			
 			Square square = square(cor == 0 ? this.blackSquares : this.whiteSquares, p);
-			this.squares[contX][contY] = square;
-			this.map.put(p, square);
+			this.squares[p.getLetter()][p.getNumber()] = square;
 			cor = cor == 0 ? 1 : 0;
-			if(contX >= 8){
-				contX = 0;
-				contY--;
-			}
-			System.out.println(p);
-		}
+		}		
+	}
+	
+	public void startGame(){
+		this.startChessboad();
+		Arrays.stream(this.squares).forEach(
+				p -> {
+					Arrays.stream(p).filter(
+						s -> s.getPosition().getNumber() == 1).forEach(
+								n->n.addPiece(new Pawn(TypePiece.PEAO, whitePieces, player1)));
+					Arrays.stream(p).filter(
+						s -> s.getPosition().getNumber() == 6).forEach(
+								n->n.addPiece(new Pawn(TypePiece.PEAO, blackPieces, player2)));
+				});
 		
 	}
 	
@@ -46,13 +56,28 @@ public class Chessboard {
 		final Square[][] squares = this.squares.clone();
 		return squares;
 	}
+	
+	public Square squaresChessboard(PositionChessboard position) {
+		return squares[position.getLetter()][position.getNumber()];
+	}
 
 	private static Square square(TypeColor color, PositionChessboard position){
 		return new Square(color, position);
 	}
 	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
-		
+		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
+	}
+	
+	public void printChessboard(Chessboard board){
+		System.out.println("*** layout chess ***");
+		for(int y = 7; y >= 0; y--){
+			for(int x = 0; x <= 7; x++){
+				System.out.print(this.squares[x][y]);
+			}
+			System.out.println();
+		}
+		System.out.println();
 	}
 	
 }

@@ -11,13 +11,15 @@ import com.chess.core.util.MovementUtils;
 
 public class Pawn extends Piece implements BehaviorChess {
 
+	private boolean firstMovement = Boolean.TRUE;
+	
 	public Pawn(TypePiece typePiece, TypeColor color, Player player){
 		super(typePiece, color, player);
 	}
 
 	@Override
 	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
-		return MovementUtils.movementAvailableFront(1, position, squares, Boolean.FALSE, this.getPlayer());
+		return MovementUtils.movementAvailableFront(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer());
 	}
 
 	@Override

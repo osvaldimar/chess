@@ -39,6 +39,9 @@ public abstract class Piece {
 		this.player = player;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return this.typePiece.toString();
+	}
 	
 }
