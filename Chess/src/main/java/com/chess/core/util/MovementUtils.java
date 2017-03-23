@@ -20,7 +20,7 @@ public class MovementUtils {
 			Square squareWalk = Square.requiredNextWalk(squares, current, walk);
 			if(squareWalk == null){
 				return list;
-			}			
+			}
 			if(squareWalk.isAvailable()){
 				if(!capture){
 					//TODO validation king in check
