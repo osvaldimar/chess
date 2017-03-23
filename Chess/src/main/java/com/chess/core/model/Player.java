@@ -1,16 +1,20 @@
 package com.chess.core.model;
 
+import com.chess.core.enums.TypePlayer;
+
 public class Player {
 
 	private String nome;
 	private Long score;
+	private TypePlayer typePlayer;
 	
 	public Player(){		
 	}
 	
-	public Player(String nome, Long score) {
+	public Player(String nome, Long score, TypePlayer typePlayer) {
 		this.nome = nome;
 		this.score = score;
+		this.typePlayer = typePlayer;
 	}
 
 	public String getNome() {
@@ -24,6 +28,11 @@ public class Player {
 	}
 	public void setScore(Long score) {
 		this.score = score;
+	}
+	
+	@Override
+	public String toString() {
+		return this.typePlayer.toString();
 	}
 	
 }
