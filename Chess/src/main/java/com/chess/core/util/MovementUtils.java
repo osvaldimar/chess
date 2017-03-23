@@ -17,10 +17,8 @@ public class MovementUtils {
 		PositionChessboard current = myPosition;	//position current
 		int cont = 0;
 		while(cont < limit){
-			Square squareWalk;
-			try {
-				squareWalk = Square.requiredNextWalk(squares, current, walk);
-			} catch (IndexOutOfBoundsException e) {
+			Square squareWalk = Square.requiredNextWalk(squares, current, walk);
+			if(squareWalk == null){
 				return list;
 			}
 			if(squareWalk.isAvailable()){
@@ -37,8 +35,7 @@ public class MovementUtils {
 			}
 			cont++;
 			current = squareWalk.getPosition();	//current position now is square walked front
-		}
-			
+		}			
 		return list;
 	}
 	
@@ -46,16 +43,16 @@ public class MovementUtils {
 		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.FRONT);
 	}
 	
-	public static List<PositionChessboard> movementAvailableBack(){
-		return null;
+	public static List<PositionChessboard> movementAvailableBack(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.BACK);
 	}
 	
-	public static List<PositionChessboard> movementAvailableLeft(){
-		return null;
+	public static List<PositionChessboard> movementAvailableLeft(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.LEFT);
 	}
 	
-	public static List<PositionChessboard> movementAvailableRight(){
-		return null;
+	public static List<PositionChessboard> movementAvailableRight(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.RIGHT);
 	}
 	
 	public static List<PositionChessboard> movementAvailableLeftUp(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
@@ -66,12 +63,46 @@ public class MovementUtils {
 		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.RIGHT_UP);
 	}
 	
-	public static List<PositionChessboard> movementAvailableLeftDown(){
-		return null;
+	public static List<PositionChessboard> movementAvailableLeftDown(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.LEFT_DOWN);
 	}
 	
-	public static List<PositionChessboard> movementAvailableRightDown(){
-		return null;
+	public static List<PositionChessboard> movementAvailableRightDown(int limit, PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.RIGHT_DOWN);
+	}
+	
+	public static List<PositionChessboard> movementAvailableknight(PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+		
+		List<PositionChessboard> list = new ArrayList<>();
+		movementAvailableKnight(capture, playerCurrent, list, squares, -1, 2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, 1, 2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, 2, 1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, 2, -1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, 1, -2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, -1, -2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, -2, -1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, -2, 1);
+		return list;
+	}
+
+	private static void movementAvailableKnight(boolean capture, Player playerCurrent, List<PositionChessboard> list,
+			Square[][] squares, int x, int y) {		
+		try {
+			Square squareWalk = squares[x][y];
+			if(squareWalk.isAvailable()){
+				if(!capture){
+					//TODO validation king in check
+					list.add(squareWalk.getPosition());
+				}
+			}else{
+				if(capture && PieceUtils.isPieceOfEnemy(squareWalk, playerCurrent)){
+					//TODO validation king in check
+					list.add(squareWalk.getPosition());
+				}
+			}
+		} catch (IndexOutOfBoundsException e) {
+			return;
+		}
 	}
 	
 }
