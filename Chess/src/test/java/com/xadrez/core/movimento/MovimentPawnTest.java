@@ -80,6 +80,10 @@ public class MovimentPawnTest {
 		chessboard.printChessboard(chessboard, "movement to takes for pawn");	
 	}
 	
-	
+	@Test
+	public void testPositionPieceInTheChessboard(){
+		
+		chessboard.startGame();
+	}
 	
 }

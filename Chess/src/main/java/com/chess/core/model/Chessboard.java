@@ -1,6 +1,7 @@
 package com.chess.core.model;
 
 import java.util.Arrays;
+import java.util.List;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
@@ -67,6 +68,10 @@ public class Chessboard {
 	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
+	}
+	
+	public void positionPiece(PositionChessboard newPosition, Piece piece, List<PositionChessboard> listPositions){
+		
 	}
 	
 	public void printChessboard(Chessboard board, String message){
