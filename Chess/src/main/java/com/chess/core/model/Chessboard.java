@@ -65,8 +65,10 @@ public class Chessboard {
 		return new Square(color, position);
 	}
 	
-	public void positionPiece(PositionChessboard pos, Piece piece) {
+	public Piece positionPiece(PositionChessboard pos, Piece piece) {
+		Piece gotten = this.squares[pos.getLetter()][pos.getNumber()].getPiece();
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
+		return gotten;
 	}
 	
 	public void printChessboard(Chessboard board, String message){
@@ -79,5 +81,55 @@ public class Chessboard {
 		}
 		System.out.println();
 	}
+
+	public TypeColor getWhiteSquares() {
+		return whiteSquares;
+	}
+
+	public void setWhiteSquares(TypeColor whiteSquares) {
+		this.whiteSquares = whiteSquares;
+	}
+
+	public TypeColor getBlackSquares() {
+		return blackSquares;
+	}
+
+	public void setBlackSquares(TypeColor blackSquares) {
+		this.blackSquares = blackSquares;
+	}
+
+	public TypeColor getBlackPieces() {
+		return blackPieces;
+	}
+
+	public void setBlackPieces(TypeColor blackPieces) {
+		this.blackPieces = blackPieces;
+	}
+
+	public TypeColor getWhitePieces() {
+		return whitePieces;
+	}
+
+	public void setWhitePieces(TypeColor whitePieces) {
+		this.whitePieces = whitePieces;
+	}
+
+	public Player getPlayer1() {
+		return player1;
+	}
+
+	public void setPlayer1(Player player1) {
+		this.player1 = player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
+	}
+	
+	
 	
 }

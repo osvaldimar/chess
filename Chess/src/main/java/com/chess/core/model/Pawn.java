@@ -9,7 +9,7 @@ import com.chess.core.enums.TypePiece;
 import com.chess.core.movement.BehaviorChess;
 import com.chess.core.util.MovementUtils;
 
-public class Pawn extends Piece implements BehaviorChess {
+public class Pawn extends Piece {
 
 	private boolean firstMovement = Boolean.TRUE;
 	

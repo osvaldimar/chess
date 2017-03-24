@@ -2,8 +2,9 @@ package com.chess.core.model;
 
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.movement.BehaviorChess;
 
-public abstract class Piece {
+public abstract class Piece implements BehaviorChess {
 
 	private TypePiece typePiece;
 	private TypeColor color;
