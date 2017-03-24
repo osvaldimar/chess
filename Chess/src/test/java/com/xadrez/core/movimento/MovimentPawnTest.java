@@ -14,6 +14,8 @@ import com.chess.core.model.Chessboard;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
+import com.xadrez.core.GameApplication;
+import com.xadrez.core.ResponseMove;
 
 import static com.chess.core.enums.PositionChessboard.*;
 import static org.junit.Assert.*;
@@ -83,7 +85,13 @@ public class MovimentPawnTest {
 	@Test
 	public void testPositionPieceInTheChessboard(){
 		
+		
 		chessboard.startGame();
+		GameApplication game = new GameApplication(chessboard);		
+		ResponseMove response = game.nextMove(PositionChessboard.E2);		
+		chessboard.printChessboard(chessboard, "play game application");
+		
 	}
+	
 	
 }

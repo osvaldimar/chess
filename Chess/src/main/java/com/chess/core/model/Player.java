@@ -30,6 +30,10 @@ public class Player {
 		this.score = score;
 	}
 	
+	public TypePlayer getTypePlayer() {
+		return typePlayer;
+	}
+	
 	@Override
 	public String toString() {
 		return this.typePlayer.toString();

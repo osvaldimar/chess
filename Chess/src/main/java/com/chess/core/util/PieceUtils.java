@@ -6,7 +6,10 @@ import com.chess.core.model.Square;
 public class PieceUtils {
 
 	public static boolean isPieceOfEnemy(Square square, Player playerCurrent){
-		return !square.getPiece().getPlayer().getNome().equals(playerCurrent.getNome());
+		if(square != null){
+			return !(square.getPiece().getPlayer().getTypePlayer() == playerCurrent.getTypePlayer());
+		}
+		return false;
 	}
 	
 }
