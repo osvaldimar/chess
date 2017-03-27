@@ -5,6 +5,9 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>xadrez core</name>
   
+  <properties>
+  	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   
   <dependencies>
   	<!-- config mockito -->
@@ -16,7 +19,7 @@
   </dependencies>
   
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -26,6 +29,8 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      
+      
     </plugins>
   </build>
 </project>

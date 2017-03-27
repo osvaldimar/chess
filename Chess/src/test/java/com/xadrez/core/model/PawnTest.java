@@ -1,9 +1,7 @@
-package com.xadrez.core.movimento;
+package com.xadrez.core.model;
 
 import static com.chess.core.enums.PositionChessboard.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import org.junit.Assert;
 
 import java.util.List;
 
@@ -22,21 +20,14 @@ import com.xadrez.core.GameApplication;
 import com.xadrez.core.ResponseChessboard;
 
 @RunWith(MockitoJUnitRunner.class)
-public class MovimentPawnTest {
+public class PawnTest {
 
-	private Player player1;
-	private Player player2;
-	private Chessboard chessboard;
-	private Pawn pawn;
-	
-	@Before
-	public void setUp(){
-		this.player1 = new Player("Joao", 100L, TypePlayer.P1);
-		this.player2 = new Player("Maria", 100L, TypePlayer.P2);
-		chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
-				TypeColor.BLACK, TypeColor.WHITE, player1, player2);
-		pawn = new Pawn(TypeColor.WHITE, this.player1);
-	}
+	private Player player1 = new Player("Joao", 100L, TypePlayer.P1);
+	private Player player2 =  new Player("Maria", 100L, TypePlayer.P2);
+	private Chessboard chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
+			TypeColor.BLACK, TypeColor.WHITE, player1, player2);
+	private Pawn pawn = new Pawn(TypeColor.WHITE, this.player1);
+
 	
 	/**
 	 * Tests: 	position piece in the chessboard <br>
@@ -46,9 +37,9 @@ public class MovimentPawnTest {
 	@Test
 	public void testMovementOfPawnToFront(){
 		System.out.println("\n------------------------------------------------------------------------------");
-		assertNull(chessboard.squaresChessboard(A2).getPiece());
+		Assert.assertNull(chessboard.squaresChessboard(A2).getPiece());
 		chessboard.positionPiece(A2, pawn);
-		assertNotNull(chessboard.squaresChessboard(A2).getPiece());
+		Assert.assertNotNull(chessboard.squaresChessboard(A2).getPiece());
 		chessboard.printChessboard(chessboard, "position");
 		
 		chessboard.startGame();
@@ -56,9 +47,9 @@ public class MovimentPawnTest {
 				
 		List<PositionChessboard> listMovement = pawn.movementAvailable(B2, chessboard.squaresChessboard());
 		System.out.println("\n" + listMovement);
-		assertEquals(listMovement.get(0), B3);
-		assertEquals(listMovement.get(1), B4);
-		assertEquals(listMovement.size(), 2);
+		Assert.assertEquals(listMovement.get(0), B3);
+		Assert.assertEquals(listMovement.get(1), B4);
+		Assert.assertEquals(listMovement.size(), 2);
 		chessboard.printChessboard(chessboard, "movement to front for pawn");		
 				
 	}
@@ -77,7 +68,7 @@ public class MovimentPawnTest {
 		
 		List<PositionChessboard> listTakes = pawn.movementAvailableToTakePieces(C2, chessboard.squaresChessboard());
 		System.out.println("\n" + listTakes);
-		assertEquals(listTakes.size(), 2);
+		Assert.assertEquals(listTakes.size(), 2);
 		chessboard.printChessboard(chessboard, "movement to takes for pawn");	
 	}
 	
@@ -87,8 +78,8 @@ public class MovimentPawnTest {
 		chessboard.startGame();
 		GameApplication game = new GameApplication(chessboard);		
 		ResponseChessboard response = game.nextMove(PositionChessboard.E2);
-		assertEquals(response.getListPositionsAvailable().size(), 2);
-		assertEquals(response.getListPositionsToTake().size(), 0);
+		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
+		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
 	}
 	
 	@Test
@@ -101,29 +92,29 @@ public class MovimentPawnTest {
 		
 		//click piece B2 pawn
 		ResponseChessboard response = game.nextMove(PositionChessboard.B2);
-		assertNotNull(response);
+		Assert.assertNotNull(response);
 				
 		//click piece B2 pawn same piece then clear
 		response = game.nextMove(PositionChessboard.B2);
-		assertEquals(response.getListPositionsAvailable().size(), 0);
+		Assert.assertEquals(response.getListPositionsAvailable().size(), 0);
 		
 		//click H2 then return lists
 		response = game.nextMove(PositionChessboard.H2);
-		assertEquals(response.getListPositionsAvailable().size(), 2);
-		assertEquals(response.getListPositionsToTake().size(), 1);
+		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
+		Assert.assertEquals(response.getListPositionsToTake().size(), 1);
 		
 		//click G3 then move H2 to G3 and take piece of enemy
 		response = game.nextMove(PositionChessboard.G3);
-		assertNotNull(response);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		Assert.assertNotNull(response);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		
 		//click piece A2, but turn is player2
 		response = game.nextMove(PositionChessboard.A2);
-		assertNotNull(response);
+		Assert.assertNotNull(response);
 		
 		//click piece A7, then turn is player2
 		response = game.nextMove(PositionChessboard.A7);
-		assertNotNull(response);
+		Assert.assertNotNull(response);
 	}
 	
 	

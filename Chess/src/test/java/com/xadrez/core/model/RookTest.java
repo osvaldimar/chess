@@ -1,4 +1,4 @@
-package com.xadrez.core.movimento;
+package com.xadrez.core.model;
 
 import static com.chess.core.enums.PositionChessboard.*;
 import static org.junit.Assert.*;
@@ -16,23 +16,16 @@ import com.chess.core.model.Rook;
 import com.xadrez.core.GameApplication;
 import com.xadrez.core.ResponseChessboard;
 
-@RunWith(MockitoJUnitRunner.class)
-public class MovimentRookTest {
 
-	private Player player1;
-	private Player player2;
-	private Chessboard chessboard;
-	private Rook rook;
+public class RookTest {
+
+	private Player player1 = new Player("Joao", 100L, TypePlayer.P1);
+	private Player player2 = new Player("Maria", 100L, TypePlayer.P2);
+	private Chessboard chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
+			TypeColor.BLACK, TypeColor.WHITE, player1, player2);
+	private Rook rook = new Rook(TypeColor.WHITE, this.player1);
 	
-	@Before
-	public void setUp(){
-		this.player1 = new Player("Joao", 100L, TypePlayer.P1);
-		this.player2 = new Player("Maria", 100L, TypePlayer.P2);
-		this.chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
-				TypeColor.BLACK, TypeColor.WHITE, player1, player2);
-		rook = new Rook(TypeColor.WHITE, this.player1);
-	}
-	
+
 	@Test
 	public void testMovimentRookToFront(){
 		System.out.println("\n------------------------------------------------------------------------------");		
