@@ -1,5 +1,6 @@
 package com.chess.core.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +17,7 @@ public class Chessboard {
 	private TypeColor whitePieces;
 	private Player player1;
 	private Player player2;
+	private List<Piece> listGraveyard;
 	
 	public Chessboard(TypeColor blackSquares, TypeColor whiteSquares, 
 			TypeColor blackPieces, TypeColor whitePieces, Player player1, Player player2){
@@ -25,6 +27,7 @@ public class Chessboard {
 		this.whitePieces = whitePieces;
 		this.player1 = player1;
 		this.player2 = player2;
+		this.listGraveyard = new ArrayList<>();
 		startChessboad();
 	}
 	
@@ -45,11 +48,15 @@ public class Chessboard {
 				p -> {
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 1).forEach(
-								n->n.addPiece(new Pawn(TypePiece.PEAO, whitePieces, player1)));
+								n->n.addPiece(new Pawn(whitePieces, player1)));
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 6).forEach(
-								n->n.addPiece(new Pawn(TypePiece.PEAO, blackPieces, player2)));
+								n->n.addPiece(new Pawn(blackPieces, player2)));
 				});
+		this.squaresChessboard(PositionChessboard.A1).addPiece(new Rook(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.H1).addPiece(new Rook(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.A8).addPiece(new Rook(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.H8).addPiece(new Rook(blackPieces, player2));
 		
 	}
 	
@@ -66,9 +73,15 @@ public class Chessboard {
 		return new Square(color, position);
 	}
 	
-	public Piece positionPiece(PositionChessboard pos, Piece piece) {
-		Piece gotten = this.squares[pos.getLetter()][pos.getNumber()].getPiece();
+	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
+	}
+	
+	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) {
+		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
+		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
+		this.squares[origin.getLetter()][origin.getNumber()].removePiece();
+		if(gotten != null) listGraveyard.add(gotten);
 		return gotten;
 	}
 	
@@ -80,7 +93,6 @@ public class Chessboard {
 			}
 			System.out.println();
 		}
-		System.out.println();
 	}
 
 	public TypeColor getWhiteSquares() {
@@ -130,7 +142,14 @@ public class Chessboard {
 	public void setPlayer2(Player player2) {
 		this.player2 = player2;
 	}
-	
+
+	public List<Piece> getListGraveyard() {
+		return listGraveyard;
+	}
+
+	public void setListGraveyard(List<Piece> listGraveyard) {
+		this.listGraveyard = listGraveyard;
+	}
 	
 	
 }

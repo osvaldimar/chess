@@ -6,20 +6,22 @@ import java.util.List;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
-import com.chess.core.movement.BehaviorChess;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.util.MovementUtils;
 
 public class Pawn extends Piece {
 
 	private boolean firstMovement = Boolean.TRUE;
 	
-	public Pawn(TypePiece typePiece, TypeColor color, Player player){
-		super(typePiece, color, player);
+	public Pawn(TypeColor color, Player player){
+		super(TypePiece.PAWN, color, player);
 	}
 
 	@Override
 	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
-		return MovementUtils.movementAvailableFront(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer());
+		return (getPlayer().getTypePlayer() == TypePlayer.P1 ? 
+				MovementUtils.movementAvailableFront(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) :
+				MovementUtils.movementAvailableBack(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) );
 	}
 
 	@Override

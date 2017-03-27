@@ -26,11 +26,12 @@ public final class GameApplication {
 
 	private void init() {
 		currentPlayer = chessboard.getPlayer1();
+		chessboard.printChessboard(chessboard, "Play game application starting...");
 	}
 
-	public ResponseMove nextMove(PositionChessboard pos) {
+	public ResponseChessboard nextMove(PositionChessboard pos) {
 		if(pieceClicked != null){
-			ResponseMove response = executeMovePiece(pos);
+			ResponseChessboard response = executeMovePiece(pos);
 			if(response == null){
 				return executeClickPiece(pos);
 			}
@@ -40,29 +41,37 @@ public final class GameApplication {
 		}
 	}
 	
-	private ResponseMove executeClickPiece(PositionChessboard pos){
+	private ResponseChessboard executeClickPiece(PositionChessboard pos){
 		pieceClicked = null;
+		if(squareClicked != null && squareClicked.getPosition() == pos){
+			ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLEAR, pos, squareClicked, currentPlayer);
+			this.printInfoResponse(response);
+			squareClicked = null;
+			return response;	//same piece? then ignore lists and clear all
+		}
+		//process lists available and to take for piece clicked
 		squareClicked = this.chessboard.squaresChessboard(pos);
 		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayer)){
 			pieceClicked = squareClicked.getPiece();
 			listPositionsAvailable = pieceClicked.movementAvailable(pos, this.chessboard.squaresChessboard());
 			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(pos, this.chessboard.squaresChessboard());
-			return new ResponseMove(pos, pieceClicked, null, currentPlayer, squareClicked, 
-					listPositionsAvailable, listPositionsToTake);
-		}		
-		return null;
+			return buildResponseClicked(pos);
+		}
+		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, pos, squareClicked, currentPlayer);
+		this.printInfoResponse(response);
+		return response;
 	}
 	
-	private ResponseMove executeMovePiece(PositionChessboard pos){
+	private ResponseChessboard executeMovePiece(PositionChessboard pos){
 		if(listPositionsAvailable.contains(pos)){
-			Piece gotten = this.chessboard.positionPiece(pos, pieceClicked);
+			Piece gotten = this.chessboard.movePieceIntTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
 			if(gotten != null){
 				throw new RuntimeException("Square marked as available, but piece gotten(" +gotten+ ") should is null");
 			}
 			return buildResponseMove(pos, gotten);
 		}
 		if(listPositionsToTake.contains(pos)){
-			Piece gotten = this.chessboard.positionPiece(pos, pieceClicked);
+			Piece gotten = this.chessboard.movePieceIntTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
 			if(gotten == null){
 				throw new RuntimeException("Square marked as piece to take, but square not have anything piece");
 			}			
@@ -71,14 +80,23 @@ public final class GameApplication {
 		return null;
 	}
 	
-	private ResponseMove buildResponseMove(PositionChessboard pos, Piece gotten) {
-		ResponseMove response = new ResponseMove(pos, pieceClicked, gotten, currentPlayer, squareClicked, 
-				listPositionsAvailable, listPositionsToTake);	
+	private ResponseChessboard buildResponseClicked(PositionChessboard pos) {
+		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLICKED,  pos, pieceClicked, null, currentPlayer, squareClicked, 
+				listPositionsAvailable, listPositionsToTake);
+		this.printInfoResponse(response);
+		return response;
+	}
+	
+	private ResponseChessboard buildResponseMove(PositionChessboard pos, Piece gotten) {
+		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.MOVED, pos, pieceClicked, gotten, currentPlayer, squareClicked, 
+				listPositionsAvailable, listPositionsToTake);
+		this.printInfoResponse(response);
 		pieceClicked = null;
 		squareClicked = null;
 		listPositionsAvailable = null;
 		listPositionsToTake = null;
 		this.changePlayer();
+		chessboard.printChessboard(chessboard, "Play game application turn... player: " + currentPlayer);
 		return response;
 	}
 
@@ -88,6 +106,10 @@ public final class GameApplication {
 		}else{
 			currentPlayer = chessboard.getPlayer1();
 		}
+	}
+	
+	private void printInfoResponse(ResponseChessboard response) {
+		System.out.println("\n" + response);
 	}
 
 }
