@@ -95,6 +95,18 @@ public class Chessboard {
 		}
 	}
 
+	@Override
+	public String toString() {
+		String str = "";
+		for(int y = 7; y >= 0; y--){
+			for(int x = 0; x <= 7; x++){
+				str += this.squares[x][y];
+			}
+			str += "\n";
+		}
+		return str;
+	}
+	
 	public TypeColor getWhiteSquares() {
 		return whiteSquares;
 	}
