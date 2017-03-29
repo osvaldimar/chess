@@ -1,22 +1,29 @@
 package com.xadrez.core.model;
 
-import static com.chess.core.enums.PositionChessboard.*;
+import static com.chess.core.enums.PositionChessboard.E1;
+import static com.chess.core.enums.PositionChessboard.E4;
+import static com.chess.core.enums.PositionChessboard.E5;
+import static com.chess.core.enums.PositionChessboard.E7;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.chess.core.Chessboard;
+import com.chess.core.GameApplication;
+import com.chess.core.ResponseChessboard;
+import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.model.Chessboard;
 import com.chess.core.model.King;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
-import com.xadrez.core.GameApplication;
-import com.xadrez.core.ResponseChessboard;
+import com.chess.core.util.PieceUtils;
+
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -70,5 +77,14 @@ public class KingTest {
 		
 	}
 	
-	
+	@Test
+	public void testGetPositionOfKingChessboard(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();		
+		PositionChessboard p1 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player1);
+		Assert.assertEquals(p1, PositionChessboard.E1);
+		PositionChessboard p2 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player2);
+		Assert.assertEquals(p2, PositionChessboard.E8);
+		chessboard.printChessboard(chessboard, "Test getPositionKingInChessboard()");		
+	}
 }

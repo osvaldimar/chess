@@ -44,6 +44,11 @@ public class King extends Piece implements BehaviorChess {
 		list.addAll(MovementUtils.movementAvailableRightDown(1, position, squares, Boolean.TRUE, getPlayer()));
 		return list;
 	}
+	
+	private List<PositionChessboard> movementSpecial(PositionChessboard position, Square[][] squares){
+		
+		return null;
+	}
 
 	public boolean isFirstMovement() {
 		return isFirstMovement;

@@ -1,10 +1,12 @@
-package com.xadrez.core;
+package com.chess.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chess.core.Chessboard;
 import com.chess.core.enums.PositionChessboard;
-import com.chess.core.model.Chessboard;
+import com.chess.core.exception.CheckMoveException;
+import com.chess.core.exception.CheckStateException;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
@@ -31,10 +33,19 @@ public final class GameApplication {
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		if(pieceClicked != null){
-			ResponseChessboard response = executeMovePiece(pos);
-			if(response == null){
-				return executeClickPiece(pos);
-			}
+			ResponseChessboard response = null;
+			try {
+				response = executeMovePiece(pos);
+				if(response == null){
+					return executeClickPiece(pos);
+				}
+			} catch (CheckMoveException e) {
+				response = new ResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED, 
+						pos, squareClicked, currentPlayer);
+			} catch (CheckStateException e) {
+				response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
+						pos, squareClicked, currentPlayer);
+			}			
 			return response;
 		}else{
 			return executeClickPiece(pos);
@@ -62,7 +73,7 @@ public final class GameApplication {
 		return response;
 	}
 	
-	private ResponseChessboard executeMovePiece(PositionChessboard pos){
+	private ResponseChessboard executeMovePiece(PositionChessboard pos) throws CheckMoveException, CheckStateException{
 		if(listPositionsAvailable.contains(pos)){
 			Piece gotten = this.chessboard.movePieceIntTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
 			if(gotten != null){

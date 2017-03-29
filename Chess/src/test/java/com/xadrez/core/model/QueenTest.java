@@ -12,13 +12,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.chess.core.Chessboard;
+import com.chess.core.GameApplication;
+import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.model.Chessboard;
 import com.chess.core.model.Player;
 import com.chess.core.model.Queen;
-import com.xadrez.core.GameApplication;
-import com.xadrez.core.ResponseChessboard;
 
 
 @RunWith(MockitoJUnitRunner.class)

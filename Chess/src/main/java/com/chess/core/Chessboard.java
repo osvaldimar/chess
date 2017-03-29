@@ -1,4 +1,4 @@
-package com.chess.core.model;
+package com.chess.core;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,7 +6,19 @@ import java.util.List;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
-import com.chess.core.enums.TypePiece;
+import com.chess.core.exception.CheckMoveException;
+import com.chess.core.exception.CheckStateException;
+import com.chess.core.model.Bishop;
+import com.chess.core.model.King;
+import com.chess.core.model.Knight;
+import com.chess.core.model.Pawn;
+import com.chess.core.model.Piece;
+import com.chess.core.model.Player;
+import com.chess.core.model.Queen;
+import com.chess.core.model.Rook;
+import com.chess.core.model.Square;
+import com.chess.core.util.ChessboardPieceFactory;
+import com.chess.core.util.ValidateCheck;
 
 public class Chessboard {
 
@@ -36,7 +48,7 @@ public class Chessboard {
 		this.squares = new Square[8][8];
 		PositionChessboard[] posicoes = PositionChessboard.values();
 		for (PositionChessboard p : posicoes) {			
-			Square square = square(cor == 0 ? this.blackSquares : this.whiteSquares, p);
+			Square square = buildSquare(cor == 0 ? this.blackSquares : this.whiteSquares, p);
 			this.squares[p.getLetter()][p.getNumber()] = square;
 			cor = cor == 0 ? 1 : 0;
 		}		
@@ -73,6 +85,10 @@ public class Chessboard {
 		
 	}
 	
+	public Square[][] getCloneSquaresChessboard(){
+		return ChessboardPieceFactory.buildCloneSquares(squares);
+	}
+	
 	public Square[][] squaresChessboard() {
 		final Square[][] squares = this.squares.clone();
 		return squares;
@@ -82,7 +98,7 @@ public class Chessboard {
 		return squares[position.getLetter()][position.getNumber()];
 	}
 
-	private static Square square(TypeColor color, PositionChessboard position){
+	private static Square buildSquare(TypeColor color, PositionChessboard position){
 		return new Square(color, position);
 	}
 	
@@ -90,11 +106,17 @@ public class Chessboard {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
-	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) {
+	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);		
+		clone[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
+		clone[origin.getLetter()][origin.getNumber()].removePiece();
+		
+		ValidateCheck.validateKingExposedInCheck(clone, piece.getPlayer());
+		
 		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
 		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
 		this.squares[origin.getLetter()][origin.getNumber()].removePiece();
-		if(gotten != null) listGraveyard.add(gotten);
+		if(gotten != null) listGraveyard.add(gotten);		
 		return gotten;
 	}
 	

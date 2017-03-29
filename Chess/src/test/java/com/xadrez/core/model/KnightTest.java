@@ -1,6 +1,8 @@
 package com.xadrez.core.model;
 
-import static com.chess.core.enums.PositionChessboard.*;
+import static com.chess.core.enums.PositionChessboard.B1;
+import static com.chess.core.enums.PositionChessboard.C6;
+import static com.chess.core.enums.PositionChessboard.D8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -9,13 +11,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.chess.core.Chessboard;
+import com.chess.core.GameApplication;
+import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.model.Chessboard;
 import com.chess.core.model.Knight;
 import com.chess.core.model.Player;
-import com.xadrez.core.GameApplication;
-import com.xadrez.core.ResponseChessboard;
 
 
 @RunWith(MockitoJUnitRunner.class)

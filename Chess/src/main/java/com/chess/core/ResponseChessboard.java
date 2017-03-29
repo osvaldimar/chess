@@ -1,4 +1,4 @@
-package com.xadrez.core;
+package com.chess.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ResponseChessboard {
 	private StatusResponse statusResponse;
 	
 	public enum StatusResponse{
-		CLICKED, MOVED, NONE, CLEAR;
+		CLICKED, MOVED, NONE, CLEAR, EXPOSED, CHECK;
 	}
 	
 	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Square squareClicked, Player currentPlayer){

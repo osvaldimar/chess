@@ -1,23 +1,31 @@
 package com.xadrez.core.model;
 
-import static com.chess.core.enums.PositionChessboard.*;
-import org.junit.Assert;
+import static com.chess.core.enums.PositionChessboard.A2;
+import static com.chess.core.enums.PositionChessboard.B2;
+import static com.chess.core.enums.PositionChessboard.B3;
+import static com.chess.core.enums.PositionChessboard.B4;
+import static com.chess.core.enums.PositionChessboard.B7;
+import static com.chess.core.enums.PositionChessboard.C2;
+import static com.chess.core.enums.PositionChessboard.D3;
+import static com.chess.core.enums.PositionChessboard.D7;
+import static com.chess.core.enums.PositionChessboard.G3;
+import static com.chess.core.enums.PositionChessboard.G7;
 
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.chess.core.Chessboard;
+import com.chess.core.GameApplication;
+import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.model.Chessboard;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
-import com.xadrez.core.GameApplication;
-import com.xadrez.core.ResponseChessboard;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PawnTest {
