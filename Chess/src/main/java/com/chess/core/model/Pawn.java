@@ -11,7 +11,7 @@ import com.chess.core.util.MovementUtils;
 
 public class Pawn extends Piece {
 
-	private boolean firstMovement = Boolean.TRUE;
+	private boolean isFirstMovement = Boolean.TRUE;
 	
 	public Pawn(TypeColor color, Player player){
 		super(TypePiece.PAWN, color, player);
@@ -20,8 +20,8 @@ public class Pawn extends Piece {
 	@Override
 	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
 		return (getPlayer().getTypePlayer() == TypePlayer.P1 ? 
-				MovementUtils.movementAvailableFront(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) :
-				MovementUtils.movementAvailableBack(firstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) );
+				MovementUtils.movementAvailableFront(isFirstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) :
+				MovementUtils.movementAvailableBack(isFirstMovement ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) );
 	}
 
 	@Override

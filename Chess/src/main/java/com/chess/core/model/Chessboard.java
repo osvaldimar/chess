@@ -54,8 +54,21 @@ public class Chessboard {
 								n->n.addPiece(new Pawn(blackPieces, player2)));
 				});
 		this.squaresChessboard(PositionChessboard.A1).addPiece(new Rook(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.B1).addPiece(new Knight(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.C1).addPiece(new Bishop(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.D1).addPiece(new Queen(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.E1).addPiece(new King(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.F1).addPiece(new Bishop(whitePieces, player1));
+		this.squaresChessboard(PositionChessboard.G1).addPiece(new Knight(whitePieces, player1));
 		this.squaresChessboard(PositionChessboard.H1).addPiece(new Rook(whitePieces, player1));
+		
 		this.squaresChessboard(PositionChessboard.A8).addPiece(new Rook(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.B8).addPiece(new Knight(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.C8).addPiece(new Bishop(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.D8).addPiece(new Queen(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.E8).addPiece(new King(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.F8).addPiece(new Bishop(blackPieces, player2));
+		this.squaresChessboard(PositionChessboard.G8).addPiece(new Knight(blackPieces, player2));
 		this.squaresChessboard(PositionChessboard.H8).addPiece(new Rook(blackPieces, player2));
 		
 	}

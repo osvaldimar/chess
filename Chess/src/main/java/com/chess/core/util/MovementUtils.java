@@ -71,17 +71,17 @@ public class MovementUtils {
 		return movementAvailableGeneric(limit, myPosition, squares, capture, playerCurrent, TypeWalk.RIGHT_DOWN);
 	}
 	
-	public static List<PositionChessboard> movementAvailableknight(PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
+	public static List<PositionChessboard> movementAvailableKnight(PositionChessboard myPosition, Square[][] squares, boolean capture, Player playerCurrent){
 		
 		List<PositionChessboard> list = new ArrayList<>();
-		movementAvailableKnight(capture, playerCurrent, list, squares, -1, 2);
-		movementAvailableKnight(capture, playerCurrent, list, squares, 1, 2);
-		movementAvailableKnight(capture, playerCurrent, list, squares, 2, 1);
-		movementAvailableKnight(capture, playerCurrent, list, squares, 2, -1);
-		movementAvailableKnight(capture, playerCurrent, list, squares, 1, -2);
-		movementAvailableKnight(capture, playerCurrent, list, squares, -1, -2);
-		movementAvailableKnight(capture, playerCurrent, list, squares, -2, -1);
-		movementAvailableKnight(capture, playerCurrent, list, squares, -2, 1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()-1, myPosition.getNumber()+2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()+1, myPosition.getNumber()+2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()+2, myPosition.getNumber()+1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()+2, myPosition.getNumber()-1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()+1, myPosition.getNumber()-2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()-1, myPosition.getNumber()-2);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()-2, myPosition.getNumber()-1);
+		movementAvailableKnight(capture, playerCurrent, list, squares, myPosition.getLetter()-2, myPosition.getNumber()+1);
 		return list;
 	}
 

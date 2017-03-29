@@ -9,12 +9,10 @@ import com.chess.core.enums.TypePiece;
 import com.chess.core.movement.BehaviorChess;
 import com.chess.core.util.MovementUtils;
 
-public class Rook extends Piece implements BehaviorChess {
+public class Queen extends Piece implements BehaviorChess {
 
-	private boolean isFirstMovement = Boolean.TRUE;
-	
-	public Rook(TypeColor color, Player player) {
-		super(TypePiece.ROOK, color, player);
+	public Queen(TypeColor color, Player player) {
+		super(TypePiece.QUEEN, color, player);
 	}
 
 	@Override
@@ -24,6 +22,10 @@ public class Rook extends Piece implements BehaviorChess {
 		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.FALSE, getPlayer()));
 		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.FALSE, getPlayer()));
 		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.FALSE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.FALSE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.FALSE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.FALSE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.FALSE, getPlayer()));
 		return list;
 	}
 
@@ -34,11 +36,11 @@ public class Rook extends Piece implements BehaviorChess {
 		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.TRUE, getPlayer()));
 		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.TRUE, getPlayer()));
 		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.TRUE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.TRUE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.TRUE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.TRUE, getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.TRUE, getPlayer()));
 		return list;
-	}
-	
-	public boolean isFirstMovement() {
-		return isFirstMovement;
 	}
 
 }
