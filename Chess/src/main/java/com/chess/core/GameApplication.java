@@ -32,12 +32,12 @@ public final class GameApplication {
 	}
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
+		ResponseChessboard response = null;
 		if(pieceClicked != null){
-			ResponseChessboard response = null;
 			try {
 				response = executeMovePiece(pos);
 				if(response == null){
-					return executeClickPiece(pos);
+					response = executeClickPiece(pos);
 				}
 			} catch (CheckMoveException e) {
 				response = new ResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED, 
@@ -46,17 +46,17 @@ public final class GameApplication {
 				response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
 						pos, squareClicked, currentPlayer);
 			}			
-			return response;
 		}else{
-			return executeClickPiece(pos);
+			response = executeClickPiece(pos);
 		}
+		this.printInfoResponse(response);
+		return response;
 	}
 	
 	private ResponseChessboard executeClickPiece(PositionChessboard pos){
 		pieceClicked = null;
 		if(squareClicked != null && squareClicked.getPosition() == pos){
 			ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLEAR, pos, squareClicked, currentPlayer);
-			this.printInfoResponse(response);
 			squareClicked = null;
 			return response;	//same piece? then ignore lists and clear all
 		}
@@ -69,7 +69,6 @@ public final class GameApplication {
 			return buildResponseClicked(pos);
 		}
 		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, pos, squareClicked, currentPlayer);
-		this.printInfoResponse(response);
 		return response;
 	}
 	
@@ -94,14 +93,12 @@ public final class GameApplication {
 	private ResponseChessboard buildResponseClicked(PositionChessboard pos) {
 		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLICKED,  pos, pieceClicked, null, currentPlayer, squareClicked, 
 				listPositionsAvailable, listPositionsToTake);
-		this.printInfoResponse(response);
 		return response;
 	}
 	
 	private ResponseChessboard buildResponseMove(PositionChessboard pos, Piece gotten) {
 		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.MOVED, pos, pieceClicked, gotten, currentPlayer, squareClicked, 
 				listPositionsAvailable, listPositionsToTake);
-		this.printInfoResponse(response);
 		pieceClicked = null;
 		squareClicked = null;
 		listPositionsAvailable = null;

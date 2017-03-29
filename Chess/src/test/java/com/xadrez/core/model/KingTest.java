@@ -1,9 +1,6 @@
 package com.xadrez.core.model;
 
-import static com.chess.core.enums.PositionChessboard.E1;
-import static com.chess.core.enums.PositionChessboard.E4;
-import static com.chess.core.enums.PositionChessboard.E5;
-import static com.chess.core.enums.PositionChessboard.E7;
+import static com.chess.core.enums.PositionChessboard.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -19,9 +16,12 @@ import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePlayer;
+import com.chess.core.model.Bishop;
 import com.chess.core.model.King;
+import com.chess.core.model.Knight;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
+import com.chess.core.model.Queen;
 import com.chess.core.util.PieceUtils;
 
 
@@ -86,5 +86,71 @@ public class KingTest {
 		PositionChessboard p2 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player2);
 		Assert.assertEquals(p2, PositionChessboard.E8);
 		chessboard.printChessboard(chessboard, "Test getPositionKingInChessboard()");		
+	}
+	
+	@Test
+	public void testKingBeforeSimulationCheck(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.positionPiece(F2, new Bishop(TypeColor.BLACK, player2));
+		GameApplication game = new GameApplication(chessboard);	
+		
+		ResponseChessboard res = game.nextMove(A2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(A3);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		res = game.nextMove(A7);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		res = game.nextMove(A6);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);	
+	}
+	
+	@Test
+	public void testKingAfterSimulationCheck(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
+		GameApplication game = new GameApplication(chessboard);	
+		
+		ResponseChessboard res = game.nextMove(F2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(F3);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.EXPOSED);
+	}
+	
+	@Test
+	public void testKingAdvancedBeforeAndAfterSimulationCheck(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.squaresChessboard(D8).removePiece();
+		chessboard.squaresChessboard(B1).removePiece();
+		chessboard.squaresChessboard(D2).removePiece();
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
+		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
+		chessboard.positionPiece(D3, new Knight(TypeColor.WHITE, player1));
+		GameApplication game = new GameApplication(chessboard);
+		
+		//P1
+		ResponseChessboard res = game.nextMove(E1);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(F2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		res = game.nextMove(D3);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(F2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		//P2
+		res = game.nextMove(H4);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(F2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		//P1
+		res = game.nextMove(E1);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		res = game.nextMove(D2);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 	}
 }

@@ -107,11 +107,18 @@ public class Chessboard {
 	}
 	
 	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
-		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);		
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
+		
+		boolean isCheckBeforeSimulation = ValidateCheck.validateKingInCheck(clone, piece.getPlayer());		
 		clone[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
 		clone[origin.getLetter()][origin.getNumber()].removePiece();
-		
-		ValidateCheck.validateKingExposedInCheck(clone, piece.getPlayer());
+
+		//before simulation check
+		if(isCheckBeforeSimulation){
+			ValidateCheck.validateKingExposedInCheckBeforeSimulation(clone, piece.getPlayer());
+		}
+		//after simulation check
+		ValidateCheck.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
 		
 		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
 		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);

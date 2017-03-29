@@ -20,7 +20,7 @@ public class ResponseChessboard {
 	private StatusResponse statusResponse;
 	
 	public enum StatusResponse{
-		CLICKED, MOVED, NONE, CLEAR, EXPOSED, CHECK;
+		CLICKED, MOVED, NONE, CLEAR, EXPOSED, CHECK, MATE;
 	}
 	
 	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Square squareClicked, Player currentPlayer){

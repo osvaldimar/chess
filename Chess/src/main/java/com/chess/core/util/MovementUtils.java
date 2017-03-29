@@ -23,12 +23,10 @@ public class MovementUtils {
 			}
 			if(squareWalk.isAvailable()){
 				if(!capture){
-					//TODO validation king in check
 					list.add(squareWalk.getPosition());
 				}
 			}else{
 				if(capture && PieceUtils.isPieceOfEnemy(squareWalk, playerCurrent)){
-					//TODO validation king in check
 					list.add(squareWalk.getPosition());
 				}
 				break;
@@ -91,12 +89,10 @@ public class MovementUtils {
 			Square squareWalk = squares[x][y];
 			if(squareWalk.isAvailable()){
 				if(!capture){
-					//TODO validation king in check
 					list.add(squareWalk.getPosition());
 				}
 			}else{
 				if(capture && PieceUtils.isPieceOfEnemy(squareWalk, playerCurrent)){
-					//TODO validation king in check
 					list.add(squareWalk.getPosition());
 				}
 			}
