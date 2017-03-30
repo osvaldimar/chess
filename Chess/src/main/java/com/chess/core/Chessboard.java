@@ -3,6 +3,8 @@ package com.chess.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
@@ -104,6 +106,13 @@ public class Chessboard {
 	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
+	}
+	
+	public void processValidateCheck(Player player) {
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
+		if(!ValidateCheck.validateKingInCheck(clone, player))
+			return;
+		ValidateCheck.processValidateCheck(clone, player);
 	}
 	
 	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {

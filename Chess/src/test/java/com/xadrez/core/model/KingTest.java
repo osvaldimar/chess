@@ -153,4 +153,19 @@ public class KingTest {
 		res = game.nextMove(D2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 	}
+	
+	@Test
+	public void testKingSimulationCheckMate(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.squaresChessboard(D8).removePiece();
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
+		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
+		GameApplication game = new GameApplication(chessboard);
+		
+		ResponseChessboard response = game.validateCheck();
+		
+		
+	}
 }

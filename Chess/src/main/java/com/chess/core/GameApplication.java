@@ -30,6 +30,13 @@ public final class GameApplication {
 		currentPlayer = chessboard.getPlayer1();
 		chessboard.printChessboard(chessboard, "Play game application starting...");
 	}
+	
+	public ResponseChessboard validateCheck() {
+		System.out.println("PROCESS CHECK");
+		chessboard.processValidateCheck(currentPlayer);
+		return new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
+				null, null, currentPlayer);
+	}
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		ResponseChessboard response = null;
