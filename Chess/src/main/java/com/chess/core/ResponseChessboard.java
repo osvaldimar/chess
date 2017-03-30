@@ -73,10 +73,10 @@ public class ResponseChessboard {
 		StringBuilder builder = new StringBuilder("STATUS ");
 		builder.append(getStatusResponse() + ": ");
 		builder.append(" - Square clicked: " + getSquareClicked());
-		builder.append(" - Position clicked: " + getPositionClicked());
+		builder.append(" - Position selected: " + getPositionClicked());
 		builder.append(" - Piece gotten: " + getPieceGotten() + 
 				(getPieceGotten() != null ? "-"+getPieceGotten().getPlayer().getTypePlayer() : ""));
-		builder.append(" - player: " + currentPlayer);
+		builder.append(" - actual player: " + currentPlayer);
 		builder.append("\nList positions available: " + getListPositionsAvailable());
 		builder.append("\nList positions to take: " + getListPositionsToTake());
 		return builder.toString();

@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
+import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.model.Bishop;
@@ -108,11 +109,10 @@ public class Chessboard {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
-	public void processValidateCheck(Player player) {
+	public void processValidateCheckmate(Player player) throws CheckmateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
-		if(!ValidateCheck.validateKingInCheck(clone, player))
-			return;
-		ValidateCheck.processValidateCheck(clone, player);
+		if(ValidateCheck.validateKingInCheck(clone, player))
+			ValidateCheck.processValidateCheckMate(clone, player);
 	}
 	
 	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
@@ -141,6 +141,16 @@ public class Chessboard {
 		for(int y = 7; y >= 0; y--){
 			for(int x = 0; x <= 7; x++){
 				System.out.print(this.squares[x][y]);
+			}
+			System.out.println();
+		}
+	}
+	
+	public static void printCloneChessboard(Square[][] clone, String message){
+		System.out.println("\n*** Clone layout chess *** - " + message);
+		for(int y = 7; y >= 0; y--){
+			for(int x = 0; x <= 7; x++){
+				System.out.print(clone[x][y]);
 			}
 			System.out.println();
 		}

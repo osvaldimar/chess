@@ -1,5 +1,8 @@
 package com.chess.core.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypeWalk;

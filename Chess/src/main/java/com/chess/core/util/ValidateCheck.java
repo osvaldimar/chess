@@ -7,14 +7,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.chess.core.Chessboard;
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
+import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 
 public class ValidateCheck {
-
+	
 	public static void validateKingExposedInCheckBeforeSimulation(Square[][] clone, Player player) throws CheckStateException{
 		if(validateKingInCheck(clone, player))
 			throw new CheckStateException();
@@ -40,32 +43,56 @@ public class ValidateCheck {
 		return Boolean.FALSE;
 	}
 	
-	public static boolean processValidateCheck(Square[][] clone, Player player) {
+	public static void processValidateCheckMate(Square[][] clone, Player player) throws CheckmateException {
 		
-		PositionChessboard positionKing = PieceUtils.getPositionKingInChessboard(clone, player);	
 		List<Square> listSquare = new ArrayList<>();
 		for(Square[] s : clone){
 			listSquare.addAll(Arrays.stream(s).filter(f -> !f.isAvailable())
 			.filter(p -> p.getPiece().getPlayer().getTypePlayer()==player.getTypePlayer())
-			.collect(Collectors.toList()));			
+			.sorted((o1,o2) -> {
+					if(o1.getPiece().getTypePiece().getValue() < o2.getPiece().getTypePiece().getValue())
+						return -1;
+					if(o1.getPiece().getTypePiece().getValue() > o2.getPiece().getTypePiece().getValue())
+						return 1;
+					return 0;
+			})
+			.collect(Collectors.toList()));
 		}
-		System.out.println("list square test check: " + listSquare);
-		listSquare.stream().forEach(f -> {
-			f.getPiece().movementAvailable(f.getPosition(), clone)
-				.stream().filter(p -> {
-					boolean check = false;
-					clone[p.getLetter()][p.getNumber()].addPiece(f.getPiece());
-					clone[f.getPosition().getLetter()][f.getPosition().getNumber()].removePiece();
-					check = !validateKingInCheck(clone, player);
-					clone[f.getPosition().getLetter()][f.getPosition().getNumber()].addPiece(f.getPiece());
-					clone[p.getLetter()][p.getNumber()].removePiece();
-					return check;
-				});
-		});
+		System.out.println("\nlist my pieces for take or block check enemy: \n" + listSquare);
 		
-		return Boolean.FALSE;
+		List<Square> listPiecesTakeEnemy = listSquare.stream().filter(mySqu ->
+			mySqu.getPiece().movementAvailableToTakePieces(mySqu.getPosition(), clone)
+				.stream()
+				.filter(nextPos -> !isCheckPositionPieceSimulation(clone, mySqu, nextPos, player))
+				.collect(Collectors.toList()).size()>=1).collect(Collectors.toList());
+		System.out.println("listPiecesTakeEnemy: " + listPiecesTakeEnemy);
+		
+		List<Square> listPiecesMoveBlockEnemy = listSquare.stream().filter(mySqu ->
+		mySqu.getPiece().movementAvailable(mySqu.getPosition(), clone)
+			.stream()
+			.filter(nextPos -> !isCheckPositionPieceSimulation(clone, mySqu, nextPos, player))
+			.collect(Collectors.toList()).size()>=1).collect(Collectors.toList());
+		System.out.println("listPiecesMoveBlockEnemy: " + listPiecesMoveBlockEnemy);
+		
+		if(listPiecesTakeEnemy.isEmpty() && listPiecesMoveBlockEnemy.isEmpty()){
+			throw new CheckmateException();
+		}
 	}
-
+	
+	private static boolean isCheckPositionPieceSimulation(Square[][] clone, Square mySqu, PositionChessboard nextPos, Player player) {
+		boolean check;
+		Piece myTemp = mySqu.getPiece();
+		Piece enemyTemp = clone[nextPos.getLetter()][nextPos.getNumber()].getPiece();
+		//Chessboard.printCloneChessboard(clone, "Before simulation - Piece: " + mySqu.getPiece());
+		clone[nextPos.getLetter()][nextPos.getNumber()].addPiece(myTemp);
+		clone[mySqu.getPosition().getLetter()][mySqu.getPosition().getNumber()].removePiece();
+		check = validateKingInCheck(clone, player);
+		//Chessboard.printCloneChessboard(clone, "After simulation - check: " + check);
+		clone[mySqu.getPosition().getLetter()][mySqu.getPosition().getNumber()].addPiece(myTemp);
+		clone[nextPos.getLetter()][nextPos.getNumber()].addPiece(enemyTemp);
+		//Chessboard.printCloneChessboard(clone, "Undo simulation - Piece: " + mySqu.getPiece());
+		return check;
+	}
 	
 	
 }

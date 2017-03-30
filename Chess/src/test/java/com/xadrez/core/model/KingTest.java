@@ -79,13 +79,11 @@ public class KingTest {
 	
 	@Test
 	public void testGetPositionOfKingChessboard(){
-		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();		
 		PositionChessboard p1 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player1);
 		Assert.assertEquals(p1, PositionChessboard.E1);
 		PositionChessboard p2 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player2);
-		Assert.assertEquals(p2, PositionChessboard.E8);
-		chessboard.printChessboard(chessboard, "Test getPositionKingInChessboard()");		
+		Assert.assertEquals(p2, PositionChessboard.E8);		
 	}
 	
 	@Test
@@ -164,8 +162,8 @@ public class KingTest {
 		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
 		GameApplication game = new GameApplication(chessboard);
 		
-		ResponseChessboard response = game.validateCheck();
-		
-		
+		ResponseChessboard response = game.verifyCheckmateValidator();
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MATE);		
 	}
+	
 }

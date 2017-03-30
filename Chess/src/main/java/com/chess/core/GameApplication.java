@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.chess.core.Chessboard;
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.model.Piece;
@@ -31,11 +32,19 @@ public final class GameApplication {
 		chessboard.printChessboard(chessboard, "Play game application starting...");
 	}
 	
-	public ResponseChessboard validateCheck() {
-		System.out.println("PROCESS CHECK");
-		chessboard.processValidateCheck(currentPlayer);
-		return new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
-				null, null, currentPlayer);
+	public ResponseChessboard verifyCheckmateValidator() {
+		ResponseChessboard response = null;
+		try {
+			chessboard.processValidateCheckmate(currentPlayer);
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, 
+					null, null, currentPlayer);
+			this.printInfoResponse(response);
+		} catch (CheckmateException e) {
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.MATE, 
+					null, null, currentPlayer);
+			this.printInfoResponse(response);
+		}
+		return response;
 	}
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
@@ -57,6 +66,8 @@ public final class GameApplication {
 			response = executeClickPiece(pos);
 		}
 		this.printInfoResponse(response);
+		if(response.getStatusResponse() == ResponseChessboard.StatusResponse.MOVED)
+			chessboard.printChessboard(chessboard, "Play game application turn... player: " + currentPlayer);
 		return response;
 	}
 	
@@ -110,8 +121,7 @@ public final class GameApplication {
 		squareClicked = null;
 		listPositionsAvailable = null;
 		listPositionsToTake = null;
-		this.changePlayer();
-		chessboard.printChessboard(chessboard, "Play game application turn... player: " + currentPlayer);
+		this.changePlayer();		
 		return response;
 	}
 
