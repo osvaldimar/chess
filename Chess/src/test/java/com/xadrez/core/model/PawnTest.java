@@ -108,9 +108,16 @@ public class PawnTest {
 		
 		//click G3 then move H2 to G3 and take piece of enemy
 		response = game.nextMove(G3);
-		Assert.assertEquals(response.getPieceGotten().getTypePiece(), TypePiece.PAWN);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1);
+		Assert.assertEquals(response.getSquareClicked().getPosition(), H2);
+		Assert.assertEquals(response.getPositionClicked(), G3);
+		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
+		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P1);
+		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
+		Assert.assertEquals(response.getListPositionsToTake().size(), 1);
+		Assert.assertEquals(response.getPieceGotten().getTypePiece(), TypePiece.PAWN);
+		Assert.assertEquals(response.getPieceGotten().getPlayer().getTypePlayer(), TypePlayer.P2);
 		
 		//click piece A7, turn player2, first movement then available 2 square to front
 		response = game.nextMove(A7);
@@ -121,7 +128,14 @@ public class PawnTest {
 		//click move piece to A6, turn player2
 		response = game.nextMove(A6);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
-		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2);
+		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2);		
+		Assert.assertEquals(response.getSquareClicked().getPosition(), A7);
+		Assert.assertEquals(response.getPositionClicked(), A6);		
+		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
+		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P2);		
+		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
+		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
+		Assert.assertNull(response.getPieceGotten());
 		
 		//test second movement pawn of player1 only walk one square to front
 		response = game.nextMove(G3);
