@@ -22,6 +22,7 @@ public final class GameApplication {
 	private Piece pieceClicked;
 	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
 	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
+	private List<Piece> listPiecesEnemyDoCheck;
 
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
@@ -102,16 +103,10 @@ public final class GameApplication {
 	private ResponseChessboard executeMovePiece(PositionChessboard pos) throws CheckMoveException, CheckStateException{
 		if(listPositionsAvailable.contains(pos)){
 			Piece gotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
-			if(gotten != null){
-				throw new RuntimeException("Square marked as available, but piece gotten(" +gotten+ ") should is null");
-			}
 			return buildResponseMove(pos, gotten);
 		}
 		if(listPositionsToTake.contains(pos)){
-			Piece gotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
-			if(gotten == null){
-				throw new RuntimeException("Square marked as piece to take, but square not have anything piece");
-			}			
+			Piece gotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), pos, pieceClicked);		
 			return buildResponseMove(pos, gotten);
 		}
 		return null;
@@ -150,4 +145,18 @@ public final class GameApplication {
 		System.out.println(gson.toJson(response));
 	}
 
+	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status, 
+			PositionChessboard positionSelected, Piece pieceGotten){
+		return new ResponseChessboard.Builder()
+				.status(status)
+				.currentPlayer(currentPlayer)
+				.squareClicked(squareClicked)
+				.pieceClicked(pieceClicked)
+				.positionSelected(positionSelected)
+				.listPositionsAvailable(listPositionsAvailable)
+				.listPositionsToTake(listPositionsToTake)
+				.listPiecesEnemyDoCheck(listPiecesEnemyDoCheck)
+				.pieceGotten(pieceGotten)
+				.build();
+	}
 }

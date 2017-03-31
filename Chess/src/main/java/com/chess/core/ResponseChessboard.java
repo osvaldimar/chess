@@ -92,4 +92,48 @@ public class ResponseChessboard {
 		}
 		return builder.toString();
 	}
+		
+	public static class Builder {
+		private ResponseChessboard response;
+		
+		public Builder status(StatusResponse status){
+			response.statusResponse = status;
+			return this;
+		}
+		public Builder currentPlayer(Player currentPlayer){
+			response.currentPlayer = currentPlayer;
+			return this;
+		}
+		public Builder squareClicked(Square squareClicked){
+			response.squareClicked = squareClicked;
+			return this;
+		}
+		public Builder positionSelected(PositionChessboard positionSelected){
+			response.positionSelected = positionSelected;
+			return this;
+		}
+		public Builder pieceClicked(Piece pieceClicked){
+			response.pieceClicked = pieceClicked;
+			return this;
+		}
+		public Builder listPositionsAvailable(List<PositionChessboard> listPositionsAvailable){
+			response.listPositionsAvailable = listPositionsAvailable;
+			return this;
+		}
+		public Builder listPositionsToTake(List<PositionChessboard> listPositionsToTake){
+			response.listPositionsToTake = listPositionsToTake;
+			return this;
+		}
+		public Builder listPiecesEnemyDoCheck(List<Piece> listPiecesEnemyDoCheck){
+			response.listPiecesEnemyDoCheck = listPiecesEnemyDoCheck;
+			return this;
+		}
+		public Builder pieceGotten(Piece pieceGotten){
+			response.pieceGotten = pieceGotten;
+			return this;
+		}		
+		public ResponseChessboard build(){
+			return response;
+		}
+	}
 }
