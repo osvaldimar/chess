@@ -10,22 +10,27 @@ import com.chess.core.model.Square;
 
 public class ResponseChessboard {
 
-	private PositionChessboard positionClicked;
 	private Player currentPlayer;
+	private StatusResponse statusResponse;
+	private PositionChessboard positionSelected;
 	private Square squareClicked;
-	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
-	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	private Piece pieceClicked;
 	private Piece pieceGotten;
-	private StatusResponse statusResponse;
+	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
+	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	
 	public enum StatusResponse{
-		CLICKED, MOVED, NONE, CLEAR, EXPOSED, CHECK, MATE;
+		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE;
+	}
+	
+	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer) {
+		this.statusResponse = statusResponse;
+		this.currentPlayer = currentPlayer;
 	}
 	
 	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Square squareClicked, Player currentPlayer){
 		this.statusResponse = typeResponse;
-		this.positionClicked = positionClicked;
+		this.positionSelected = positionClicked;
 		this.squareClicked = squareClicked;
 		this.currentPlayer = currentPlayer;
 	}
@@ -33,7 +38,7 @@ public class ResponseChessboard {
 	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Piece pieceClicked, Piece pieceGotten, Player currentPlayer,
 			Square squareClicked, List<PositionChessboard> listPositionsAvailable, List<PositionChessboard> listPositionsToTake){
 				this.statusResponse = typeResponse;
-				this.positionClicked = positionClicked;
+				this.positionSelected = positionClicked;
 				this.pieceClicked = pieceClicked;
 				this.pieceGotten = pieceGotten;
 				this.currentPlayer = currentPlayer;
@@ -41,7 +46,7 @@ public class ResponseChessboard {
 				this.listPositionsAvailable = listPositionsAvailable;
 				this.listPositionsToTake = listPositionsToTake;		
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -58,7 +63,7 @@ public class ResponseChessboard {
 		return pieceClicked;
 	}
 	public PositionChessboard getPositionClicked() {
-		return positionClicked;
+		return positionSelected;
 	}
 	public Piece getPieceGotten() {
 		return pieceGotten;

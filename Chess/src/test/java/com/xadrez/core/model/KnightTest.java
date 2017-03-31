@@ -54,7 +54,7 @@ public class KnightTest {
 	public void testMovimentQueenToTakeAnotherPiece(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(B1).removePiece();		
+		chessboard.getSquareChessboard(B1).removePiece();		
 		chessboard.positionPiece(C6, knight);
 		GameApplication game = new GameApplication(chessboard);	
 

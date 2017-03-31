@@ -42,7 +42,7 @@ public class QueenTest {
 	public void testMovimentQueenPlaces(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(D1).removePiece();		
+		chessboard.getSquareChessboard(D1).removePiece();		
 		chessboard.positionPiece(D4, queen);
 		GameApplication game = new GameApplication(chessboard);	
 
@@ -57,7 +57,7 @@ public class QueenTest {
 	public void testMovimentQueenToTakeAnotherPiece(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(D1).removePiece();		
+		chessboard.getSquareChessboard(D1).removePiece();		
 		chessboard.positionPiece(D4, queen);
 		GameApplication game = new GameApplication(chessboard);	
 

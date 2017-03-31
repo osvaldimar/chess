@@ -33,7 +33,7 @@ public class RookTest {
 	public void testMovimentRookToFront(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(A2).removePiece();
+		chessboard.getSquareChessboard(A2).removePiece();
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard response = game.nextMove(A1);
@@ -62,7 +62,7 @@ public class RookTest {
 	public void testMovimentRookToTakeAnotherPiece(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(A1).removePiece();		
+		chessboard.getSquareChessboard(A1).removePiece();		
 		chessboard.positionPiece(C3, rook);
 		GameApplication game = new GameApplication(chessboard);	
 		

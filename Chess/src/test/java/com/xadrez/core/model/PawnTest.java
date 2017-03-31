@@ -45,15 +45,15 @@ public class PawnTest {
 	@Test
 	public void testMovementOfPawnToFront(){
 		System.out.println("\n------------------------------------------------------------------------------");
-		Assert.assertNull(chessboard.squaresChessboard(A2).getPiece());
+		Assert.assertNull(chessboard.getSquareChessboard(A2).getPiece());
 		chessboard.positionPiece(A2, pawn);
-		Assert.assertNotNull(chessboard.squaresChessboard(A2).getPiece());
+		Assert.assertNotNull(chessboard.getSquareChessboard(A2).getPiece());
 		chessboard.printChessboard(chessboard, "position");
 		
 		chessboard.startGame();
 		chessboard.printChessboard(chessboard, "start game");
 				
-		List<PositionChessboard> listMovement = pawn.movementAvailable(B2, chessboard.squaresChessboard());
+		List<PositionChessboard> listMovement = pawn.movementAvailable(B2, chessboard.getSquaresChessboard());
 		System.out.println("\n" + listMovement);
 		Assert.assertEquals(listMovement.get(0), B3);
 		Assert.assertEquals(listMovement.get(1), B4);
@@ -69,12 +69,12 @@ public class PawnTest {
 	public void testMovementOfPawnToTakesPieces(){
 		System.out.println("\n------------------------------------------------------------------------------");
 		chessboard.startGame();
-		chessboard.squaresChessboard()[D3.getLetter()][D3.getNumber()].addPiece(chessboard.squaresChessboard(D7).getPiece());
-		chessboard.squaresChessboard(D7).removePiece();
-		chessboard.squaresChessboard()[B3.getLetter()][B3.getNumber()].addPiece(chessboard.squaresChessboard(B7).getPiece());
-		chessboard.squaresChessboard(B7).removePiece();
+		chessboard.getSquaresChessboard()[D3.getLetter()][D3.getNumber()].addPiece(chessboard.getSquareChessboard(D7).getPiece());
+		chessboard.getSquareChessboard(D7).removePiece();
+		chessboard.getSquaresChessboard()[B3.getLetter()][B3.getNumber()].addPiece(chessboard.getSquareChessboard(B7).getPiece());
+		chessboard.getSquareChessboard(B7).removePiece();
 		
-		List<PositionChessboard> listTakes = pawn.movementAvailableToTakePieces(C2, chessboard.squaresChessboard());
+		List<PositionChessboard> listTakes = pawn.movementAvailableToTakePieces(C2, chessboard.getSquaresChessboard());
 		System.out.println("\n" + listTakes);
 		Assert.assertEquals(listTakes.size(), 2);
 		chessboard.printChessboard(chessboard, "movement to takes for pawn");	
@@ -94,8 +94,8 @@ public class PawnTest {
 	public void testPositionPieceInTheChessboardGottenPiece(){		
 		System.out.println("\n------------------------------------------------------------------------------");
 		chessboard.startGame();
-		chessboard.squaresChessboard()[G3.getLetter()][G3.getNumber()].addPiece(chessboard.squaresChessboard(G7).getPiece());
-		chessboard.squaresChessboard(G7).removePiece();
+		chessboard.getSquaresChessboard()[G3.getLetter()][G3.getNumber()].addPiece(chessboard.getSquareChessboard(G7).getPiece());
+		chessboard.getSquareChessboard(G7).removePiece();
 		GameApplication game = new GameApplication(chessboard);
 		
 		//click piece B2 pawn

@@ -3,14 +3,12 @@ package com.chess.core;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
-import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
+import com.chess.core.exception.CheckmateException;
 import com.chess.core.model.Bishop;
 import com.chess.core.model.King;
 import com.chess.core.model.Knight;
@@ -21,7 +19,7 @@ import com.chess.core.model.Queen;
 import com.chess.core.model.Rook;
 import com.chess.core.model.Square;
 import com.chess.core.util.ChessboardPieceFactory;
-import com.chess.core.util.ValidateCheck;
+import com.chess.core.util.CheckmateValidator;
 
 public class Chessboard {
 
@@ -68,66 +66,65 @@ public class Chessboard {
 						s -> s.getPosition().getNumber() == 6).forEach(
 								n->n.addPiece(new Pawn(blackPieces, player2)));
 				});
-		this.squaresChessboard(PositionChessboard.A1).addPiece(new Rook(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.B1).addPiece(new Knight(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.C1).addPiece(new Bishop(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.D1).addPiece(new Queen(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.E1).addPiece(new King(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.F1).addPiece(new Bishop(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.G1).addPiece(new Knight(whitePieces, player1));
-		this.squaresChessboard(PositionChessboard.H1).addPiece(new Rook(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.A1).addPiece(new Rook(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.B1).addPiece(new Knight(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.C1).addPiece(new Bishop(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.D1).addPiece(new Queen(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.E1).addPiece(new King(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.F1).addPiece(new Bishop(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.G1).addPiece(new Knight(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.H1).addPiece(new Rook(whitePieces, player1));
 		
-		this.squaresChessboard(PositionChessboard.A8).addPiece(new Rook(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.B8).addPiece(new Knight(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.C8).addPiece(new Bishop(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.D8).addPiece(new Queen(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.E8).addPiece(new King(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.F8).addPiece(new Bishop(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.G8).addPiece(new Knight(blackPieces, player2));
-		this.squaresChessboard(PositionChessboard.H8).addPiece(new Rook(blackPieces, player2));
-		
+		this.getSquareChessboard(PositionChessboard.A8).addPiece(new Rook(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.B8).addPiece(new Knight(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.C8).addPiece(new Bishop(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.D8).addPiece(new Queen(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.E8).addPiece(new King(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.F8).addPiece(new Bishop(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.G8).addPiece(new Knight(blackPieces, player2));
+		this.getSquareChessboard(PositionChessboard.H8).addPiece(new Rook(blackPieces, player2));		
+	}
+	
+	private static Square buildSquare(TypeColor color, PositionChessboard position){
+		return new Square(color, position);
 	}
 	
 	public Square[][] getCloneSquaresChessboard(){
 		return ChessboardPieceFactory.buildCloneSquares(squares);
 	}
 	
-	public Square[][] squaresChessboard() {
+	public Square[][] getSquaresChessboard() {
 		final Square[][] squares = this.squares.clone();
 		return squares;
 	}
 	
-	public Square squaresChessboard(PositionChessboard position) {
+	public Square getSquareChessboard(PositionChessboard position) {
 		return squares[position.getLetter()][position.getNumber()];
-	}
-
-	private static Square buildSquare(TypeColor color, PositionChessboard position){
-		return new Square(color, position);
 	}
 	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
-	public void processValidateCheckmate(Player player) throws CheckmateException {
+	public void processValidateCheckmate(Player player) throws CheckmateException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
-		if(ValidateCheck.validateKingInCheck(clone, player))
-			ValidateCheck.processValidateCheckMate(clone, player);
+		if(CheckmateValidator.isKingInCheck(clone, player))
+			CheckmateValidator.processValidatesCheckmate(clone, player);
 	}
 	
-	public Piece movePieceIntTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
+	public Piece movePieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
 		
-		boolean isCheckBeforeSimulation = ValidateCheck.validateKingInCheck(clone, piece.getPlayer());		
+		boolean isCheckBeforeSimulation = CheckmateValidator.isKingInCheck(clone, piece.getPlayer());		
 		clone[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
 		clone[origin.getLetter()][origin.getNumber()].removePiece();
 
 		//before simulation check
 		if(isCheckBeforeSimulation){
-			ValidateCheck.validateKingExposedInCheckBeforeSimulation(clone, piece.getPlayer());
+			CheckmateValidator.validateKingExposedInCheckBeforeSimulation(clone, piece.getPlayer());
 		}
 		//after simulation check
-		ValidateCheck.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
+		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
 		
 		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
 		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
@@ -142,7 +139,7 @@ public class Chessboard {
 			for(int x = 0; x <= 7; x++){
 				System.out.print(this.squares[x][y]);
 			}
-			System.out.println();
+			System.out.println("\n");
 		}
 	}
 	

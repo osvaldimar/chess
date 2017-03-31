@@ -47,7 +47,7 @@ public class KingTest {
 	public void testMovimentKingPlaces(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(E1).removePiece();		
+		chessboard.getSquareChessboard(E1).removePiece();		
 		chessboard.positionPiece(E4, king);
 		GameApplication game = new GameApplication(chessboard);	
 
@@ -62,8 +62,8 @@ public class KingTest {
 	public void testMovimentKingToTakeAnotherPiece(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(E1).removePiece();
-		chessboard.squaresChessboard(E7).removePiece();
+		chessboard.getSquareChessboard(E1).removePiece();
+		chessboard.getSquareChessboard(E7).removePiece();
 		chessboard.positionPiece(E4, king);
 		chessboard.positionPiece(E5, new Pawn(TypeColor.BLACK, player2));
 		GameApplication game = new GameApplication(chessboard);	
@@ -90,11 +90,14 @@ public class KingTest {
 	public void testKingBeforeSimulationCheck(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(F8).removePiece();
 		chessboard.positionPiece(F2, new Bishop(TypeColor.BLACK, player2));
 		GameApplication game = new GameApplication(chessboard);	
 		
-		ResponseChessboard res = game.nextMove(A2);
+		ResponseChessboard res = game.verifyCheckmateValidator();
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		
+		res = game.nextMove(A2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(A3);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
@@ -108,24 +111,26 @@ public class KingTest {
 	public void testKingAfterSimulationCheck(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(F8).removePiece();
 		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
 		GameApplication game = new GameApplication(chessboard);	
 		
-		ResponseChessboard res = game.nextMove(F2);
+		ResponseChessboard res = game.verifyCheckmateValidator();
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);		
+		res = game.nextMove(F2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F3);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.EXPOSED);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.EXPOSED_CHECK);
 	}
 	
 	@Test
 	public void testKingAdvancedBeforeAndAfterSimulationCheck(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(F8).removePiece();
-		chessboard.squaresChessboard(D8).removePiece();
-		chessboard.squaresChessboard(B1).removePiece();
-		chessboard.squaresChessboard(D2).removePiece();
+		chessboard.getSquareChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(D8).removePiece();
+		chessboard.getSquareChessboard(B1).removePiece();
+		chessboard.getSquareChessboard(D2).removePiece();
 		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
 		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
 		chessboard.positionPiece(D3, new Knight(TypeColor.WHITE, player1));
@@ -156,14 +161,14 @@ public class KingTest {
 	public void testKingSimulationCheckMate(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(F8).removePiece();
-		chessboard.squaresChessboard(D8).removePiece();
+		chessboard.getSquareChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(D8).removePiece();
 		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
 		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
 		GameApplication game = new GameApplication(chessboard);
 		
 		ResponseChessboard response = game.verifyCheckmateValidator();
-		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MATE);		
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);		
 	}
 	
 }

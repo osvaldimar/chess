@@ -1,5 +1,7 @@
 package com.chess.core.enums;
 
+import java.util.Arrays;
+
 public enum PositionChessboard {
 
 	A8(0,7), B8(1,7), C8(2,7), D8(3,7), E8(4,7), F8(5,7), G8(6,7), H8(7,7),
@@ -25,5 +27,11 @@ public enum PositionChessboard {
 	
 	public int getNumber() {
 		return number;
+	}
+	
+	public static PositionChessboard getEnum(String position){
+		return Arrays.stream(PositionChessboard.values()).filter(p -> 
+			p.name().toString().equalsIgnoreCase(position)
+		).findFirst().orElse(null);
 	}
 }

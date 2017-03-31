@@ -12,9 +12,9 @@ import com.chess.core.model.Square;
 public final class ChessboardPieceFactory {
 	
 	public static Piece buildClonePiece(Piece p){
-		Piece clone = null;
 		if(p == null)
 			return null;
+		Piece clone = null;
 		switch (p.getTypePiece()) {
 		case PAWN: clone = new Pawn(p.getColor(), p.getPlayer());
 			break;

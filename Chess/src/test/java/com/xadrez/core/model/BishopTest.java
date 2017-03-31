@@ -51,7 +51,7 @@ public class BishopTest {
 		response = game.nextMove(C1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLEAR);
 		
-		chessboard.squaresChessboard(D2).removePiece();
+		chessboard.getSquareChessboard(D2).removePiece();
 		response = game.nextMove(C1);
 		assertEquals(response.getListPositionsAvailable().size(), 5);
 		assertEquals(response.getListPositionsToTake().size(), 0);
@@ -63,7 +63,7 @@ public class BishopTest {
 	public void testMovimentBishopToTakeAnotherPiece(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
-		chessboard.squaresChessboard(C1).removePiece();		
+		chessboard.getSquareChessboard(C1).removePiece();		
 		chessboard.positionPiece(C3, bishop);
 		GameApplication game = new GameApplication(chessboard);	
 		

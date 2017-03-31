@@ -78,8 +78,17 @@ public class Square {
 	}
 
 	@Override
-	public String toString() {		
-		return "[" + this.getPosition() + "-" + this.getPiece() + "-" + 
-					(this.getPiece()!=null? this.getPiece().getPlayer() : "  ") + "]";
+	public String toString() {
+		String str = "[" + this.getPosition();
+		if(this.getPiece()!=null){
+			str += "-" + this.getPiece() + 
+					(this.getPiece().getTypePiece().toString().length() <= 4 ? "  " : 
+						this.getPiece().getTypePiece().toString().length() <= 5 ? " " : "");
+			str += "-" + this.getPiece().getPlayer();
+		}else{
+			str += "          ";
+		}
+		str += "]";
+		return str;
 	}
 }
