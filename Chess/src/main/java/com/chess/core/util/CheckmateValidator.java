@@ -58,6 +58,18 @@ public class CheckmateValidator {
 		return Boolean.FALSE;
 	}
 	
+	public static List<Piece> getPiecesEnemyDoCheck(Square[][] clone, Player player) {
+		List<Piece> list = new ArrayList<>();
+		PositionChessboard positionKing = PieceUtils.getPositionKingInChessboard(clone, player);
+		for(Square[] s : clone){
+			list.addAll(Arrays.stream(s)
+				.filter(f -> !f.isAvailable()).filter(p -> p.getPiece().getPlayer().getTypePlayer()!=player.getTypePlayer())
+				.filter(q -> q.getPiece().movementAvailableToTakePieces(q.getPosition(), clone)
+				.contains(positionKing)).map(m -> m.getPiece()).collect(Collectors.toList()));
+		}
+		return list;
+	}
+	
 	public static void processValidatesCheckmate(Square[][] clone, Player player) throws CheckmateException, CheckStateException {
 		
 		List<Square> listSquareOfAllMyPieces = new ArrayList<>();
@@ -78,8 +90,8 @@ public class CheckmateValidator {
 				.stream().filter(walkPos -> !isCheckOfPiecePositionMovedInSimulation(clone, mySqu, walkPos, player))
 				.collect(Collectors.toList()).size()>=1).collect(Collectors.toList());
 		
-		System.out.println("\nlist all my pieces: \n" + listSquareOfAllMyPieces);
-		System.out.println("\nlist only possible pieces to take or block the enemy check: \n" + listPossiblePiecesPreventCheckmate);
+		System.out.println("\nlist only possible pieces to take or block the enemy check: \n" 
+				+ listPossiblePiecesPreventCheckmate);
 
 		if(listPossiblePiecesPreventCheckmate.isEmpty()) {
 			throw new CheckmateException();

@@ -112,6 +112,11 @@ public class Chessboard {
 			CheckmateValidator.processValidatesCheckmate(clone, player);
 	}
 	
+	public List<Piece> getPiecesEnemyDoCheck(Player player) {
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
+		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player);
+	}
+	
 	public Piece movePieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
 		

@@ -104,7 +104,7 @@ public class PawnTest {
 				
 		//click piece B2 pawn same piece then clear
 		response = game.nextMove(PositionChessboard.B2);
-		Assert.assertEquals(response.getListPositionsAvailable().size(), 0);
+		Assert.assertNull(response.getListPositionsAvailable());
 		
 		//click H2 then return lists
 		response = game.nextMove(PositionChessboard.H2);

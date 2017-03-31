@@ -1,6 +1,5 @@
 package com.chess.core;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chess.core.enums.PositionChessboard;
@@ -10,22 +9,24 @@ import com.chess.core.model.Square;
 
 public class ResponseChessboard {
 
-	private Player currentPlayer;
 	private StatusResponse statusResponse;
-	private PositionChessboard positionSelected;
+	private Player currentPlayer;
 	private Square squareClicked;
+	private PositionChessboard positionSelected;
 	private Piece pieceClicked;
+	private List<PositionChessboard> listPositionsAvailable;
+	private List<PositionChessboard> listPositionsToTake;
+	private List<Piece> listPiecesEnemyDoCheck;
 	private Piece pieceGotten;
-	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
-	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	
 	public enum StatusResponse{
 		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE, NONE_CHECK;
 	}
 	
-	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer) {
+	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer, List<Piece> listPiecesEnemyDoCheck) {
 		this.statusResponse = statusResponse;
 		this.currentPlayer = currentPlayer;
+		this.listPiecesEnemyDoCheck = listPiecesEnemyDoCheck;
 	}
 	
 	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Square squareClicked, Player currentPlayer){
@@ -58,6 +59,9 @@ public class ResponseChessboard {
 	}
 	public List<PositionChessboard> getListPositionsToTake() {
 		return listPositionsToTake;
+	}
+	public List<Piece> getListPiecesEnemyDoCheck() {
+		return listPiecesEnemyDoCheck;
 	}
 	public Piece getPieceClicked() {
 		return pieceClicked;

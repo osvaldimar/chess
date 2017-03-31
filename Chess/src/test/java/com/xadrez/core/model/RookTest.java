@@ -8,6 +8,7 @@ import static com.chess.core.enums.PositionChessboard.C3;
 import static com.chess.core.enums.PositionChessboard.C7;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class RookTest {
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		
 		response = game.nextMove(A1);
-		assertEquals(response.getListPositionsToTake().size(), 0);
+		assertNull(response.getListPositionsToTake());
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLEAR);
 		
 		response = game.nextMove(A7);

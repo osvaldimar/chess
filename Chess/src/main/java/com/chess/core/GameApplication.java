@@ -3,15 +3,16 @@ package com.chess.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chess.core.Chessboard;
 import com.chess.core.enums.PositionChessboard;
-import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
+import com.chess.core.exception.CheckmateException;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 import com.chess.core.util.PieceUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public final class GameApplication {
 
@@ -40,11 +41,13 @@ public final class GameApplication {
 		ResponseChessboard response = null;
 		try {
 			chessboard.processValidateCheckmate(currentPlayer);
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK, currentPlayer);
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK, currentPlayer, null);
 		} catch (CheckmateException e) {
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE, currentPlayer);
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE, 
+					currentPlayer, chessboard.getPiecesEnemyDoCheck(currentPlayer));
 		} catch (CheckStateException e) {
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, currentPlayer);
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
+					currentPlayer, chessboard.getPiecesEnemyDoCheck(currentPlayer));
 		}
 		this.printInfoResponse(response);
 		return response;
@@ -52,7 +55,7 @@ public final class GameApplication {
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		if(pos == null)
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer);
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer, null);
 		
 		ResponseChessboard response = null;
 		if(pieceClicked != null){
@@ -142,7 +145,9 @@ public final class GameApplication {
 	}
 	
 	private void printInfoResponse(ResponseChessboard response) {
-		System.out.println("\n" + response);
+		//System.out.println("\n" + response);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(response));
 	}
 
 }
