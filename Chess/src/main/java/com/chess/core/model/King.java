@@ -11,8 +11,6 @@ import com.chess.core.util.MovementUtils;
 
 public class King extends Piece implements BehaviorChess {
 
-	private boolean isFirstMovement = Boolean.TRUE;
-	
 	public King(TypeColor color, Player player) {
 		super(TypePiece.KING, color, player);
 	}
@@ -48,9 +46,5 @@ public class King extends Piece implements BehaviorChess {
 	private List<PositionChessboard> movementSpecial(PositionChessboard position, Square[][] squares){
 		
 		return null;
-	}
-
-	public boolean isFirstMovement() {
-		return isFirstMovement;
 	}
 }

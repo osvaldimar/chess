@@ -133,6 +133,7 @@ public class Chessboard {
 		
 		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
 		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
+		this.squares[destiny.getLetter()][destiny.getNumber()].getPiece().incrementMovements();
 		this.squares[origin.getLetter()][origin.getNumber()].removePiece();
 		if(gotten != null) listGraveyard.add(gotten);		
 		return gotten;

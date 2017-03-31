@@ -9,13 +9,19 @@ public abstract class Piece implements BehaviorChess {
 	private TypePiece typePiece;
 	private TypeColor color;
 	private Player player;
+	private int countMovements;
 	
 	public Piece(TypePiece typePiece, TypeColor color, Player player){
 		this.typePiece = typePiece;
 		this.color = color;
 		this.player = player;
+		this.countMovements = 0;
 	}
 
+	public void incrementMovements(){
+		countMovements++;
+	}
+	
 	public TypePiece getTypePiece() {
 		return typePiece;
 	}
@@ -40,9 +46,12 @@ public abstract class Piece implements BehaviorChess {
 		this.player = player;
 	}
 	
+	public int getCountMovements() {
+		return countMovements;
+	}
+	
 	@Override
 	public String toString() {
 		return this.typePiece.toString();
-	}
-	
+	}	
 }
