@@ -40,7 +40,7 @@ public final class GameApplication {
 		ResponseChessboard response = null;
 		try {
 			chessboard.processValidateCheckmate(currentPlayer);
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer);
+			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK, currentPlayer);
 		} catch (CheckmateException e) {
 			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE, currentPlayer);
 		} catch (CheckStateException e) {

@@ -20,7 +20,7 @@ public class ResponseChessboard {
 	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	
 	public enum StatusResponse{
-		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE;
+		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE, NONE_CHECK;
 	}
 	
 	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer) {
@@ -81,9 +81,11 @@ public class ResponseChessboard {
 		builder.append(" - Position selected: " + getPositionClicked());
 		builder.append(" - Piece gotten: " + getPieceGotten() + 
 				(getPieceGotten() != null ? "-"+getPieceGotten().getPlayer().getTypePlayer() : ""));
-		builder.append(" - actual player: " + currentPlayer);
-		builder.append("\nList positions available: " + getListPositionsAvailable());
-		builder.append("\nList positions to take: " + getListPositionsToTake());
+		builder.append(" - Current player: " + currentPlayer);
+		if(getListPositionsAvailable() != null || getListPositionsToTake()!= null){
+			builder.append("\nList positions available: " + getListPositionsAvailable());
+			builder.append("\nList positions to take: " + getListPositionsToTake());
+		}
 		return builder.toString();
 	}
 }

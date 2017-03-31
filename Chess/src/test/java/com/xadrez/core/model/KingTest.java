@@ -116,7 +116,7 @@ public class KingTest {
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard res = game.verifyCheckmateValidator();
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);		
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_CHECK);		
 		res = game.nextMove(F2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F3);
