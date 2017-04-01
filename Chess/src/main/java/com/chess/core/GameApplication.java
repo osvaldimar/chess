@@ -20,6 +20,8 @@ public final class GameApplication {
 	private Player currentPlayer;
 	private Square squareClicked;
 	private Piece pieceClicked;
+	private Piece pieceGotten;
+	private PositionChessboard positionSelected;
 	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
 	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	private List<Piece> listPiecesEnemyDoCheck;
@@ -40,40 +42,45 @@ public final class GameApplication {
 	
 	public ResponseChessboard verifyCheckmateValidator() {
 		ResponseChessboard response = null;
+		this.clearAllFields();
 		try {
 			chessboard.processValidateCheckmate(currentPlayer);
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK, currentPlayer, null);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK);
 		} catch (CheckmateException e) {
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE, 
-					currentPlayer, chessboard.getPiecesEnemyDoCheck(currentPlayer));
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(currentPlayer);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE);
 		} catch (CheckStateException e) {
-			response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
-					currentPlayer, chessboard.getPiecesEnemyDoCheck(currentPlayer));
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(currentPlayer);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
 		}
+		this.clearAllFields();
 		this.printInfoResponse(response);
 		return response;
 	}
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		if(pos == null)
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer, null);
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer); //position null not exist
 		
+		positionSelected = pos;
 		ResponseChessboard response = null;
 		if(pieceClicked != null){
 			try {
-				response = executeMovePiece(pos);
+				response = executeMovePiece();
 				if(response == null){
-					response = executeClickPiece(pos);
+					response = executeClickPiece();
 				}
 			} catch (CheckMoveException e) {
-				response = new ResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED_CHECK, 
-						pos, squareClicked, currentPlayer);
+				pieceClicked = null;
+				this.clearAllLists();
+				response = buildResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED_CHECK);
 			} catch (CheckStateException e) {
-				response = new ResponseChessboard(ResponseChessboard.StatusResponse.CHECK, 
-						pos, squareClicked, currentPlayer);
+				pieceClicked = null;
+				this.clearAllLists();
+				response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
 			}			
 		}else{
-			response = executeClickPiece(pos);
+			response = executeClickPiece();
 		}
 		this.printInfoResponse(response);
 		if(response.getStatusResponse() == ResponseChessboard.StatusResponse.MOVED)
@@ -81,54 +88,48 @@ public final class GameApplication {
 		return response;
 	}
 	
-	private ResponseChessboard executeClickPiece(PositionChessboard pos){
+	private ResponseChessboard executeClickPiece(){
 		pieceClicked = null;
-		if(squareClicked != null && squareClicked.getPosition() == pos){
-			ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLEAR, pos, squareClicked, currentPlayer);
+		if(squareClicked != null && squareClicked.getPosition() == positionSelected){
+			this.clearAllLists();
+			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.CLEAR);
 			squareClicked = null;
 			return response;	//same piece? then ignore lists and clear all
 		}
 		//process lists available and to take for piece clicked
-		squareClicked = this.chessboard.getSquareChessboard(pos);
+		squareClicked = this.chessboard.getSquareChessboard(positionSelected);
 		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayer)){
 			pieceClicked = squareClicked.getPiece();
-			listPositionsAvailable = pieceClicked.movementAvailable(pos, this.chessboard.getSquaresChessboard());
-			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(pos, this.chessboard.getSquaresChessboard());
-			return buildResponseClicked(pos);
+			listPositionsAvailable = pieceClicked.movementAvailable(positionSelected, this.chessboard.getSquaresChessboard());
+			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(positionSelected, this.chessboard.getSquaresChessboard());
+			return buildResponseChessboard(ResponseChessboard.StatusResponse.CLICKED);
 		}
-		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, pos, squareClicked, currentPlayer);
-		return response;
+		return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE);
 	}
 	
-	private ResponseChessboard executeMovePiece(PositionChessboard pos) throws CheckMoveException, CheckStateException{
-		if(listPositionsAvailable.contains(pos)){
-			Piece gotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), pos, pieceClicked);
-			return buildResponseMove(pos, gotten);
-		}
-		if(listPositionsToTake.contains(pos)){
-			Piece gotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), pos, pieceClicked);		
-			return buildResponseMove(pos, gotten);
+	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException{
+		if(listPositionsAvailable.contains(positionSelected)
+				|| listPositionsToTake.contains(positionSelected)){			
+			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);
+			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);		
+			this.clearAllFields();
+			this.changePlayer();
+			return response;	
 		}
 		return null;
 	}
 	
-	private ResponseChessboard buildResponseClicked(PositionChessboard pos) {
-		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.CLICKED,  
-				pos, pieceClicked, null, currentPlayer, squareClicked, 
-				listPositionsAvailable, listPositionsToTake);
-		return response;
-	}
-	
-	private ResponseChessboard buildResponseMove(PositionChessboard pos, Piece gotten) {
-		ResponseChessboard response = new ResponseChessboard(ResponseChessboard.StatusResponse.MOVED, 
-				pos, pieceClicked, gotten, currentPlayer, squareClicked, 
-				listPositionsAvailable, listPositionsToTake);
+	private void clearAllFields() {
+		positionSelected = null;
 		pieceClicked = null;
+		pieceGotten = null;
 		squareClicked = null;
+		this.clearAllLists();
+	}	
+	private void clearAllLists() {
 		listPositionsAvailable = null;
 		listPositionsToTake = null;
-		this.changePlayer();		
-		return response;
+		listPiecesEnemyDoCheck = null;
 	}
 
 	private void changePlayer(){
@@ -145,8 +146,7 @@ public final class GameApplication {
 		System.out.println(gson.toJson(response));
 	}
 
-	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status, 
-			PositionChessboard positionSelected, Piece pieceGotten){
+	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status){
 		return new ResponseChessboard.Builder()
 				.status(status)
 				.currentPlayer(currentPlayer)

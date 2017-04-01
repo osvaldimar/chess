@@ -23,29 +23,11 @@ public class ResponseChessboard {
 		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE, NONE_CHECK;
 	}
 	
-	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer, List<Piece> listPiecesEnemyDoCheck) {
+	private ResponseChessboard(){}
+	
+	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer) {
 		this.statusResponse = statusResponse;
 		this.currentPlayer = currentPlayer;
-		this.listPiecesEnemyDoCheck = listPiecesEnemyDoCheck;
-	}
-	
-	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Square squareClicked, Player currentPlayer){
-		this.statusResponse = typeResponse;
-		this.positionSelected = positionClicked;
-		this.squareClicked = squareClicked;
-		this.currentPlayer = currentPlayer;
-	}
-	
-	public ResponseChessboard(StatusResponse typeResponse, PositionChessboard positionClicked, Piece pieceClicked, Piece pieceGotten, Player currentPlayer,
-			Square squareClicked, List<PositionChessboard> listPositionsAvailable, List<PositionChessboard> listPositionsToTake){
-				this.statusResponse = typeResponse;
-				this.positionSelected = positionClicked;
-				this.pieceClicked = pieceClicked;
-				this.pieceGotten = pieceGotten;
-				this.currentPlayer = currentPlayer;
-				this.squareClicked = squareClicked;
-				this.listPositionsAvailable = listPositionsAvailable;
-				this.listPositionsToTake = listPositionsToTake;		
 	}
 
 	public Player getCurrentPlayer() {
@@ -94,7 +76,7 @@ public class ResponseChessboard {
 	}
 		
 	public static class Builder {
-		private ResponseChessboard response;
+		private ResponseChessboard response = new ResponseChessboard();
 		
 		public Builder status(StatusResponse status){
 			response.statusResponse = status;
