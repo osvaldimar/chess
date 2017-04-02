@@ -9,6 +9,7 @@ import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
 import com.chess.core.model.King;
+import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
@@ -27,10 +28,6 @@ public final class GameApplication {
 	private List<PositionChessboard> listPositionsAvailable = new ArrayList<>();
 	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	private List<Piece> listPiecesEnemyDoCheck;
-	
-	private Square lastSquarePiceMoved;
-	private Square squarePassantPawnEnemy;
-	private boolean castling;
 	
 
 	public GameApplication(Chessboard chessboard) {
@@ -61,6 +58,7 @@ public final class GameApplication {
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
 		}
 		this.clearAllFields();
+		System.out.println("\nVerify checkmate validator:\n");
 		this.printInfoResponse(response);
 		return response;
 	}
@@ -78,12 +76,8 @@ public final class GameApplication {
 					response = executeClickPiece();
 				}
 			} catch (CheckMoveException e) {
-				pieceClicked = null;
-				this.clearAllLists();
 				response = buildResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED_CHECK);
 			} catch (CheckStateException e) {
-				pieceClicked = null;
-				this.clearAllLists();
 				response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
 			}			
 		}else{
@@ -97,7 +91,6 @@ public final class GameApplication {
 	
 	private ResponseChessboard executeClickPiece(){
 		pieceClicked = null;
-		squarePassantPawnEnemy = null;
 		if(squareClicked != null && squareClicked.getPosition() == positionSelected){
 			this.clearAllLists();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.CLEAR);
@@ -111,21 +104,19 @@ public final class GameApplication {
 			listPositionsAvailable = pieceClicked.movementAvailable(positionSelected, this.chessboard.getSquaresChessboard());
 			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(positionSelected, this.chessboard.getSquaresChessboard());
 			
-			//special movements castling
-			this.executeSpecialMovements();
+			//special movements castling and passant
 			if(pieceClicked.getTypePiece() == TypePiece.KING){
 				King king = (King)pieceClicked;
 				listPositionsAvailable.addAll(king.specialMovementCastling(chessboard.getSquaresChessboard()));
 			}
-				
+			if(pieceClicked.getTypePiece() == TypePiece.PAWN){
+				Pawn pawn = (Pawn)pieceClicked;
+				listPositionsToTake.addAll(pawn.specialMovementPassant(positionSelected, chessboard.getSquaresChessboard(), 
+						chessboard.getLastSquarePiceMoved()));
+			}
 			return buildResponseChessboard(ResponseChessboard.StatusResponse.CLICKED);
 		}
 		return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE);
-	}
-	
-	private void executeSpecialMovements() {
-		/*squarePassantPawnEnemy = chessboard.processEnPassant(positionSelected, lastSquarePiceMoved);
-		List<PositionChessboard> listPositionsDoCastling = chessboard.processCastling(positionSelected);*/
 	}
 
 	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException{
@@ -133,7 +124,6 @@ public final class GameApplication {
 				|| listPositionsToTake.contains(positionSelected)){			
 			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
-			lastSquarePiceMoved = this.chessboard.getSquareChessboard(positionSelected);
 			this.clearAllFields();
 			this.changePlayer();
 			return response;
@@ -160,6 +150,7 @@ public final class GameApplication {
 		}else{
 			currentPlayer = chessboard.getPlayer1();
 		}
+		this.verifyCheckmateValidator();
 	}
 	
 	private void printInfoResponse(ResponseChessboard response) {

@@ -25,21 +25,12 @@ import com.chess.core.util.CheckmateValidator;
 public class Chessboard {
 
 	private Square[][] squares;
-	private TypeColor whiteSquares;
-	private TypeColor blackSquares;
-	private TypeColor blackPieces;
-	private TypeColor whitePieces;
 	private Player player1;
 	private Player player2;
 	private List<Piece> listGraveyard;
 	private Square lastSquarePiceMoved;
 	
-	public Chessboard(TypeColor blackSquares, TypeColor whiteSquares, 
-			TypeColor blackPieces, TypeColor whitePieces, Player player1, Player player2){
-		this.blackSquares = blackSquares;
-		this.whiteSquares = whiteSquares;
-		this.blackPieces = blackPieces;
-		this.whitePieces = whitePieces;
+	public Chessboard(Player player1, Player player2){
 		this.player1 = player1;
 		this.player2 = player2;
 		this.listGraveyard = new ArrayList<>();
@@ -51,7 +42,7 @@ public class Chessboard {
 		this.squares = new Square[8][8];
 		PositionChessboard[] posicoes = PositionChessboard.values();
 		for (PositionChessboard p : posicoes) {			
-			Square square = buildSquare(cor == 0 ? this.blackSquares : this.whiteSquares, p);
+			Square square = buildSquare(cor == 0 ? TypeColor.BLACK : TypeColor.WHITE, p);
 			this.squares[p.getLetter()][p.getNumber()] = square;
 			cor = cor == 0 ? 1 : 0;
 		}		
@@ -63,28 +54,28 @@ public class Chessboard {
 				p -> {
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 1).forEach(
-								n->n.addPiece(new Pawn(whitePieces, player1)));
+								n->n.addPiece(new Pawn(TypeColor.WHITE, player1)));
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 6).forEach(
-								n->n.addPiece(new Pawn(blackPieces, player2)));
+								n->n.addPiece(new Pawn(TypeColor.BLACK, player2)));
 				});
-		this.getSquareChessboard(PositionChessboard.A1).addPiece(new Rook(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.B1).addPiece(new Knight(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.C1).addPiece(new Bishop(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.D1).addPiece(new Queen(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.E1).addPiece(new King(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.F1).addPiece(new Bishop(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.G1).addPiece(new Knight(whitePieces, player1));
-		this.getSquareChessboard(PositionChessboard.H1).addPiece(new Rook(whitePieces, player1));
+		this.getSquareChessboard(PositionChessboard.A1).addPiece(new Rook(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.B1).addPiece(new Knight(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.C1).addPiece(new Bishop(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.D1).addPiece(new Queen(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.E1).addPiece(new King(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.F1).addPiece(new Bishop(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.G1).addPiece(new Knight(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.H1).addPiece(new Rook(TypeColor.WHITE, player1));
 		
-		this.getSquareChessboard(PositionChessboard.A8).addPiece(new Rook(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.B8).addPiece(new Knight(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.C8).addPiece(new Bishop(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.D8).addPiece(new Queen(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.E8).addPiece(new King(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.F8).addPiece(new Bishop(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.G8).addPiece(new Knight(blackPieces, player2));
-		this.getSquareChessboard(PositionChessboard.H8).addPiece(new Rook(blackPieces, player2));		
+		this.getSquareChessboard(PositionChessboard.A8).addPiece(new Rook(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.B8).addPiece(new Knight(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.C8).addPiece(new Bishop(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.D8).addPiece(new Queen(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.E8).addPiece(new King(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.F8).addPiece(new Bishop(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.G8).addPiece(new Knight(TypeColor.BLACK, player2));
+		this.getSquareChessboard(PositionChessboard.H8).addPiece(new Rook(TypeColor.BLACK, player2));		
 	}
 	
 	private static Square buildSquare(TypeColor color, PositionChessboard position){
@@ -111,7 +102,7 @@ public class Chessboard {
 	public void processValidateCheckmate(Player player) throws CheckmateException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		if(CheckmateValidator.isKingInCheck(clone, player))
-			CheckmateValidator.processValidatesCheckmate(clone, player);
+			CheckmateValidator.processValidatesCheckmate(clone, player, lastSquarePiceMoved);
 	}
 	
 	public List<Piece> getPiecesEnemyDoCheck(Player player) {
@@ -129,7 +120,14 @@ public class Chessboard {
 	public Piece movePieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
 		
-		boolean isCheckBeforeSimulation = CheckmateValidator.isKingInCheck(clone, piece.getPlayer());		
+		boolean isCheckBeforeSimulation = CheckmateValidator.isKingInCheck(clone, piece.getPlayer());
+		if(piece.getTypePiece() == TypePiece.PAWN){
+			Pawn pawn = (Pawn) piece;
+			if(pawn.isPositionDestinyTakeElPassant(destiny)){
+				PositionChessboard posPawnEnemyPassant = pawn.getSquarePassantToTakePawnEnemy().getPosition();
+				clone[posPawnEnemyPassant.getLetter()][posPawnEnemyPassant.getNumber()].removePiece();	//remove pawn enemy taking by passant
+			}
+		}
 		clone[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
 		clone[origin.getLetter()][origin.getNumber()].removePiece();
 
@@ -140,7 +138,8 @@ public class Chessboard {
 		//after simulation check
 		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
 		
-		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);		
+		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);
+		if(piece.getTypePiece() == TypePiece.PAWN) verifySpecialMovementPassant(origin, destiny, piece);
 		Piece gotten = walkPieceInTheChessboard(origin, destiny);
 		getSquareChessboard(destiny).getPiece().incrementMovements();
 		
@@ -149,6 +148,14 @@ public class Chessboard {
 		return gotten;
 	}
 	
+	private void verifySpecialMovementPassant(PositionChessboard origin, PositionChessboard destiny, Piece piece) {
+		Pawn pawn = (Pawn) piece;
+		if(pawn.isPositionDestinyTakeElPassant(destiny)){
+			//take pawn in passant and put on destiny that my pawn will go take it
+			walkPieceInTheChessboard(pawn.getSquarePassantToTakePawnEnemy().getPosition(), destiny);
+		}
+	}
+
 	private void verifySpecialMovementCastling(PositionChessboard origin, PositionChessboard destiny, Piece piece){
 		//moves rook if king is doing castling
 		if(origin == PositionChessboard.E1 && destiny == PositionChessboard.C1){
@@ -192,38 +199,6 @@ public class Chessboard {
 			str += "\n";
 		}
 		return str;
-	}
-	
-	public TypeColor getWhiteSquares() {
-		return whiteSquares;
-	}
-
-	public void setWhiteSquares(TypeColor whiteSquares) {
-		this.whiteSquares = whiteSquares;
-	}
-
-	public TypeColor getBlackSquares() {
-		return blackSquares;
-	}
-
-	public void setBlackSquares(TypeColor blackSquares) {
-		this.blackSquares = blackSquares;
-	}
-
-	public TypeColor getBlackPieces() {
-		return blackPieces;
-	}
-
-	public void setBlackPieces(TypeColor blackPieces) {
-		this.blackPieces = blackPieces;
-	}
-
-	public TypeColor getWhitePieces() {
-		return whitePieces;
-	}
-
-	public void setWhitePieces(TypeColor whitePieces) {
-		this.whitePieces = whitePieces;
 	}
 
 	public Player getPlayer1() {

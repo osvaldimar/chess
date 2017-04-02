@@ -22,10 +22,9 @@ import com.chess.core.model.Player;
 @RunWith(MockitoJUnitRunner.class)
 public class PawnTest {
 
-	private Player player1 = new Player("Joao", 100L, TypePlayer.P1);
-	private Player player2 =  new Player("Maria", 100L, TypePlayer.P2);
-	private Chessboard chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
-			TypeColor.BLACK, TypeColor.WHITE, player1, player2);
+	private Player player1 = new Player("Joao", 100L, TypePlayer.P1_W);
+	private Player player2 =  new Player("Maria", 100L, TypePlayer.P2_B);
+	private Chessboard chessboard = new Chessboard(player1, player2);
 	private Pawn pawn = new Pawn(TypeColor.WHITE, this.player1);
 
 	
@@ -109,30 +108,30 @@ public class PawnTest {
 		//click G3 then move H2 to G3 and take piece of enemy
 		response = game.nextMove(G3);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
-		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1);
+		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1_W);
 		Assert.assertEquals(response.getSquareClicked().getPosition(), H2);
 		Assert.assertEquals(response.getPositionClicked(), G3);
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P1);
+		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P1_W);
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getListPositionsToTake().size(), 1);
 		Assert.assertEquals(response.getPieceGotten().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceGotten().getPlayer().getTypePlayer(), TypePlayer.P2);
+		Assert.assertEquals(response.getPieceGotten().getPlayer().getTypePlayer(), TypePlayer.P2_B);
 		
 		//click piece A7, turn player2, first movement then available 2 square to front
 		response = game.nextMove(A7);
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
-		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2);
+		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2_B);
 		
 		//click move piece to A6, turn player2
 		response = game.nextMove(A6);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
-		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2);		
+		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2_B);		
 		Assert.assertEquals(response.getSquareClicked().getPosition(), A7);
 		Assert.assertEquals(response.getPositionClicked(), A6);		
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P2);		
+		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P2_B);		
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
 		Assert.assertNull(response.getPieceGotten());
@@ -142,7 +141,7 @@ public class PawnTest {
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 1);
 		Assert.assertEquals(response.getListPositionsAvailable().get(0), G4);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
-		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1);
+		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1_W);
 		
 		//turn player1, moved piece G3 to G4
 		response = game.nextMove(G4);

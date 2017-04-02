@@ -30,10 +30,9 @@ public class KnightTest {
 	
 	@Before
 	public void setUp(){
-		player1 = new Player("Joao", 100L, TypePlayer.P1);
-		player2 = new Player("Maria", 100L, TypePlayer.P2);
-		chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
-				TypeColor.BLACK, TypeColor.WHITE, player1, player2);
+		player1 = new Player("Joao", 100L, TypePlayer.P1_W);
+		player2 = new Player("Maria", 100L, TypePlayer.P2_B);
+		chessboard = new Chessboard(player1, player2);
 		knight = new Knight(TypeColor.WHITE, player1);
 	}
 

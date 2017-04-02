@@ -15,10 +15,9 @@ public class ConsoleChess {
 	
 	public static void main(String[] args) {
 		
-		Player player1 = new Player("mano1", 100L, TypePlayer.P1);
-		Player player2 = new Player("mano2", 100L, TypePlayer.P2);
-		Chessboard chessboard = new Chessboard(TypeColor.BLACK, TypeColor.WHITE, 
-				TypeColor.BLACK, TypeColor.WHITE, player1, player2);		
+		Player player1 = new Player("mano1", 100L, TypePlayer.P1_W);
+		Player player2 = new Player("mano2", 100L, TypePlayer.P2_B);
+		Chessboard chessboard = new Chessboard(player1, player2);		
 		
 		chessboard.startGame();
 		GameApplication game = new GameApplication(chessboard);		

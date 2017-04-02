@@ -7,9 +7,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.enums.TypePiece;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
+import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
@@ -69,7 +71,8 @@ public class CheckmateValidator {
 		return list;
 	}
 	
-	public static void processValidatesCheckmate(Square[][] clone, Player player) throws CheckmateException, CheckStateException {
+	public static void processValidatesCheckmate(Square[][] clone, Player player, Square lastSquarePiceMovedChessboard) 
+			throws CheckmateException, CheckStateException {
 		
 		List<Square> listSquareOfAllMyPieces = new ArrayList<>();
 		for(Square[] s : clone){
@@ -85,7 +88,7 @@ public class CheckmateValidator {
 		}
 		
 		List<Square> listPossiblePiecesPreventCheckmate = listSquareOfAllMyPieces.stream()
-				.filter(mySqu -> executePossibleMovements(clone, mySqu)
+				.filter(mySqu -> executePossibleMovements(clone, mySqu, lastSquarePiceMovedChessboard)
 				.stream().filter(walkPos -> !isCheckOfPiecePositionMovedInSimulation(clone, mySqu, walkPos, player))
 				.collect(Collectors.toList()).size()>=1).collect(Collectors.toList());
 		
@@ -99,10 +102,15 @@ public class CheckmateValidator {
 		}
 	}
 	
-	private static List<PositionChessboard> executePossibleMovements(Square[][] clone, Square mySqu) {
+	private static List<PositionChessboard> executePossibleMovements(Square[][] clone, Square mySqu, Square lastSquarePiceMovedChessboard) {
 		List<PositionChessboard> listPositions = new ArrayList<>();
 		listPositions.addAll(mySqu.getPiece().movementAvailable(mySqu.getPosition(), clone));
-		listPositions.addAll(mySqu.getPiece().movementAvailableToTakePieces(mySqu.getPosition(), clone));		
+		listPositions.addAll(mySqu.getPiece().movementAvailableToTakePieces(mySqu.getPosition(), clone));
+		//verify if pawn can take a pawn in el passant, then add list to take
+		if(mySqu.getPiece().getTypePiece() == TypePiece.PAWN){
+			Pawn pawn = (Pawn)mySqu.getPiece();
+			listPositions.addAll(pawn.specialMovementPassant(mySqu.getPosition(), clone, lastSquarePiceMovedChessboard));
+		}
 		return listPositions;
 	}
 	
@@ -112,6 +120,14 @@ public class CheckmateValidator {
 		Piece enemyPieceTemp = clone[walkPos.getLetter()][walkPos.getNumber()].getPiece();
 		clone[walkPos.getLetter()][walkPos.getNumber()].addPiece(myPieceTemp);
 		clone[mySqu.getPosition().getLetter()][mySqu.getPosition().getNumber()].removePiece();
+		//verifi my pawn has a square of passant to take
+		if(myPieceTemp.getTypePiece() == TypePiece.PAWN){
+			Pawn pawn = (Pawn) myPieceTemp;
+			if(pawn.isPositionDestinyTakeElPassant(walkPos)){
+				PositionChessboard posPawnEnemyPassant = pawn.getSquarePassantToTakePawnEnemy().getPosition();
+				clone[posPawnEnemyPassant.getLetter()][posPawnEnemyPassant.getNumber()].removePiece();	//remove pawn enemy taking by passant
+			}
+		}
 		isCheck = isKingInCheck(clone, player);
 		clone[mySqu.getPosition().getLetter()][mySqu.getPosition().getNumber()].addPiece(myPieceTemp);
 		clone[walkPos.getLetter()][walkPos.getNumber()].addPiece(enemyPieceTemp);
