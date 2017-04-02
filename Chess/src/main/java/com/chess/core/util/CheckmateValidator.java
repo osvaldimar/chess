@@ -102,7 +102,7 @@ public class CheckmateValidator {
 	private static List<PositionChessboard> executePossibleMovements(Square[][] clone, Square mySqu) {
 		List<PositionChessboard> listPositions = new ArrayList<>();
 		listPositions.addAll(mySqu.getPiece().movementAvailable(mySqu.getPosition(), clone));
-		listPositions.addAll(mySqu.getPiece().movementAvailableToTakePieces(mySqu.getPosition(), clone));
+		listPositions.addAll(mySqu.getPiece().movementAvailableToTakePieces(mySqu.getPosition(), clone));		
 		return listPositions;
 	}
 	

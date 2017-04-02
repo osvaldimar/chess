@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
+import com.chess.core.enums.TypePiece;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
@@ -31,6 +32,7 @@ public class Chessboard {
 	private Player player1;
 	private Player player2;
 	private List<Piece> listGraveyard;
+	private Square lastSquarePiceMoved;
 	
 	public Chessboard(TypeColor blackSquares, TypeColor whiteSquares, 
 			TypeColor blackPieces, TypeColor whitePieces, Player player1, Player player2){
@@ -116,6 +118,13 @@ public class Chessboard {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player);
 	}
+
+	public Piece walkPieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny){
+		Piece gotten = getSquareChessboard(destiny).getPiece();		
+		getSquareChessboard(destiny).addPiece(getSquareChessboard(origin).getPiece());
+		getSquareChessboard(origin).removePiece();
+		return gotten;
+	}
 	
 	public Piece movePieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
@@ -131,12 +140,26 @@ public class Chessboard {
 		//after simulation check
 		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
 		
-		Piece gotten = this.squares[destiny.getLetter()][destiny.getNumber()].getPiece();
-		this.squares[destiny.getLetter()][destiny.getNumber()].addPiece(piece);
-		this.squares[destiny.getLetter()][destiny.getNumber()].getPiece().incrementMovements();
-		this.squares[origin.getLetter()][origin.getNumber()].removePiece();
-		if(gotten != null) listGraveyard.add(gotten);		
+		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);		
+		Piece gotten = walkPieceInTheChessboard(origin, destiny);
+		getSquareChessboard(destiny).getPiece().incrementMovements();
+		
+		this.lastSquarePiceMoved = getSquareChessboard(destiny);		
+		if(gotten != null) listGraveyard.add(gotten);
 		return gotten;
+	}
+	
+	private void verifySpecialMovementCastling(PositionChessboard origin, PositionChessboard destiny, Piece piece){
+		//moves rook if king is doing castling
+		if(origin == PositionChessboard.E1 && destiny == PositionChessboard.C1){
+			walkPieceInTheChessboard(PositionChessboard.A1, PositionChessboard.D1);
+		}else if(origin == PositionChessboard.E1 && destiny == PositionChessboard.G1){
+			walkPieceInTheChessboard(PositionChessboard.H1, PositionChessboard.F1);
+		}else if(origin == PositionChessboard.E8 && destiny == PositionChessboard.C8){
+			walkPieceInTheChessboard(PositionChessboard.A8, PositionChessboard.D8);
+		}else if(origin == PositionChessboard.E8 && destiny == PositionChessboard.G8){
+			walkPieceInTheChessboard(PositionChessboard.H8, PositionChessboard.F8);
+		}
 	}
 	
 	public void printChessboard(Chessboard board, String message){
@@ -226,6 +249,8 @@ public class Chessboard {
 	public void setListGraveyard(List<Piece> listGraveyard) {
 		this.listGraveyard = listGraveyard;
 	}
-	
+	public Square getLastSquarePiceMoved() {
+		return lastSquarePiceMoved;
+	}
 	
 }

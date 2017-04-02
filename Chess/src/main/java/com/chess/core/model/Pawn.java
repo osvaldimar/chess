@@ -11,6 +11,8 @@ import com.chess.core.util.MovementUtils;
 
 public class Pawn extends Piece {
 
+	private Square squarePassant;
+	
 	public Pawn(TypeColor color, Player player){
 		super(TypePiece.PAWN, color, player);
 	}
@@ -34,6 +36,8 @@ public class Pawn extends Piece {
 		}
 		return list;
 	}
+	
+	
 
 	@Override
 	public String toString(){
