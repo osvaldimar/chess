@@ -40,10 +40,6 @@ public final class GameApplication {
 		chessboard.printChessboard(chessboard, "Game Chess start...");
 	}
 	
-	public Chessboard getLayoutChessboard(){
-		return chessboard;
-	}
-	
 	public ResponseChessboard verifyCheckmateValidator() {
 		ResponseChessboard response = null;
 		this.clearAllFields();

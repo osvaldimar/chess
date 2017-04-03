@@ -79,6 +79,10 @@ public class PawnTest {
 		ResponseChessboard response = game.nextMove(E2);
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
+		
+		response = game.nextMove(null);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		System.out.println(response.toString());
 	}
 	
 	@Test

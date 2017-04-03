@@ -11,8 +11,6 @@ import com.chess.core.util.MovementUtils;
 
 public class Rook extends Piece implements BehaviorChess {
 
-	private boolean isFirstMovement = Boolean.TRUE;
-	
 	public Rook(TypeColor color, Player player) {
 		super(TypePiece.ROOK, color, player);
 	}
@@ -35,10 +33,6 @@ public class Rook extends Piece implements BehaviorChess {
 		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.TRUE, getPlayer()));
 		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.TRUE, getPlayer()));
 		return list;
-	}
-	
-	public boolean isFirstMovement() {
-		return isFirstMovement;
 	}
 
 }
