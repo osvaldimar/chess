@@ -61,7 +61,8 @@ public final class GameApplication {
 
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		if(pos == null)
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, currentPlayer); //position null not exist
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, 
+					currentPlayer, this.getTurnPlayer()); //position null not exist
 		
 		positionSelected = pos;
 		ResponseChessboard response = null;
@@ -140,13 +141,21 @@ public final class GameApplication {
 		listPiecesEnemyDoCheck = null;
 	}
 
+	public Player getTurnPlayer(){
+		if(currentPlayer.getTypePlayer() == chessboard.getPlayer1().getTypePlayer()){
+			return chessboard.getPlayer1();
+		}else{
+			return chessboard.getPlayer2();
+		}
+	}
+	
 	private void changePlayer(){
 		if(currentPlayer.getTypePlayer() == chessboard.getPlayer1().getTypePlayer()){
 			currentPlayer = chessboard.getPlayer2();
 		}else{
 			currentPlayer = chessboard.getPlayer1();
 		}
-		this.verifyCheckmateValidator();
+		//this.verifyCheckmateValidator();
 	}
 	
 	private void printInfoResponse(ResponseChessboard response) {
@@ -166,6 +175,7 @@ public final class GameApplication {
 				.listPositionsToTake(listPositionsToTake)
 				.listPiecesEnemyDoCheck(listPiecesEnemyDoCheck)
 				.pieceGotten(pieceGotten)
+				.turn(this.getTurnPlayer())
 				.build();
 	}
 }

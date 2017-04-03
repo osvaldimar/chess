@@ -8,7 +8,8 @@ public class Player {
 	private Long score;
 	private TypePlayer typePlayer;
 	
-	public Player(){		
+	public Player(TypePlayer typePlayer){
+		this.typePlayer = typePlayer;
 	}
 	
 	public Player(String nome, Long score, TypePlayer typePlayer) {

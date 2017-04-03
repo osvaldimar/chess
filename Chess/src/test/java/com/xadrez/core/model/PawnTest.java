@@ -114,7 +114,7 @@ public class PawnTest {
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P1_W);
 		Assert.assertEquals(response.getSquareClicked().getPosition(), H2);
-		Assert.assertEquals(response.getPositionClicked(), G3);
+		Assert.assertEquals(response.getPositionSelected(), G3);
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
 		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P1_W);
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
@@ -133,7 +133,7 @@ public class PawnTest {
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		Assert.assertEquals(response.getCurrentPlayer().getTypePlayer(), TypePlayer.P2_B);		
 		Assert.assertEquals(response.getSquareClicked().getPosition(), A7);
-		Assert.assertEquals(response.getPositionClicked(), A6);		
+		Assert.assertEquals(response.getPositionSelected(), A6);		
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
 		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.P2_B);		
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);

@@ -18,16 +18,19 @@ public class ResponseChessboard {
 	private List<PositionChessboard> listPositionsToTake;
 	private List<Piece> listPiecesEnemyDoCheck;
 	private Piece pieceGotten;
+	private Player winner;
+	private Player turn;
 	
 	public enum StatusResponse{
-		CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE, NONE_CHECK;
+		START, OFF, CLICKED, MOVED, NONE, CLEAR, EXPOSED_CHECK, CHECK, CHECKMATE, NONE_CHECK;
 	}
 	
 	private ResponseChessboard(){}
 	
-	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer) {
+	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer, Player turnPlayer) {
 		this.statusResponse = statusResponse;
 		this.currentPlayer = currentPlayer;
+		this.turn = turnPlayer;
 	}
 
 	public Player getCurrentPlayer() {
@@ -48,15 +51,20 @@ public class ResponseChessboard {
 	public Piece getPieceClicked() {
 		return pieceClicked;
 	}
-	public PositionChessboard getPositionClicked() {
+	public PositionChessboard getPositionSelected() {
 		return positionSelected;
 	}
 	public Piece getPieceGotten() {
 		return pieceGotten;
 	}
-
 	public StatusResponse getStatusResponse() {
 		return statusResponse;
+	}
+	public Player getWinner() {
+		return winner;
+	}
+	public Player getTurn() {
+		return turn;
 	}
 	
 	@Override
@@ -64,7 +72,7 @@ public class ResponseChessboard {
 		StringBuilder builder = new StringBuilder("STATUS ");
 		builder.append(getStatusResponse() + ": ");
 		builder.append(" - Square clicked: " + getSquareClicked());
-		builder.append(" - Position selected: " + getPositionClicked());
+		builder.append(" - Position selected: " + getPositionSelected());
 		builder.append(" - Piece gotten: " + getPieceGotten() + 
 				(getPieceGotten() != null ? "-"+getPieceGotten().getPlayer().getTypePlayer() : ""));
 		builder.append(" - Current player: " + currentPlayer);
@@ -114,7 +122,13 @@ public class ResponseChessboard {
 			response.pieceGotten = pieceGotten;
 			return this;
 		}		
+		public Builder turn(Player turnPlayer) {
+			response.turn = turnPlayer;
+			return this;
+		}
 		public ResponseChessboard build(){
+			if(response.statusResponse == StatusResponse.CHECKMATE) 
+				response.winner = response.currentPlayer;
 			return response;
 		}
 	}

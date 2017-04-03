@@ -37,7 +37,7 @@ public class Chessboard {
 		startChessboad();
 	}
 	
-	public void startChessboad(){
+	private void startChessboad(){
 		int cor = 0;
 		this.squares = new Square[8][8];
 		PositionChessboard[] posicoes = PositionChessboard.values();
