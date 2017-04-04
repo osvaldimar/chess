@@ -87,14 +87,14 @@ public class KingCastlingTest {
 		GameApplication game = new GameApplication(chessboard);
 		
 		//player1
-		ResponseChessboard response = game.nextMove(A2);
-		response = game.nextMove(A3);
+		ResponseChessboard response = game.selectAndMove(A2, player1);
+		response = game.selectAndMove(A3, player1);
 		
 		//player2
-		response = game.nextMove(E8);
+		response = game.selectAndMove(E8, player2);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		assertEquals(response.getListPositionsAvailable().size(), 0);
-		response = game.nextMove(E8);
+		response = game.selectAndMove(E8, player2);
 		
 		chessboard.getSquareChessboard(D8).removePiece();
 		response = game.nextMove(E8);
@@ -212,7 +212,7 @@ public class KingCastlingTest {
 		res = game.nextMove(G1);
 		assertEquals(chessboard.getSquareChessboard(E1).getPiece().getTypePiece(), TypePiece.KING);
 		assertEquals(chessboard.getSquareChessboard(H1).getPiece().getTypePiece(), TypePiece.ROOK);
-		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 	}
 	
 }

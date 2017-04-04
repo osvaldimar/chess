@@ -52,8 +52,8 @@ public final class ChessService {
 		return this.playing;
 	}
 	
-	public void printInfoResponseJson(ResponseChessboard response){
-		this.game.printInfoResponse(response);
+	public void printInfoResponseJson(String response){
+		System.out.println(response);
 	}
 	
 	public String getSquaresChessboardJson(){

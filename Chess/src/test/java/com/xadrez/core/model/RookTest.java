@@ -42,10 +42,10 @@ public class RookTest {
 		
 		response = game.nextMove(A1);
 		assertNull(response.getListPositionsToTake());
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLEAR);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MARK_OFF);
 		
 		response = game.nextMove(A7);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 		
 		response = game.nextMove(A1);
 		assertEquals(response.getListPositionsToTake().size(), 1);

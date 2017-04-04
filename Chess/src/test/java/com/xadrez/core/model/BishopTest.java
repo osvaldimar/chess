@@ -48,7 +48,7 @@ public class BishopTest {
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		
 		response = game.nextMove(C1);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLEAR);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MARK_OFF);
 		
 		chessboard.getSquareChessboard(D2).removePiece();
 		response = game.nextMove(C1);

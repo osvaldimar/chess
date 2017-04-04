@@ -70,11 +70,17 @@ public final class GameApplication {
 	}
 	
 	public ResponseChessboard selectAndMove(PositionChessboard pos, Player currentPlayerRequesting) {
+		//valid position and player
 		if(currentPlayerRequesting == null || pos == null)
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, 
-					currentPlayerRequesting, turnPlayer); //position or player null not exist
-		this.currentPlayerRequesting = currentPlayerRequesting;
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION, 
+					currentPlayerRequesting, turnPlayer);
+		//valid currentPlayer and turn
+		if(currentPlayerRequesting != null && 
+				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.OPPONENT_TURN, 
+					currentPlayerRequesting, turnPlayer);
 		
+		this.currentPlayerRequesting = currentPlayerRequesting;		
 		positionSelected = pos;
 		ResponseChessboard response = null;
 		if(pieceClicked != null){
@@ -97,10 +103,11 @@ public final class GameApplication {
 	private ResponseChessboard executeClickPiece(){
 		pieceClicked = null;
 		if(squareClicked != null && squareClicked.getPosition() == positionSelected){
+			//same piece clicked again? then ignore lists and clear all, mark off piece
 			this.clearAllLists();
-			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.CLEAR);
+			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MARK_OFF);
 			squareClicked = null;
-			return response;	//same piece? then ignore lists and clear all
+			return response;
 		}
 		//process lists available and to take for piece clicked
 		squareClicked = this.chessboard.getSquareChessboard(positionSelected);
@@ -121,7 +128,7 @@ public final class GameApplication {
 			}
 			return buildResponseChessboard(ResponseChessboard.StatusResponse.CLICKED);
 		}
-		return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE);
+		return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION);
 	}
 
 	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException{

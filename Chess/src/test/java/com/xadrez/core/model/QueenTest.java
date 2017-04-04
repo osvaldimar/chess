@@ -60,16 +60,16 @@ public class QueenTest {
 		chessboard.positionPiece(D4, queen);
 		GameApplication game = new GameApplication(chessboard);	
 
-		ResponseChessboard response = game.nextMove(D4);
+		ResponseChessboard response = game.selectAndMove(D4, player1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		
-		response = game.nextMove(A7);
+		response = game.selectAndMove(A7, player1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		assertNotNull(response.getPieceGotten());
 		
-		response = game.nextMove(A8);
+		response = game.selectAndMove(A8, player2);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
-		response = game.nextMove(A7);
+		response = game.selectAndMove(A7, player2);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		assertNotNull(response.getPieceGotten());
 		

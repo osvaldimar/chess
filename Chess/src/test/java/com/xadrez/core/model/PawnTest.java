@@ -81,7 +81,7 @@ public class PawnTest {
 		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
 		
 		response = game.nextMove(null);
-		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 		System.out.println(response.toString());
 	}
 	
@@ -101,7 +101,7 @@ public class PawnTest {
 		//click piece B2 pawn same piece then clear
 		response = game.nextMove(B2);
 		Assert.assertNull(response.getListPositionsAvailable());
-		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLEAR);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MARK_OFF);
 		
 		//click H2 then return lists
 		response = game.nextMove(H2);

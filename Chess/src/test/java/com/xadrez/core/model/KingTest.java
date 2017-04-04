@@ -101,9 +101,9 @@ public class KingTest {
 		res = game.nextMove(A3);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
 		res = game.nextMove(A7);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 		res = game.nextMove(A6);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE);	
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);	
 	}
 	
 	@Test
