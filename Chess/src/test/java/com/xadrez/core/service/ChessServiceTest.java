@@ -16,10 +16,14 @@ public class ChessServiceTest {
 		service.selectAndMovePiece("A2", "W");
 		service.selectAndMovePiece("A4", "W");
 		service.verifyCheckmateTurn();
+		//service.printInfoResponse(response);
+		service.printLayoutChessboard();
 		
 		service.selectAndMovePiece("A7", "B");
 		service.selectAndMovePiece("A5", "B");
 		service.verifyCheckmateTurn();
+		//service.printInfoResponse(response);
+		service.printLayoutChessboard();
 		
 	}
 	

@@ -38,7 +38,7 @@ public final class GameApplication {
 
 	private void init() {
 		turnPlayer = chessboard.getPlayer1();
-		chessboard.printChessboard(chessboard, "Game Chess start...");
+		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 	}
 	
 	public ResponseChessboard verifyCheckmateValidator() {
@@ -65,7 +65,7 @@ public final class GameApplication {
 		ResponseChessboard response = selectAndMove(pos, turnPlayer);
 		this.printInfoResponse(response);
 		if(response.getStatusResponse() == ResponseChessboard.StatusResponse.MOVED)
-			chessboard.printChessboard(chessboard, "Game Chess turn... player now: " + turnPlayer);
+			chessboard.printDebugChessboard(chessboard, "Game Chess turn... player now: " + turnPlayer);
 		return response;
 	}
 	
@@ -157,12 +157,27 @@ public final class GameApplication {
 		}
 	}
 	
-	private void printInfoResponse(ResponseChessboard response) {
-		//System.out.println("\n" + response);
+	public void printInfoResponse(ResponseChessboard response) {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		System.out.println(gson.toJson(response));
 	}
+	
+	@Deprecated
+	public void printInfoChessboard(Chessboard chessboard) {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(chessboard.getSquaresChessboard()));
+	}
 
+	public String getInfoChessboardJson() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.toJson(chessboard.getSquaresChessboard());
+	}
+	
+	public void printInfoChessboardJson() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		System.out.println(gson.toJson(chessboard.getSquaresChessboard()));
+	}
+	
 	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status){
 		return new ResponseChessboard.Builder()
 				.status(status)

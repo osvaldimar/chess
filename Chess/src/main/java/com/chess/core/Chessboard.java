@@ -171,26 +171,41 @@ public class Chessboard {
 	}
 	
 	public Player getPlayerByType(String type){
-		if(player1.getTypePlayer() == TypePlayer.valueOf(type)){
+		if(player1.getTypePlayer() == TypePlayer.getEnum(type)){
 			return player1;
-		}else if(player2.getTypePlayer() == TypePlayer.valueOf(type)){
+		}else if(player2.getTypePlayer() == TypePlayer.getEnum(type)){
 			return player2;
 		}else{
 			return null;
 		}		
 	}
 	
-	public void printChessboard(Chessboard board, String message){
+	public void printLayoutChessboard() {
+		System.out.print(getLayoutChessboard());
+	}
+	
+	public String getLayoutChessboard(){
+		StringBuilder builder = new StringBuilder("\n");
+		for(int y = 7; y >= 0; y--){
+			for(int x = 0; x <= 7; x++){
+				builder.append(this.squares[x][y]);
+			}
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
+	
+	public void printDebugChessboard(Chessboard board, String message){
 		System.out.println("\n*** layout chess *** - " + message);
 		for(int y = 7; y >= 0; y--){
 			for(int x = 0; x <= 7; x++){
 				System.out.print(this.squares[x][y]);
 			}
-			System.out.println("\n");
+			System.out.println();
 		}
 	}
 	
-	public static void printCloneChessboard(Square[][] clone, String message){
+	public static void printCloneDebugChessboard(Square[][] clone, String message){
 		System.out.println("\n*** Clone layout chess *** - " + message);
 		for(int y = 7; y >= 0; y--){
 			for(int x = 0; x <= 7; x++){

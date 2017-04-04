@@ -39,17 +39,17 @@ public class PawnTest {
 		Assert.assertNull(chessboard.getSquareChessboard(A2).getPiece());
 		chessboard.positionPiece(A2, pawn);
 		Assert.assertNotNull(chessboard.getSquareChessboard(A2).getPiece());
-		chessboard.printChessboard(chessboard, "position");
+		chessboard.printDebugChessboard(chessboard, "position");
 		
 		chessboard.startGame();
-		chessboard.printChessboard(chessboard, "start game");
+		chessboard.printDebugChessboard(chessboard, "start game");
 				
 		List<PositionChessboard> listMovement = pawn.movementAvailable(B2, chessboard.getSquaresChessboard());
 		System.out.println("\n" + listMovement);
 		Assert.assertEquals(listMovement.get(0), B3);
 		Assert.assertEquals(listMovement.get(1), B4);
 		Assert.assertEquals(listMovement.size(), 2);
-		chessboard.printChessboard(chessboard, "movement to front for pawn");		
+		chessboard.printDebugChessboard(chessboard, "movement to front for pawn");		
 				
 	}
 	
@@ -68,7 +68,7 @@ public class PawnTest {
 		List<PositionChessboard> listTakes = pawn.movementAvailableToTakePieces(C2, chessboard.getSquaresChessboard());
 		System.out.println("\n" + listTakes);
 		Assert.assertEquals(listTakes.size(), 2);
-		chessboard.printChessboard(chessboard, "movement to takes for pawn");	
+		chessboard.printDebugChessboard(chessboard, "movement to takes for pawn");	
 	}
 	
 	@Test

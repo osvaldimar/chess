@@ -45,11 +45,31 @@ public final class ChessService {
 					.build());
 		}
 		return ResponseGameJson.createResponseJson(
-				game.verifyCheckmateValidator());
+				this.game.verifyCheckmateValidator());
 	}
 	
 	public boolean isPlaying() {
-		return playing;
+		return this.playing;
+	}
+	
+	public void printInfoResponseJson(ResponseChessboard response){
+		this.game.printInfoResponse(response);
+	}
+	
+	public String getSquaresChessboardJson(){
+		return this.game.getInfoChessboardJson();
+	}
+
+	public void printSquaresChessboardJson(){
+		this.game.printInfoChessboardJson();
+	}
+	
+	public String getLayoutChessboard(){
+		return this.chessboard.getLayoutChessboard();
+	}
+	
+	public void printLayoutChessboard(){
+		this.chessboard.printLayoutChessboard();
 	}
 	
 }

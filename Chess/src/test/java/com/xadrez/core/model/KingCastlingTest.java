@@ -74,7 +74,7 @@ public class KingCastlingTest {
 		
 		chessboard.getSquareChessboard(H1).getPiece().incrementMovements();
 		chessboard.walkPieceInTheChessboard(A1, B1);
-		chessboard.printChessboard(chessboard, "Test castling WHITE rook H1 count movements, rook A1 moved B1");
+		chessboard.printDebugChessboard(chessboard, "Test castling WHITE rook H1 count movements, rook A1 moved B1");
 		response = game.nextMove(E1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		assertEquals(response.getListPositionsAvailable().size(), 2);
@@ -123,7 +123,7 @@ public class KingCastlingTest {
 		
 		chessboard.getSquareChessboard(H8).getPiece().incrementMovements();
 		chessboard.walkPieceInTheChessboard(A8, B8);
-		chessboard.printChessboard(chessboard, "Test castling BLACK rook H8 count movements, rook A8 moved B8");
+		chessboard.printDebugChessboard(chessboard, "Test castling BLACK rook H8 count movements, rook A8 moved B8");
 		response = game.nextMove(E8);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		assertEquals(response.getListPositionsAvailable().size(), 2);
