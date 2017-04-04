@@ -21,7 +21,7 @@ public class Pawn extends Piece {
 
 	@Override
 	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
-		return (getPlayer().getTypePlayer() == TypePlayer.P1_W ? 
+		return (getPlayer().getTypePlayer() == TypePlayer.W ? 
 				MovementUtils.movementAvailableFront(this.getCountMovements() < 1 ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) :
 				MovementUtils.movementAvailableBack(this.getCountMovements() < 1 ? 2:1, position, squares, Boolean.FALSE, this.getPlayer()) );
 	}
@@ -29,7 +29,7 @@ public class Pawn extends Piece {
 	@Override
 	public List<PositionChessboard> movementAvailableToTakePieces(PositionChessboard position, Square[][] squares) {
 		List<PositionChessboard> list = new ArrayList<>();
-		if(getPlayer().getTypePlayer() == TypePlayer.P1_W){
+		if(getPlayer().getTypePlayer() == TypePlayer.W){
 			list.addAll(MovementUtils.movementAvailableLeftUp(1, position, squares, Boolean.TRUE, this.getPlayer()));
 			list.addAll(MovementUtils.movementAvailableRightUp(1, position, squares, Boolean.TRUE, this.getPlayer()));
 		}else{

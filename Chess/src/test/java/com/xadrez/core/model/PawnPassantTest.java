@@ -19,8 +19,8 @@ import com.chess.core.model.Player;
 @RunWith(MockitoJUnitRunner.class)
 public class PawnPassantTest {
 
-	private Player player1 = new Player("Joao", 100L, TypePlayer.P1_W);
-	private Player player2 =  new Player("Maria", 100L, TypePlayer.P2_B);
+	private Player player1 = new Player("Joao", 100L, TypePlayer.W);
+	private Player player2 =  new Player("Maria", 100L, TypePlayer.B);
 	private Chessboard chessboard = new Chessboard(player1, player2);
 
 	

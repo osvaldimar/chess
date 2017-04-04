@@ -11,45 +11,34 @@ public final class ChessService {
 
 	private Chessboard chessboard;
 	private GameApplication game;
-	private boolean play;
+	private boolean playing;
 	
 	public String startChess(){
-		this.play = Boolean.TRUE;
-		this.chessboard = new Chessboard(
-				new Player(TypePlayer.P1_W), new Player(TypePlayer.P2_B));
+		this.playing = Boolean.TRUE;
+		this.chessboard = new Chessboard(new Player(TypePlayer.W), new Player(TypePlayer.B));
 		this.chessboard.startGame();
 		this.game = new GameApplication(chessboard);
 		return ResponseGameJson.createResponseJson(
 				new ResponseChessboard.Builder()
 				.status(ResponseChessboard.StatusResponse.START)
-				.turn(new Player(TypePlayer.P1_W))
+				.turn(new Player(TypePlayer.W))
 				.build());
 	}
 
-	public String selectPiece(String positionOrigin){
-		if(!isPlay()) {
+	public String selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting){
+		if(!isPlaying()) {
 			return ResponseGameJson.createResponseJson(
 					new ResponseChessboard.Builder()
 					.status(ResponseChessboard.StatusResponse.OFF)
 					.build());
 		}
 		return ResponseGameJson.createResponseJson(
-				game.nextMove(PositionChessboard.getEnum(positionOrigin)));
+				this.game.selectAndMove(PositionChessboard.getEnum(positionOriginOrDestiny), 
+						this.chessboard.getPlayerByType(currentPlayerRequesting)));
 	}
 	
-	public String movePiece(String positionDestiny){
-		if(!isPlay()) {
-			return ResponseGameJson.createResponseJson(
-					new ResponseChessboard.Builder()
-					.status(ResponseChessboard.StatusResponse.OFF)
-					.build());
-		}
-		return ResponseGameJson.createResponseJson(
-				game.nextMove(PositionChessboard.getEnum(positionDestiny)));
-	}
-	
-	public String verifyCheckmate(){
-		if(!isPlay()) {
+	public String verifyCheckmateTurn(){
+		if(!isPlaying()) {
 			return ResponseGameJson.createResponseJson(
 					new ResponseChessboard.Builder()
 					.status(ResponseChessboard.StatusResponse.OFF)
@@ -59,8 +48,8 @@ public final class ChessService {
 				game.verifyCheckmateValidator());
 	}
 	
-	public boolean isPlay() {
-		return play;
+	public boolean isPlaying() {
+		return playing;
 	}
 	
 }

@@ -30,8 +30,8 @@ public class KingCastlingTest {
 	
 	@Before
 	public void setUp(){
-		player1 = new Player("Joao", 100L, TypePlayer.P1_W);
-		player2 = new Player("Maria", 100L, TypePlayer.P2_B);
+		player1 = new Player("Joao", 100L, TypePlayer.W);
+		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
 		king = new King(TypeColor.WHITE, player1);
 	}

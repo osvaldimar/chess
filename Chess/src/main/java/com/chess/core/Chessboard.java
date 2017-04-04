@@ -7,6 +7,7 @@ import java.util.List;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
@@ -167,6 +168,16 @@ public class Chessboard {
 		}else if(origin == PositionChessboard.E8 && destiny == PositionChessboard.G8){
 			walkPieceInTheChessboard(PositionChessboard.H8, PositionChessboard.F8);
 		}
+	}
+	
+	public Player getPlayerByType(String type){
+		if(player1.getTypePlayer() == TypePlayer.valueOf(type)){
+			return player1;
+		}else if(player2.getTypePlayer() == TypePlayer.valueOf(type)){
+			return player2;
+		}else{
+			return null;
+		}		
 	}
 	
 	public void printChessboard(Chessboard board, String message){

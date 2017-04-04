@@ -12,14 +12,14 @@ public class ChessServiceTest {
 		
 		ChessService service = new ChessService();
 		service.startChess();
-		service.selectPiece("A2");
-		service.movePiece("A4");
-		service.verifyCheckmate();
 		
-		service.selectPiece("A7");
-		service.movePiece("A5");
-		service.verifyCheckmate();
-		service.selectPiece("A5");
+		service.selectAndMovePiece("A2", "W");
+		service.selectAndMovePiece("A4", "W");
+		service.verifyCheckmateTurn();
+		
+		service.selectAndMovePiece("A7", "B");
+		service.selectAndMovePiece("A5", "B");
+		service.verifyCheckmateTurn();
 		
 	}
 	

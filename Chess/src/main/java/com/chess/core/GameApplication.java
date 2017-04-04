@@ -20,7 +20,8 @@ import com.google.gson.GsonBuilder;
 public final class GameApplication {
 
 	private Chessboard chessboard;
-	private Player currentPlayer;
+	private Player turnPlayer;
+	private Player currentPlayerRequesting;
 	private Square squareClicked;
 	private Piece pieceClicked;
 	private Piece pieceGotten;
@@ -36,7 +37,7 @@ public final class GameApplication {
 	}
 
 	private void init() {
-		currentPlayer = chessboard.getPlayer1();
+		turnPlayer = chessboard.getPlayer1();
 		chessboard.printChessboard(chessboard, "Game Chess start...");
 	}
 	
@@ -44,25 +45,35 @@ public final class GameApplication {
 		ResponseChessboard response = null;
 		this.clearAllFields();
 		try {
-			chessboard.processValidateCheckmate(currentPlayer);
+			chessboard.processValidateCheckmate(turnPlayer);
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK);
 		} catch (CheckmateException e) {
-			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(currentPlayer);
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE);
 		} catch (CheckStateException e) {
-			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(currentPlayer);
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
 		}
 		this.clearAllFields();
-		System.out.println("\nVerify checkmate validator:\n");
-		this.printInfoResponse(response);
+		//System.out.println("\nVerify checkmate validator:\n");
+		//this.printInfoResponse(response);
 		return response;
 	}
 
+	@Deprecated
 	public ResponseChessboard nextMove(PositionChessboard pos) {
-		if(pos == null)
+		ResponseChessboard response = selectAndMove(pos, turnPlayer);
+		this.printInfoResponse(response);
+		if(response.getStatusResponse() == ResponseChessboard.StatusResponse.MOVED)
+			chessboard.printChessboard(chessboard, "Game Chess turn... player now: " + turnPlayer);
+		return response;
+	}
+	
+	public ResponseChessboard selectAndMove(PositionChessboard pos, Player currentPlayerRequesting) {
+		if(currentPlayerRequesting == null || pos == null)
 			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE, 
-					currentPlayer, this.getTurnPlayer()); //position null not exist
+					currentPlayerRequesting, turnPlayer); //position or player null not exist
+		this.currentPlayerRequesting = currentPlayerRequesting;
 		
 		positionSelected = pos;
 		ResponseChessboard response = null;
@@ -80,9 +91,6 @@ public final class GameApplication {
 		}else{
 			response = executeClickPiece();
 		}
-		this.printInfoResponse(response);
-		if(response.getStatusResponse() == ResponseChessboard.StatusResponse.MOVED)
-			chessboard.printChessboard(chessboard, "Game Chess turn... player now: " + currentPlayer);
 		return response;
 	}
 	
@@ -96,7 +104,7 @@ public final class GameApplication {
 		}
 		//process lists available and to take for piece clicked
 		squareClicked = this.chessboard.getSquareChessboard(positionSelected);
-		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayer)){
+		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayerRequesting)){
 			pieceClicked = squareClicked.getPiece();
 			listPositionsAvailable = pieceClicked.movementAvailable(positionSelected, this.chessboard.getSquaresChessboard());
 			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(positionSelected, this.chessboard.getSquaresChessboard());
@@ -120,9 +128,9 @@ public final class GameApplication {
 		if(listPositionsAvailable.contains(positionSelected)
 				|| listPositionsToTake.contains(positionSelected)){			
 			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);
+			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
-			this.changePlayer();
 			return response;
 		}
 		return null;
@@ -140,22 +148,13 @@ public final class GameApplication {
 		listPositionsToTake = null;
 		listPiecesEnemyDoCheck = null;
 	}
-
-	public Player getTurnPlayer(){
-		if(currentPlayer.getTypePlayer() == chessboard.getPlayer1().getTypePlayer()){
-			return chessboard.getPlayer1();
-		}else{
-			return chessboard.getPlayer2();
-		}
-	}
 	
-	private void changePlayer(){
-		if(currentPlayer.getTypePlayer() == chessboard.getPlayer1().getTypePlayer()){
-			currentPlayer = chessboard.getPlayer2();
+	private void changeTurnPlayer(){
+		if(turnPlayer.getTypePlayer() == chessboard.getPlayer1().getTypePlayer()){
+			turnPlayer = chessboard.getPlayer2();
 		}else{
-			currentPlayer = chessboard.getPlayer1();
+			turnPlayer = chessboard.getPlayer1();
 		}
-		//this.verifyCheckmateValidator();
 	}
 	
 	private void printInfoResponse(ResponseChessboard response) {
@@ -167,7 +166,7 @@ public final class GameApplication {
 	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status){
 		return new ResponseChessboard.Builder()
 				.status(status)
-				.currentPlayer(currentPlayer)
+				.currentPlayer(currentPlayerRequesting)
 				.squareClicked(squareClicked)
 				.pieceClicked(pieceClicked)
 				.positionSelected(positionSelected)
@@ -175,7 +174,7 @@ public final class GameApplication {
 				.listPositionsToTake(listPositionsToTake)
 				.listPiecesEnemyDoCheck(listPiecesEnemyDoCheck)
 				.pieceGotten(pieceGotten)
-				.turn(this.getTurnPlayer())
+				.turn(turnPlayer)
 				.build();
 	}
 }

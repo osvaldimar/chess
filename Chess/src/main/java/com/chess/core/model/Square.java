@@ -1,8 +1,5 @@
 package com.chess.core.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypeWalk;
@@ -86,7 +83,7 @@ public class Square {
 						this.getPiece().getTypePiece().toString().length() <= 5 ? " " : "");
 			str += "-" + this.getPiece().getPlayer();
 		}else{
-			str += "          ";
+			str += "         ";
 		}
 		str += "]";
 		return str;
