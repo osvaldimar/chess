@@ -17,9 +17,12 @@ public class ConsoleServiceChess {
 			String response = service.selectAndMovePiece(input[0], input[1]);
 			service.printInfoResponseJson(response);
 			if(response.contains("PAWN_PROMOTION")){
-				input = scanner.nextLine().split(" ");
-				response = service.choosePromotion(input[0], input[1]);
-				service.printInfoResponseJson(response);
+				while(true){
+					input = scanner.nextLine().split(" ");
+					response = service.choosePromotion(input[0], input[1]);
+					service.printInfoResponseJson(response);
+					if (response.contains("MOVED")) break;
+				}
 			}
 			if (response.contains("MOVED")) {
 				service.printLayoutChessboard();
