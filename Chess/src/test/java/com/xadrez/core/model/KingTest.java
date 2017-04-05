@@ -94,12 +94,12 @@ public class KingTest {
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard res = game.verifyCheckmateValidator();
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
 		
 		res = game.nextMove(A2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(A3);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
 		res = game.nextMove(A7);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 		res = game.nextMove(A6);
@@ -139,7 +139,7 @@ public class KingTest {
 		ResponseChessboard res = game.nextMove(E1);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F2);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
 		res = game.nextMove(D3);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F2);

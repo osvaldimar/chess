@@ -51,7 +51,7 @@ public class PawnPromotionTest {
 		assertEquals(response.getListPositionsAvailable().size(), 1);
 		
 		response = game.selectAndMove(B1, player2);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.B);
 		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION");
 		
@@ -60,21 +60,21 @@ public class PawnPromotionTest {
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.B);
 		
 		response = game.selectAndMove(E7, player2);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		
 		//promotion
 		response = game.executePromotion(TypePiece.QUEEN, player1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.OPPONENT_TURN);
 		
 		response = game.executePromotion(null, player2);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		
 		response = game.executePromotion(TypePiece.QUEEN, player2);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION");
 		
 		response = game.verifyCheckmateValidator();
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECK);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.W);
 		
 		chessboard.walkPieceInTheChessboard(D4, D2);
@@ -99,7 +99,7 @@ public class PawnPromotionTest {
 		
 		ResponseChessboard response = game.selectAndMove(B7, player1);
 		response = game.selectAndMove(A8, player1);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		assertEquals(response.getListPositionsAvailable().size(), 1);
 		assertEquals(response.getListPositionsToTake().size(), 2);
 		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION");
@@ -109,7 +109,7 @@ public class PawnPromotionTest {
 		
 		response = game.selectAndMove(A8, player1);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.W);
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		
 		response = game.executePromotion(TypePiece.ROOK, player1);
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
