@@ -22,7 +22,7 @@ public class ResponseChessboard {
 	private Player turn;
 	
 	public enum StatusResponse{
-		START, OFF, NONE_ACTION, OPPONENT_TURN, CLICKED, MOVED, MARK_OFF, 
+		START, OFF, NONE_ACTION, OPPONENT_TURN, CLICKED, MOVED, MOVED_PROMOTION, MARK_OFF, 
 		NONE_CHECK, EXPOSED_CHECK, CHECK, CHECKMATE;
 	}
 	

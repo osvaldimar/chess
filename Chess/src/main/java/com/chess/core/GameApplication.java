@@ -13,6 +13,7 @@ import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
 import com.chess.core.model.Square;
+import com.chess.core.util.ChessboardPieceFactory;
 import com.chess.core.util.PieceUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,6 +40,26 @@ public final class GameApplication {
 	private void init() {
 		turnPlayer = chessboard.getPlayer1();
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
+	}
+	
+	public ResponseChessboard executePromotion(TypePiece type, Player currentPlayerRequesting){
+		//valid currentPlayer and turn
+		Piece piece = ChessboardPieceFactory.buildPieceByType(type, currentPlayerRequesting);
+		if(currentPlayerRequesting != null && 
+				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
+			return new ResponseChessboard(ResponseChessboard.StatusResponse.OPPONENT_TURN, 
+					currentPlayerRequesting, turnPlayer);
+		if(chessboard.getPositionPromotionPawn() == null){
+			return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION);
+		}
+		if(piece != null){
+			chessboard.processPromotionOfPawn(positionSelected, piece);
+			this.changeTurnPlayer();
+			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
+			this.clearAllFields();
+			return response;
+		}
+		return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
 	}
 	
 	public ResponseChessboard verifyCheckmateValidator() {
@@ -79,6 +100,9 @@ public final class GameApplication {
 				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
 			return new ResponseChessboard(ResponseChessboard.StatusResponse.OPPONENT_TURN, 
 					currentPlayerRequesting, turnPlayer);
+		//validate promotion pawn
+		if(this.chessboard.getPositionPromotionPawn() != null)
+			return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
 		
 		this.currentPlayerRequesting = currentPlayerRequesting;		
 		positionSelected = pos;
@@ -134,7 +158,11 @@ public final class GameApplication {
 	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException{
 		if(listPositionsAvailable.contains(positionSelected)
 				|| listPositionsToTake.contains(positionSelected)){			
-			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);
+			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);			
+			//validate promotion
+			if(chessboard.getPositionPromotionPawn() != null){
+				return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+			}
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();

@@ -30,6 +30,7 @@ public class Chessboard {
 	private Player player2;
 	private List<Piece> listGraveyard;
 	private Square lastSquarePiceMoved;
+	private PositionChessboard positionPromotionPawn;
 	
 	public Chessboard(Player player1, Player player2){
 		this.player1 = player1;
@@ -106,6 +107,11 @@ public class Chessboard {
 			CheckmateValidator.processValidatesCheckmate(clone, player, lastSquarePiceMoved);
 	}
 	
+	public void processPromotionOfPawn(PositionChessboard positionSelected, Piece piece) {
+		this.positionPiece(positionSelected, piece);
+		this.positionPromotionPawn = null;
+	}
+	
 	public List<Piece> getPiecesEnemyDoCheck(Player player) {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player);
@@ -119,8 +125,7 @@ public class Chessboard {
 	}
 	
 	public Piece movePieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny, Piece piece) throws CheckMoveException, CheckStateException {
-		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);	
-		
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);		
 		boolean isCheckBeforeSimulation = CheckmateValidator.isKingInCheck(clone, piece.getPlayer());
 		if(piece.getTypePiece() == TypePiece.PAWN){
 			Pawn pawn = (Pawn) piece;
@@ -141,14 +146,24 @@ public class Chessboard {
 		
 		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifySpecialMovementPassant(origin, destiny, piece);
+		if(piece.getTypePiece() == TypePiece.PAWN) verifyPromotionPawn(destiny, piece);
 		Piece gotten = walkPieceInTheChessboard(origin, destiny);
 		getSquareChessboard(destiny).getPiece().incrementMovements();
-		
+				
 		this.lastSquarePiceMoved = getSquareChessboard(destiny);		
 		if(gotten != null) listGraveyard.add(gotten);
 		return gotten;
 	}
 	
+	private void verifyPromotionPawn(PositionChessboard destiny, Piece piece) {
+		if( (piece.getPlayer().getTypePlayer() == TypePlayer.W && destiny.getNumber() == 7) 
+				|| (piece.getPlayer().getTypePlayer() == TypePlayer.B && destiny.getNumber() == 0) ){
+			positionPromotionPawn = destiny;
+		}else{
+			positionPromotionPawn = null;
+		}
+	}
+
 	private void verifySpecialMovementPassant(PositionChessboard origin, PositionChessboard destiny, Piece piece) {
 		Pawn pawn = (Pawn) piece;
 		if(pawn.isPositionDestinyTakeElPassant(destiny)){
@@ -253,5 +268,7 @@ public class Chessboard {
 	public Square getLastSquarePiceMoved() {
 		return lastSquarePiceMoved;
 	}
-	
+	public PositionChessboard getPositionPromotionPawn() {
+		return positionPromotionPawn;
+	}
 }

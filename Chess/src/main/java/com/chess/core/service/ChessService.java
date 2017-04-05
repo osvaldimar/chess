@@ -4,6 +4,7 @@ import com.chess.core.Chessboard;
 import com.chess.core.GameApplication;
 import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.model.Player;
 
@@ -46,6 +47,18 @@ public final class ChessService {
 		}
 		return ResponseGameJson.createResponseJson(
 				this.game.verifyCheckmateValidator());
+	}
+	
+	public String choosePromotion(String promotedPiece, String currentPlayerRequesting){
+		if(!isPlaying()) {
+			return ResponseGameJson.createResponseJson(
+					new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OFF)
+					.build());
+		}
+		return ResponseGameJson.createResponseJson(
+				this.game.executePromotion(TypePiece.getEnum(promotedPiece), 
+						this.chessboard.getPlayerByType(currentPlayerRequesting)));
 	}
 	
 	public boolean isPlaying() {
