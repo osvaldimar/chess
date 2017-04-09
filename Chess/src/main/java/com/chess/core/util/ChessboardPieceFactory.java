@@ -25,9 +25,9 @@ public final class ChessboardPieceFactory {
 			TypeColor color = player.getTypePlayer() == TypePlayer.W ? TypeColor.WHITE : TypeColor.BLACK;
 			Map<TypePiece, Piece> map = new HashMap<>();
 			map.put(TypePiece.QUEEN, new Queen(color, player));
-			map.put(TypePiece.ROOK, new Queen(color, player));
-			map.put(TypePiece.KNIGHT, new Queen(color, player));
-			map.put(TypePiece.BISHOP, new Queen(color, player));
+			map.put(TypePiece.ROOK, new Rook(color, player));
+			map.put(TypePiece.KNIGHT, new Knight(color, player));
+			map.put(TypePiece.BISHOP, new Bishop(color, player));
 			return map.get(type);
 		}
 		return null;

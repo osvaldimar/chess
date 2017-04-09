@@ -69,7 +69,7 @@ public final class GameApplication {
 			this.clearAllFields();
 			return response;
 		}
-		return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+		return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 	}
 	
 	public ResponseChessboard verifyCheckmateValidator() {
@@ -88,7 +88,7 @@ public final class GameApplication {
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE);
 		} catch (CheckStateException e) {
 			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
-			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.GIVING_CHECK);
 		}
 		this.clearAllFields();
 		//System.out.println("\nVerify checkmate validator:\n");
@@ -128,7 +128,7 @@ public final class GameApplication {
 					.build();
 		//validate promotion pawn
 		if(this.chessboard.getPositionPromotionPawn() != null)
-			return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+			return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 		
 		this.currentPlayerRequesting = currentPlayerRequesting;		
 		positionSelected = pos;
@@ -142,7 +142,7 @@ public final class GameApplication {
 			} catch (CheckMoveException e) {
 				response = buildResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED_CHECK);
 			} catch (CheckStateException e) {
-				response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECK);
+				response = buildResponseChessboard(ResponseChessboard.StatusResponse.GIVING_CHECK);
 			}			
 		}else{
 			response = executeClickPiece();
@@ -187,7 +187,7 @@ public final class GameApplication {
 			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);			
 			//validate promotion
 			if(chessboard.getPositionPromotionPawn() != null){
-				return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
+				return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 			}
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
