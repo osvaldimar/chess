@@ -139,10 +139,10 @@ public class Chessboard {
 
 		//before simulation check
 		if(isCheckBeforeSimulation){
-			CheckmateValidator.validateKingExposedInCheckBeforeSimulation(clone, piece.getPlayer());
+			CheckmateValidator.validateKingExposedInCheckBeforeSimulation(clone, piece.getPlayer());	//you are in check
 		}
 		//after simulation check
-		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());
+		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());			//you can't expose king in check
 		
 		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifySpecialMovementPassant(origin, destiny, piece);

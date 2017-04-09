@@ -1,8 +1,10 @@
 package com.chess.core.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.chess.core.Chessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
@@ -67,6 +69,14 @@ public final class ChessboardPieceFactory {
 	private static Square buildCloneSquare(Square square) {
 		return new Square(buildClonePiece(square.getPiece()), 
 				square.getColor(), square.getPosition());
+	}
+	
+	public static Square[][] doLayoutAfterStart(final Chessboard chessboard, final List<PositionMovement> list){
+		chessboard.startGame();
+		list.forEach(p -> {
+			chessboard.walkPieceInTheChessboard(p.getActualPosition(), p.getDestinyPosition());
+		});
+		return chessboard.getSquaresChessboard();
 	}
 	
 }

@@ -2,7 +2,7 @@ package com.chess.core.model;
 
 import com.chess.core.enums.TypePlayer;
 
-public class Player {
+public class Player implements PlayerMode {
 
 	private String nome;
 	private Long score;
@@ -38,6 +38,18 @@ public class Player {
 	@Override
 	public String toString() {
 		return this.typePlayer.toString();
+	}
+
+	@Override
+	public String nextMove() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPromotion() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

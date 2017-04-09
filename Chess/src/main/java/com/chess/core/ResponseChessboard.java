@@ -27,12 +27,6 @@ public class ResponseChessboard {
 	}
 	
 	private ResponseChessboard(){}
-	
-	public ResponseChessboard(StatusResponse statusResponse, Player currentPlayer, Player turnPlayer) {
-		this.statusResponse = statusResponse;
-		this.currentPlayer = currentPlayer;
-		this.turn = turnPlayer;
-	}
 
 	public Player getCurrentPlayer() {
 		return currentPlayer;

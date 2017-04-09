@@ -31,6 +31,7 @@ public final class GameApplication {
 	private List<PositionChessboard> listPositionsToTake = new ArrayList<>();
 	private List<Piece> listPiecesEnemyDoCheck;
 	
+	private boolean playing;
 
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
@@ -38,17 +39,26 @@ public final class GameApplication {
 	}
 
 	private void init() {
+		this.playing = Boolean.TRUE;
 		turnPlayer = chessboard.getPlayer1();
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 	}
 	
 	public ResponseChessboard executePromotion(TypePiece type, Player currentPlayerRequesting){
+		if(!this.playing) {
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OFF)
+					.build();
+		}
 		//valid currentPlayer and turn
 		Piece piece = ChessboardPieceFactory.buildPieceByType(type, currentPlayerRequesting);
 		if(currentPlayerRequesting != null && 
 				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.OPPONENT_TURN, 
-					currentPlayerRequesting, turnPlayer);
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OPPONENT_TURN) 
+					.currentPlayer(currentPlayerRequesting)
+					.turn(turnPlayer)
+					.build();
 		if(chessboard.getPositionPromotionPawn() == null){
 			return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION);
 		}
@@ -63,6 +73,11 @@ public final class GameApplication {
 	}
 	
 	public ResponseChessboard verifyCheckmateValidator() {
+		if(!this.playing) {
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OFF)
+					.build();
+		}
 		ResponseChessboard response = null;
 		this.clearAllFields();
 		try {
@@ -91,15 +106,26 @@ public final class GameApplication {
 	}
 	
 	public ResponseChessboard selectAndMove(PositionChessboard pos, Player currentPlayerRequesting) {
+		if(!this.playing) {
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OFF)
+					.build();
+		}
 		//valid position and player
 		if(currentPlayerRequesting == null || pos == null)
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION, 
-					currentPlayerRequesting, turnPlayer);
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.NONE_ACTION)
+					.currentPlayer(currentPlayerRequesting)
+					.turn(turnPlayer)
+					.build();
 		//valid currentPlayer and turn
 		if(currentPlayerRequesting != null && 
 				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
-			return new ResponseChessboard(ResponseChessboard.StatusResponse.OPPONENT_TURN, 
-					currentPlayerRequesting, turnPlayer);
+			return new ResponseChessboard.Builder()
+					.status(ResponseChessboard.StatusResponse.OPPONENT_TURN) 
+					.currentPlayer(currentPlayerRequesting)
+					.turn(turnPlayer)
+					.build();
 		//validate promotion pawn
 		if(this.chessboard.getPositionPromotionPawn() != null)
 			return buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED_PROMOTION);
