@@ -94,12 +94,12 @@ public class KingTest {
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard res = game.verifyCheckmateValidator();
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.IN_CHECK);
 		
 		res = game.nextMove(A2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(A3);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.IN_CHECK);
 		res = game.nextMove(A7);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 		res = game.nextMove(A6);
@@ -139,7 +139,7 @@ public class KingTest {
 		ResponseChessboard res = game.nextMove(E1);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F2);
-		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
+		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.IN_CHECK);
 		res = game.nextMove(D3);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(F2);
@@ -167,7 +167,14 @@ public class KingTest {
 		GameApplication game = new GameApplication(chessboard);
 		
 		ResponseChessboard response = game.verifyCheckmateValidator();
-		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);		
+		game.printInfoResponse(response);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);
+		
+		//GAME IS OVER, ANY MOVEMENT RESULTED IN CHECKMATE
+		response = game.nextMove(A2);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		response = game.nextMove(A4);
+		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);
 	}
 	
 }

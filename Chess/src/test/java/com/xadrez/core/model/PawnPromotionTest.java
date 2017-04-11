@@ -74,7 +74,7 @@ public class PawnPromotionTest {
 		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION");
 		
 		response = game.verifyCheckmateValidator();
-		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.GIVING_CHECK);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.IN_CHECK);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.W);
 		
 		chessboard.walkPieceInTheChessboard(D4, D2);

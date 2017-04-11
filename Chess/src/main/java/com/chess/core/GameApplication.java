@@ -88,11 +88,9 @@ public final class GameApplication {
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.CHECKMATE);
 		} catch (CheckStateException e) {
 			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
-			response = buildResponseChessboard(ResponseChessboard.StatusResponse.GIVING_CHECK);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.IN_CHECK);
 		}
 		this.clearAllFields();
-		//System.out.println("\nVerify checkmate validator:\n");
-		//this.printInfoResponse(response);
 		return response;
 	}
 
@@ -142,7 +140,9 @@ public final class GameApplication {
 			} catch (CheckMoveException e) {
 				response = buildResponseChessboard(ResponseChessboard.StatusResponse.EXPOSED_CHECK);
 			} catch (CheckStateException e) {
-				response = buildResponseChessboard(ResponseChessboard.StatusResponse.GIVING_CHECK);
+				//attempt away MOVED resulted state CHECK, then validate if IN_CHECK or CHECKMATE in the turn actual requesting
+				response = this.verifyCheckmateValidator();
+				//response = buildResponseChessboard(ResponseChessboard.StatusResponse.IN_CHECK);
 			}			
 		}else{
 			response = executeClickPiece();
