@@ -44,7 +44,7 @@ public class ResponseClient {
 
 
 	public static class Builder{
-		private ResponseClient response;
+		private ResponseClient response = new ResponseClient();
 		
 		public Builder status(String status){
 			response.status = status;

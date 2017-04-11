@@ -17,28 +17,33 @@ public final class ChessService {
 		this.chessboard = new Chessboard(new Player(TypePlayer.W), new Player(TypePlayer.B));
 		this.chessboard.startGame();
 		this.game = new GameApplication(chessboard);
-		return ResponseGameJson.createResponseJson(
-				new ResponseChessboard.Builder()
-				.status(ResponseChessboard.StatusResponse.START)
-				.turn(new Player(TypePlayer.W))				
-				.build());
+		return TransformJson.createResponseJson(
+				ResponseClientConverter.convert(
+						new ResponseChessboard.Builder()
+						.status(ResponseChessboard.StatusResponse.START)
+						.currentPlayer(new Player(TypePlayer.W))
+						.turn(new Player(TypePlayer.W))
+						.build()));
 	}
 
 	public String selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting){
-		return ResponseGameJson.createResponseJson(
+		return TransformJson.createResponseJson(
+				ResponseClientConverter.convert(
 				this.game.selectAndMove(PositionChessboard.getEnum(positionOriginOrDestiny), 
-						this.chessboard.getPlayerByType(currentPlayerRequesting)));
+						this.chessboard.getPlayerByType(currentPlayerRequesting))));
 	}
 	
 	public String verifyCheckmateTurn(){
-		return ResponseGameJson.createResponseJson(
-				this.game.verifyCheckmateValidator());
+		return TransformJson.createResponseJson(
+				ResponseClientConverter.convert(
+				this.game.verifyCheckmateValidator()));
 	}
 	
 	public String choosePromotion(String promotedPiece, String currentPlayerRequesting){
-		return ResponseGameJson.createResponseJson(
+		return TransformJson.createResponseJson(
+				ResponseClientConverter.convert(
 				this.game.executePromotion(TypePiece.getEnum(promotedPiece), 
-						this.chessboard.getPlayerByType(currentPlayerRequesting)));
+						this.chessboard.getPlayerByType(currentPlayerRequesting))));
 	}
 	
 	public void printInfoResponseJson(String response){
