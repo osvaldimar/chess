@@ -1,6 +1,7 @@
-package com.chess.core.service;
+package com.chess.core.client;
 
 import com.chess.core.ResponseChessboard;
+import com.chess.core.client.ResponseClient;
 
 public final class ResponseClientConverter {
 

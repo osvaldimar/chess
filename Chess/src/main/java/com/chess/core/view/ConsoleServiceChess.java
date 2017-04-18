@@ -2,13 +2,13 @@ package com.chess.core.view;
 
 import java.util.Scanner;
 
-import com.chess.core.service.ChessService;
+import com.chess.core.service.ChessServiceImpl;
 
 public class ConsoleServiceChess {
 	
 	public static void main(String[] args) {
 		
-		ChessService service = new ChessService();	
+		ChessServiceImpl service = new ChessServiceImpl();	
 		service.startChess();
 		Scanner scanner = new Scanner(System.in);		
 		while(true){

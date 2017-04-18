@@ -1,4 +1,4 @@
-package com.chess.core.service;
+package com.chess.core.client;
 
 public class ResponseClient {
 

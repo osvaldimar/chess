@@ -7,8 +7,8 @@ import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.service.ChessService;
-import com.chess.core.service.ResponseClient;
+import com.chess.core.service.ChessServiceImpl;
+import com.chess.core.client.ResponseClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,7 +20,7 @@ public class ChessServiceTest {
 	@Test
 	public void testChessServiceMethodsFacade(){
 		
-		ChessService service = new ChessService();
+		ChessServiceImpl service = new ChessServiceImpl();
 		String responseJson = service.startChess();
 		service.printInfoResponseJson(responseJson);
 		
