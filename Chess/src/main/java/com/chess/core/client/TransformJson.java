@@ -1,5 +1,6 @@
-package com.chess.core.service;
+package com.chess.core.client;
 
+import com.chess.core.client.ResponseClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -41,6 +41,7 @@ public final class GameApplication {
 	private void init() {
 		this.playing = Boolean.TRUE;
 		turnPlayer = chessboard.getPlayer1();
+		currentPlayerRequesting = chessboard.getPlayer1();
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 	}
 	
