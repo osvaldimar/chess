@@ -1,5 +1,7 @@
 package com.chess.core.client;
 
+import java.util.UUID;
+
 public interface ChessServiceRemote {
 
 	String startChess();
@@ -19,4 +21,6 @@ public interface ChessServiceRemote {
 	String getLayoutChessboard();
 	
 	void printLayoutChessboard();
+	
+	UUID getUuidChess();
 }

@@ -1,9 +1,12 @@
 package com.chess.core.service;
 
+import java.util.UUID;
+
 import com.chess.core.Chessboard;
 import com.chess.core.GameApplication;
 import com.chess.core.ResponseChessboard;
 import com.chess.core.client.ChessServiceRemote;
+import com.chess.core.client.ResponseClient;
 import com.chess.core.client.ResponseClientConverter;
 import com.chess.core.client.TransformJson;
 import com.chess.core.enums.PositionChessboard;
@@ -15,19 +18,20 @@ public class ChessServiceImpl implements ChessServiceRemote{
 
 	private Chessboard chessboard;
 	private GameApplication game;
+	private UUID uuidChess = UUID.randomUUID();
 	
 	@Override
 	public String startChess(){
 		this.chessboard = new Chessboard(new Player(TypePlayer.W), new Player(TypePlayer.B));
 		this.chessboard.startGame();
 		this.game = new GameApplication(chessboard);
-		return TransformJson.createResponseJson(
-				ResponseClientConverter.convert(
-						new ResponseChessboard.Builder()
-						.status(ResponseChessboard.StatusResponse.START)
-						.currentPlayer(new Player(TypePlayer.W))
-						.turn(new Player(TypePlayer.W))
-						.build()));
+		ResponseClient convert = new ResponseClient.Builder()
+				.status(ResponseChessboard.StatusResponse.START.toString())
+				.currentPlayer(new Player(TypePlayer.W).getTypePlayer().toString())
+				.turn(new Player(TypePlayer.W).getTypePlayer().toString())
+				.uuid(uuidChess.toString())
+				.build();
+		return TransformJson.createResponseJson(convert);
 	}
 
 	@Override
@@ -78,4 +82,8 @@ public class ChessServiceImpl implements ChessServiceRemote{
 		this.chessboard.printLayoutChessboard();
 	}
 	
+	@Override
+	public UUID getUuidChess() {
+		return uuidChess;
+	}
 }

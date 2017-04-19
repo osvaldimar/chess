@@ -10,4 +10,9 @@ public class TransformJson {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(res);
 	}
+	
+	public static ResponseClient fromJson(String json){
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		return gson.fromJson(json, ResponseClient.class);
+	}
 }
