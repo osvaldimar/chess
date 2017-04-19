@@ -67,6 +67,7 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
+			this.chessboard.play(turnPlayer.getTypePlayer());
 			return response;
 		}
 		return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
@@ -192,6 +193,7 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
+			this.chessboard.play(turnPlayer.getTypePlayer());
 			return response;
 		}
 		return null;

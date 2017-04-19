@@ -154,6 +154,9 @@ public class KingTest {
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
 		res = game.nextMove(D2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		
+		//memory
+		Assert.assertEquals(chessboard.getChessMemory().getListMovements().size(), 3);
 	}
 	
 	@Test

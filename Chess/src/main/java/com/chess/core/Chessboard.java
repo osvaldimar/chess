@@ -11,6 +11,8 @@ import com.chess.core.enums.TypePlayer;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
+import com.chess.core.memory.ChessboardMemory;
+import com.chess.core.memory.PositionMemory;
 import com.chess.core.model.Bishop;
 import com.chess.core.model.King;
 import com.chess.core.model.Knight;
@@ -32,10 +34,13 @@ public class Chessboard {
 	private Square lastSquarePiceMoved;
 	private PositionChessboard positionPromotionPawn;
 	
+	private ChessboardMemory chessMemory;
+	
 	public Chessboard(Player player1, Player player2){
 		this.player1 = player1;
 		this.player2 = player2;
 		this.listGraveyard = new ArrayList<>();
+		this.chessMemory = new ChessboardMemory();
 		startChessboad();
 	}
 	
@@ -97,6 +102,21 @@ public class Chessboard {
 		return squares[position.getLetter()][position.getNumber()];
 	}
 	
+	public synchronized void play(TypePlayer type){
+		if(type == player1.getTypePlayer()){
+			//player1.setSquares(ChessboardPieceFactory.buildCloneSquares(getSquaresChessboard()));
+			new Thread(player1).start();
+		}else{
+			//player2.setSquares(ChessboardPieceFactory.buildCloneSquares(getSquaresChessboard()));
+			new Thread(player2).start();
+		}
+	}
+	
+	public void undo(){
+		//PositionMemory p = this.chessMemory.undo();
+		//this.chess
+	}
+	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
@@ -152,6 +172,9 @@ public class Chessboard {
 				
 		this.lastSquarePiceMoved = getSquareChessboard(destiny);		
 		if(gotten != null) listGraveyard.add(gotten);
+		
+		//memory
+		this.chessMemory.addMovement(new PositionMemory(origin, destiny, piece, gotten));
 		return gotten;
 	}
 	
@@ -270,5 +293,8 @@ public class Chessboard {
 	}
 	public PositionChessboard getPositionPromotionPawn() {
 		return positionPromotionPawn;
+	}
+	public ChessboardMemory getChessMemory() {
+		return chessMemory;
 	}
 }

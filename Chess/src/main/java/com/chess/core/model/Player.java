@@ -1,5 +1,6 @@
 package com.chess.core.model;
 
+import com.chess.core.Chessboard;
 import com.chess.core.enums.TypePlayer;
 
 public class Player implements PlayerMode {
@@ -7,6 +8,7 @@ public class Player implements PlayerMode {
 	private String nome;
 	private Long score;
 	private TypePlayer typePlayer;
+	private Square[][] squares;
 	
 	public Player(TypePlayer typePlayer){
 		this.typePlayer = typePlayer;
@@ -50,6 +52,21 @@ public class Player implements PlayerMode {
 	public String getPromotion() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean isArtificialInteligence() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void run() {
+		
+	}
+
+	public void setSquares(Square[][] squares) {
+		this.squares = squares;		
 	}
 	
 }
