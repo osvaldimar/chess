@@ -34,7 +34,7 @@ public class BishopTest {
 		player1 = new Player("Joao", 100L, TypePlayer.W);
 		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
-		bishop = new Bishop(TypeColor.WHITE, player1);
+		bishop = new Bishop(TypeColor.WHITE, player1.getTypePlayer());
 	}
 
 	@Test

@@ -1,23 +1,24 @@
 package com.chess.core.model;
 
-import com.chess.core.Chessboard;
 import com.chess.core.enums.TypePlayer;
 
-public class Player implements PlayerMode {
+public class Player {
 
 	private String nome;
 	private Long score;
 	private TypePlayer typePlayer;
-	private Square[][] squares;
+	private int quantityMovement;
 	
 	public Player(TypePlayer typePlayer){
 		this.typePlayer = typePlayer;
+		this.quantityMovement = 0;
 	}
 	
 	public Player(String nome, Long score, TypePlayer typePlayer) {
 		this.nome = nome;
 		this.score = score;
 		this.typePlayer = typePlayer;
+		this.quantityMovement = 0;
 	}
 
 	public String getNome() {
@@ -37,36 +38,20 @@ public class Player implements PlayerMode {
 		return typePlayer;
 	}
 	
+	public int getQuantityMovement() {
+		return quantityMovement;
+	}
+
+	public void setQuantityMovement(int quantityMovement) {
+		this.quantityMovement = quantityMovement;
+	}
+	
+	public void incrementMovements() {
+		this.quantityMovement++;
+	}
+
 	@Override
 	public String toString() {
 		return this.typePlayer.toString();
 	}
-
-	@Override
-	public String nextMove() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPromotion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isArtificialInteligence() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void run() {
-		
-	}
-
-	public void setSquares(Square[][] squares) {
-		this.squares = squares;		
-	}
-	
 }

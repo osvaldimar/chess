@@ -34,7 +34,7 @@ public class QueenTest {
 		player1 = new Player("Joao", 100L, TypePlayer.W);
 		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
-		queen = new Queen(TypeColor.WHITE, player1);
+		queen = new Queen(TypeColor.WHITE, player1.getTypePlayer());
 	}
 
 	@Test

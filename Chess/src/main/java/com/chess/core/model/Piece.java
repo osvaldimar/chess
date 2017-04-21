@@ -2,16 +2,17 @@ package com.chess.core.model;
 
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.movement.BehaviorChess;
 
 public abstract class Piece implements BehaviorChess {
 
 	private TypePiece typePiece;
 	private TypeColor color;
-	private Player player;
+	private TypePlayer player;
 	private int countMovements;
 	
-	public Piece(TypePiece typePiece, TypeColor color, Player player){
+	public Piece(TypePiece typePiece, TypeColor color, TypePlayer player){
 		this.typePiece = typePiece;
 		this.color = color;
 		this.player = player;
@@ -38,11 +39,11 @@ public abstract class Piece implements BehaviorChess {
 		this.color = color;
 	}
 
-	public Player getPlayer() {
+	public TypePlayer getPlayer() {
 		return player;
 	}
 
-	public void setPlayer(Player player) {
+	public void setPlayer(TypePlayer player) {
 		this.player = player;
 	}
 	

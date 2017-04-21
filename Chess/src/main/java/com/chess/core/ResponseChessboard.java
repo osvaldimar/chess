@@ -23,7 +23,7 @@ public class ResponseChessboard {
 	
 	public enum StatusResponse{
 		START, OFF, NONE_ACTION, OPPONENT_TURN, CLICKED, MOVED, PAWN_PROMOTION, MARK_OFF, 
-		NONE_CHECK, EXPOSED_CHECK, IN_CHECK, CHECKMATE;
+		NONE_CHECK, EXPOSED_CHECK, IN_CHECK, CHECKMATE, DRAW_STALEMATE, DRAW_50_MOVEMENTS, DRAW_3_POSITIONS;
 	}
 	
 	private ResponseChessboard(){}
@@ -69,7 +69,7 @@ public class ResponseChessboard {
 		builder.append(" - Square clicked: " + getSquareClicked());
 		builder.append(" - Position selected: " + getPositionSelected());
 		builder.append(" - Piece gotten: " + getPieceGotten() + 
-				(getPieceGotten() != null ? "-"+getPieceGotten().getPlayer().getTypePlayer() : ""));
+				(getPieceGotten() != null ? "-"+getPieceGotten().getPlayer() : ""));
 		builder.append(" - Current player: " + currentPlayer);
 		if(getListPositionsAvailable() != null || getListPositionsToTake()!= null){
 			builder.append("\nList positions available: " + getListPositionsAvailable());

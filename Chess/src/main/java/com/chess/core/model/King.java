@@ -6,6 +6,7 @@ import java.util.List;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.movement.BehaviorChess;
 import com.chess.core.util.CheckmateValidator;
 import com.chess.core.util.ChessboardPieceFactory;
@@ -13,7 +14,7 @@ import com.chess.core.util.MovementUtils;
 
 public class King extends Piece implements BehaviorChess {
 
-	public King(TypeColor color, Player player) {
+	public King(TypeColor color, TypePlayer player) {
 		super(TypePiece.KING, color, player);
 	}
 

@@ -11,6 +11,9 @@ import com.chess.core.enums.TypePlayer;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
+import com.chess.core.exception.Draw3PositionsException;
+import com.chess.core.exception.Draw50MovementsException;
+import com.chess.core.exception.DrawStalemateException;
 import com.chess.core.memory.ChessboardMemory;
 import com.chess.core.memory.PositionMemory;
 import com.chess.core.model.Bishop;
@@ -35,6 +38,7 @@ public class Chessboard {
 	private PositionChessboard positionPromotionPawn;
 	
 	private ChessboardMemory chessMemory;
+	private int totalMovements;
 	
 	public Chessboard(Player player1, Player player2){
 		this.player1 = player1;
@@ -61,28 +65,28 @@ public class Chessboard {
 				p -> {
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 1).forEach(
-								n->n.addPiece(new Pawn(TypeColor.WHITE, player1)));
+								n->n.addPiece(new Pawn(TypeColor.WHITE, player1.getTypePlayer())));
 					Arrays.stream(p).filter(
 						s -> s.getPosition().getNumber() == 6).forEach(
-								n->n.addPiece(new Pawn(TypeColor.BLACK, player2)));
+								n->n.addPiece(new Pawn(TypeColor.BLACK, player2.getTypePlayer())));
 				});
-		this.getSquareChessboard(PositionChessboard.A1).addPiece(new Rook(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.B1).addPiece(new Knight(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.C1).addPiece(new Bishop(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.D1).addPiece(new Queen(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.E1).addPiece(new King(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.F1).addPiece(new Bishop(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.G1).addPiece(new Knight(TypeColor.WHITE, player1));
-		this.getSquareChessboard(PositionChessboard.H1).addPiece(new Rook(TypeColor.WHITE, player1));
+		this.getSquareChessboard(PositionChessboard.A1).addPiece(new Rook(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.B1).addPiece(new Knight(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.C1).addPiece(new Bishop(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.D1).addPiece(new Queen(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.E1).addPiece(new King(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.F1).addPiece(new Bishop(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.G1).addPiece(new Knight(TypeColor.WHITE, player1.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.H1).addPiece(new Rook(TypeColor.WHITE, player1.getTypePlayer()));
 		
-		this.getSquareChessboard(PositionChessboard.A8).addPiece(new Rook(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.B8).addPiece(new Knight(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.C8).addPiece(new Bishop(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.D8).addPiece(new Queen(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.E8).addPiece(new King(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.F8).addPiece(new Bishop(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.G8).addPiece(new Knight(TypeColor.BLACK, player2));
-		this.getSquareChessboard(PositionChessboard.H8).addPiece(new Rook(TypeColor.BLACK, player2));		
+		this.getSquareChessboard(PositionChessboard.A8).addPiece(new Rook(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.B8).addPiece(new Knight(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.C8).addPiece(new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.D8).addPiece(new Queen(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.E8).addPiece(new King(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.F8).addPiece(new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.G8).addPiece(new Knight(TypeColor.BLACK, player2.getTypePlayer()));
+		this.getSquareChessboard(PositionChessboard.H8).addPiece(new Rook(TypeColor.BLACK, player2.getTypePlayer()));		
 	}
 	
 	private static Square buildSquare(TypeColor color, PositionChessboard position){
@@ -102,29 +106,20 @@ public class Chessboard {
 		return squares[position.getLetter()][position.getNumber()];
 	}
 	
-	public synchronized void play(TypePlayer type){
-		if(type == player1.getTypePlayer()){
-			//player1.setSquares(ChessboardPieceFactory.buildCloneSquares(getSquaresChessboard()));
-			new Thread(player1).start();
-		}else{
-			//player2.setSquares(ChessboardPieceFactory.buildCloneSquares(getSquaresChessboard()));
-			new Thread(player2).start();
-		}
-	}
-	
-	public void undo(){
-		//PositionMemory p = this.chessMemory.undo();
-		//this.chess
-	}
-	
 	public void positionPiece(PositionChessboard pos, Piece piece) {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
+	public void processValidateDraw(Player player) throws DrawStalemateException, Draw50MovementsException, Draw3PositionsException {
+		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
+		if(!CheckmateValidator.isKingInCheck(clone, player.getTypePlayer()))
+			CheckmateValidator.processValidatesDraw(clone, player.getTypePlayer(), lastSquarePiceMoved, player1, player2, chessMemory);
+	}
+	
 	public void processValidateCheckmate(Player player) throws CheckmateException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
-		if(CheckmateValidator.isKingInCheck(clone, player))
-			CheckmateValidator.processValidatesCheckmate(clone, player, lastSquarePiceMoved);
+		if(CheckmateValidator.isKingInCheck(clone, player.getTypePlayer()))
+			CheckmateValidator.processValidatesCheckmate(clone, player.getTypePlayer(), lastSquarePiceMoved);
 	}
 	
 	public void processPromotionOfPawn(PositionChessboard positionSelected, Piece piece) {
@@ -134,7 +129,7 @@ public class Chessboard {
 	
 	public List<Piece> getPiecesEnemyDoCheck(Player player) {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
-		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player);
+		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player.getTypePlayer());
 	}
 
 	public Piece walkPieceInTheChessboard(PositionChessboard origin, PositionChessboard destiny){
@@ -173,14 +168,24 @@ public class Chessboard {
 		this.lastSquarePiceMoved = getSquareChessboard(destiny);		
 		if(gotten != null) listGraveyard.add(gotten);
 		
-		//memory
-		this.chessMemory.addMovement(new PositionMemory(origin, destiny, piece, gotten));
+		//quantity movement of players
+		if(piece.getTypePiece() == TypePiece.PAWN || gotten != null){
+			player1.setQuantityMovement(0);
+			player2.setQuantityMovement(0);
+		}else{
+			if(piece.getPlayer() == player1.getTypePlayer()) player1.incrementMovements();
+			else player2.incrementMovements();
+		}
+		
+		//memory queue
+		this.chessMemory.addPositionQueue(new PositionMemory(origin, destiny, piece, gotten), piece.getPlayer());
+		this.totalMovements++;
 		return gotten;
 	}
 	
 	private void verifyPromotionPawn(PositionChessboard destiny, Piece piece) {
-		if( (piece.getPlayer().getTypePlayer() == TypePlayer.W && destiny.getNumber() == 7) 
-				|| (piece.getPlayer().getTypePlayer() == TypePlayer.B && destiny.getNumber() == 0) ){
+		if( (piece.getPlayer() == TypePlayer.W && destiny.getNumber() == 7) 
+				|| (piece.getPlayer() == TypePlayer.B && destiny.getNumber() == 0) ){
 			positionPromotionPawn = destiny;
 		}else{
 			positionPromotionPawn = null;
@@ -296,5 +301,8 @@ public class Chessboard {
 	}
 	public ChessboardMemory getChessMemory() {
 		return chessMemory;
+	}
+	public int getTotalMovements() {
+		return totalMovements;
 	}
 }

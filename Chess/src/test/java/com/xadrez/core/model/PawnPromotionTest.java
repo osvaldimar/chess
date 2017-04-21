@@ -76,8 +76,41 @@ public class PawnPromotionTest {
 		response = game.verifyCheckmateValidator();
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.IN_CHECK);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.W);
+	}
+	
+	@Test
+	public void testPromotionPawnBlackWithCheckmateRook(){
+		System.out.println("\n------------------------------------------------------------------------------");
+		chessboard.startGame();
+		GameApplication game = new GameApplication(chessboard);
+		chessboard.getSquareChessboard(A2).removePiece();
+		chessboard.getSquareChessboard(B2).removePiece();
+		chessboard.getSquareChessboard(C2).removePiece();
+		chessboard.getSquareChessboard(A1).removePiece();
+		chessboard.getSquareChessboard(B1).removePiece();
+		chessboard.getSquareChessboard(C1).removePiece();
+		chessboard.getSquareChessboard(D1).removePiece();
+		chessboard.walkPieceInTheChessboard(B7, B2);
+		chessboard.getSquareChessboard(B2).getPiece().incrementMovements();
+		chessboard.printDebugChessboard(chessboard, "promotion test init");
 		
-		chessboard.walkPieceInTheChessboard(D4, D2);
+		//player1
+		ResponseChessboard response = game.selectAndMove(H2, player1);
+		response = game.selectAndMove(H4, player1);		
+		//player2
+		response = game.selectAndMove(B2, player2);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
+		assertEquals(response.getListPositionsAvailable().size(), 1);
+		
+		response = game.selectAndMove(B1, player2);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.PAWN_PROMOTION);
+		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.B);
+		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION");		
+		
+		response = game.executePromotion(TypePiece.ROOK, player2);
+		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		chessboard.printDebugChessboard(chessboard, "promotion test - MOVED_PROMOTION ROOK");
+
 		response = game.verifyCheckmateValidator();
 		assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);
 		assertEquals(response.getTurn().getTypePlayer(), TypePlayer.W);

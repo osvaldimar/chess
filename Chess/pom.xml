@@ -10,6 +10,12 @@
   </properties>
   
   <dependencies>
+  	<!-- AI -->
+  	<dependency>
+  		<groupId>com.dim.chess.ai</groupId>
+		<artifactId>chess-ai</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
     <!-- google gson -->
   	<dependency>
     	<groupId>com.google.code.gson</groupId>

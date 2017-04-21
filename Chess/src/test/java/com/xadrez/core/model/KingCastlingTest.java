@@ -33,7 +33,7 @@ public class KingCastlingTest {
 		player1 = new Player("Joao", 100L, TypePlayer.W);
 		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
-		king = new King(TypeColor.WHITE, player1);
+		king = new King(TypeColor.WHITE, player1.getTypePlayer());
 	}
 	
 	@Test
@@ -187,7 +187,7 @@ public class KingCastlingTest {
 		chessboard.getSquareChessboard(F1).removePiece();
 		chessboard.getSquareChessboard(G1).removePiece();
 		chessboard.getSquareChessboard(B8).removePiece();
-		chessboard.positionPiece(H3, new Knight(TypeColor.BLACK, player2));
+		chessboard.positionPiece(H3, new Knight(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);		
 		
 		ResponseChessboard res = game.nextMove(E1);
@@ -204,7 +204,7 @@ public class KingCastlingTest {
 		chessboard.getSquareChessboard(F1).removePiece();
 		chessboard.getSquareChessboard(G1).removePiece();
 		chessboard.getSquareChessboard(B8).removePiece();
-		chessboard.positionPiece(F3, new Knight(TypeColor.BLACK, player2));
+		chessboard.positionPiece(F3, new Knight(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);		
 		
 		ResponseChessboard res = game.nextMove(E1);

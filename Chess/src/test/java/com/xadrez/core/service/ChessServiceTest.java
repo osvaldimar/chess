@@ -52,7 +52,7 @@ public class ChessServiceTest {
 		
 		responseJson = service.verifyCheckmateTurn();
 		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
-		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
+		Assert.assertEquals("Expected NONE_CHECK", ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.NONE_CHECK);
 		
 		service.printInfoResponseJson(responseJson);
@@ -90,4 +90,10 @@ public class ChessServiceTest {
 				ResponseChessboard.StatusResponse.NONE_ACTION);
 	}
 	
+	@Test
+	public void testCallMethodsGetsOfChessService(){
+		ChessServiceImpl service = new ChessServiceImpl();
+		service.startChess();
+		service.printSquaresChessboardJson();
+	}
 }

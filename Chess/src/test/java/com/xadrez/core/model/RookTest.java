@@ -26,7 +26,7 @@ public class RookTest {
 	private Player player1 = new Player("Joao", 100L, TypePlayer.W);
 	private Player player2 = new Player("Maria", 100L, TypePlayer.B);
 	private Chessboard chessboard = new Chessboard(player1, player2);
-	private Rook rook = new Rook(TypeColor.WHITE, this.player1);
+	private Rook rook = new Rook(TypeColor.WHITE, this.player1.getTypePlayer());
 	
 
 	@Test

@@ -6,12 +6,13 @@ import java.util.List;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.movement.BehaviorChess;
 import com.chess.core.util.MovementUtils;
 
 public class Rook extends Piece implements BehaviorChess {
 
-	public Rook(TypeColor color, Player player) {
+	public Rook(TypeColor color, TypePlayer player) {
 		super(TypePiece.ROOK, color, player);
 	}
 

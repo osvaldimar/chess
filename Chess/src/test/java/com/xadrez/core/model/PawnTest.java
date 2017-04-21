@@ -1,6 +1,21 @@
 package com.xadrez.core.model;
 
-import static com.chess.core.enums.PositionChessboard.*;
+import static com.chess.core.enums.PositionChessboard.A2;
+import static com.chess.core.enums.PositionChessboard.A5;
+import static com.chess.core.enums.PositionChessboard.A6;
+import static com.chess.core.enums.PositionChessboard.A7;
+import static com.chess.core.enums.PositionChessboard.B2;
+import static com.chess.core.enums.PositionChessboard.B3;
+import static com.chess.core.enums.PositionChessboard.B4;
+import static com.chess.core.enums.PositionChessboard.B7;
+import static com.chess.core.enums.PositionChessboard.C2;
+import static com.chess.core.enums.PositionChessboard.D3;
+import static com.chess.core.enums.PositionChessboard.D7;
+import static com.chess.core.enums.PositionChessboard.E2;
+import static com.chess.core.enums.PositionChessboard.G3;
+import static com.chess.core.enums.PositionChessboard.G4;
+import static com.chess.core.enums.PositionChessboard.G7;
+import static com.chess.core.enums.PositionChessboard.H2;
 
 import java.util.List;
 
@@ -25,7 +40,7 @@ public class PawnTest {
 	private Player player1 = new Player("Joao", 100L, TypePlayer.W);
 	private Player player2 =  new Player("Maria", 100L, TypePlayer.B);
 	private Chessboard chessboard = new Chessboard(player1, player2);
-	private Pawn pawn = new Pawn(TypeColor.WHITE, this.player1);
+	private Pawn pawn = new Pawn(TypeColor.WHITE, this.player1.getTypePlayer());
 
 	
 	/**
@@ -116,11 +131,11 @@ public class PawnTest {
 		Assert.assertEquals(response.getSquareClicked().getPosition(), H2);
 		Assert.assertEquals(response.getPositionSelected(), G3);
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.W);
+		Assert.assertEquals(response.getPieceClicked().getPlayer(), TypePlayer.W);
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getListPositionsToTake().size(), 1);
 		Assert.assertEquals(response.getPieceGotten().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceGotten().getPlayer().getTypePlayer(), TypePlayer.B);
+		Assert.assertEquals(response.getPieceGotten().getPlayer(), TypePlayer.B);
 		
 		//click piece A7, turn player2, first movement then available 2 square to front
 		response = game.nextMove(A7);
@@ -135,7 +150,7 @@ public class PawnTest {
 		Assert.assertEquals(response.getSquareClicked().getPosition(), A7);
 		Assert.assertEquals(response.getPositionSelected(), A6);		
 		Assert.assertEquals(response.getPieceClicked().getTypePiece(), TypePiece.PAWN);
-		Assert.assertEquals(response.getPieceClicked().getPlayer().getTypePlayer(), TypePlayer.B);		
+		Assert.assertEquals(response.getPieceClicked().getPlayer(), TypePlayer.B);		
 		Assert.assertEquals(response.getListPositionsAvailable().size(), 2);
 		Assert.assertEquals(response.getListPositionsToTake().size(), 0);
 		Assert.assertNull(response.getPieceGotten());

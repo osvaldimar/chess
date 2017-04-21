@@ -39,7 +39,7 @@ public class KingTest {
 		player1 = new Player("Joao", 100L, TypePlayer.W);
 		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
-		king = new King(TypeColor.WHITE, player1);
+		king = new King(TypeColor.WHITE, player1.getTypePlayer());
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class KingTest {
 		chessboard.getSquareChessboard(E1).removePiece();
 		chessboard.getSquareChessboard(E7).removePiece();
 		chessboard.positionPiece(E4, king);
-		chessboard.positionPiece(E5, new Pawn(TypeColor.BLACK, player2));
+		chessboard.positionPiece(E5, new Pawn(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);	
 
 		ResponseChessboard response = game.nextMove(E4);
@@ -79,9 +79,9 @@ public class KingTest {
 	@Test
 	public void testGetPositionOfKingChessboard(){
 		chessboard.startGame();		
-		PositionChessboard p1 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player1);
+		PositionChessboard p1 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player1.getTypePlayer());
 		Assert.assertEquals(p1, PositionChessboard.E1);
-		PositionChessboard p2 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player2);
+		PositionChessboard p2 = PieceUtils.getPositionKingInChessboard(chessboard.getCloneSquaresChessboard(), player2.getTypePlayer());
 		Assert.assertEquals(p2, PositionChessboard.E8);		
 	}
 	
@@ -90,7 +90,7 @@ public class KingTest {
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
 		chessboard.getSquareChessboard(F8).removePiece();
-		chessboard.positionPiece(F2, new Bishop(TypeColor.BLACK, player2));
+		chessboard.positionPiece(F2, new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard res = game.verifyCheckmateValidator();
@@ -111,7 +111,7 @@ public class KingTest {
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
 		chessboard.getSquareChessboard(F8).removePiece();
-		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);	
 		
 		ResponseChessboard res = game.verifyCheckmateValidator();
@@ -130,9 +130,9 @@ public class KingTest {
 		chessboard.getSquareChessboard(D8).removePiece();
 		chessboard.getSquareChessboard(B1).removePiece();
 		chessboard.getSquareChessboard(D2).removePiece();
-		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
-		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
-		chessboard.positionPiece(D3, new Knight(TypeColor.WHITE, player1));
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
+		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2.getTypePlayer()));
+		chessboard.positionPiece(D3, new Knight(TypeColor.WHITE, player1.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);
 		
 		//P1
@@ -155,8 +155,6 @@ public class KingTest {
 		res = game.nextMove(D2);
 		Assert.assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		
-		//memory
-		Assert.assertEquals(chessboard.getChessMemory().getListMovements().size(), 3);
 	}
 	
 	@Test
@@ -165,8 +163,8 @@ public class KingTest {
 		chessboard.startGame();
 		chessboard.getSquareChessboard(F8).removePiece();
 		chessboard.getSquareChessboard(D8).removePiece();
-		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2));
-		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2));
+		chessboard.positionPiece(H4, new Bishop(TypeColor.BLACK, player2.getTypePlayer()));
+		chessboard.positionPiece(F2, new Queen(TypeColor.BLACK, player2.getTypePlayer()));
 		GameApplication game = new GameApplication(chessboard);
 		
 		ResponseChessboard response = game.verifyCheckmateValidator();
@@ -175,8 +173,6 @@ public class KingTest {
 		
 		//GAME IS OVER, ANY MOVEMENT RESULTED IN CHECKMATE
 		response = game.nextMove(A2);
-		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);
-		response = game.nextMove(A4);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CHECKMATE);
 	}
 	

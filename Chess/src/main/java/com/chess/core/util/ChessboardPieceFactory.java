@@ -13,16 +13,15 @@ import com.chess.core.model.King;
 import com.chess.core.model.Knight;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
-import com.chess.core.model.Player;
 import com.chess.core.model.Queen;
 import com.chess.core.model.Rook;
 import com.chess.core.model.Square;
 
 public final class ChessboardPieceFactory {
 	
-	public static Piece buildPieceByType(TypePiece type, Player player){
+	public static Piece buildPieceByType(TypePiece type, TypePlayer player){
 		if(type != null){
-			TypeColor color = player.getTypePlayer() == TypePlayer.W ? TypeColor.WHITE : TypeColor.BLACK;
+			TypeColor color = player == TypePlayer.W ? TypeColor.WHITE : TypeColor.BLACK;
 			Map<TypePiece, Piece> map = new HashMap<>();
 			map.put(TypePiece.QUEEN, new Queen(color, player));
 			map.put(TypePiece.ROOK, new Rook(color, player));

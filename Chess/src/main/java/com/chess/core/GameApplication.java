@@ -8,6 +8,9 @@ import com.chess.core.enums.TypePiece;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
+import com.chess.core.exception.Draw3PositionsException;
+import com.chess.core.exception.Draw50MovementsException;
+import com.chess.core.exception.DrawStalemateException;
 import com.chess.core.model.King;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
@@ -32,6 +35,7 @@ public final class GameApplication {
 	private List<Piece> listPiecesEnemyDoCheck;
 	
 	private boolean playing;
+	private ResponseChessboard responseCheckmateDrawValidator;
 
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
@@ -42,6 +46,7 @@ public final class GameApplication {
 		this.playing = Boolean.TRUE;
 		turnPlayer = chessboard.getPlayer1();
 		currentPlayerRequesting = chessboard.getPlayer1();
+		this.responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 	}
 	
@@ -52,7 +57,7 @@ public final class GameApplication {
 					.build();
 		}
 		//valid currentPlayer and turn
-		Piece piece = ChessboardPieceFactory.buildPieceByType(type, currentPlayerRequesting);
+		Piece piece = ChessboardPieceFactory.buildPieceByType(type, currentPlayerRequesting.getTypePlayer());
 		if(currentPlayerRequesting != null && 
 				currentPlayerRequesting.getTypePlayer() != turnPlayer.getTypePlayer()) 
 			return new ResponseChessboard.Builder()
@@ -68,13 +73,17 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
-			this.chessboard.play(turnPlayer.getTypePlayer());
+			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
 			return response;
 		}
 		return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 	}
 	
 	public ResponseChessboard verifyCheckmateValidator() {
+		return responseCheckmateDrawValidator;
+	}
+	
+	private ResponseChessboard verifyCheckmateValidatorFull() {
 		if(!this.playing) {
 			return new ResponseChessboard.Builder()
 					.status(ResponseChessboard.StatusResponse.OFF)
@@ -84,6 +93,7 @@ public final class GameApplication {
 		this.clearAllFields();
 		try {
 			chessboard.processValidateCheckmate(turnPlayer);
+			chessboard.processValidateDraw(turnPlayer);
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_CHECK);
 		} catch (CheckmateException e) {
 			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
@@ -91,6 +101,15 @@ public final class GameApplication {
 		} catch (CheckStateException e) {
 			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
 			response = buildResponseChessboard(ResponseChessboard.StatusResponse.IN_CHECK);
+		} catch (DrawStalemateException e) {
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.DRAW_STALEMATE);
+		} catch (Draw50MovementsException e) {
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.DRAW_50_MOVEMENTS);
+		} catch (Draw3PositionsException e) {
+			listPiecesEnemyDoCheck = chessboard.getPiecesEnemyDoCheck(turnPlayer);
+			response = buildResponseChessboard(ResponseChessboard.StatusResponse.DRAW_3_POSITIONS);
 		}
 		this.clearAllFields();
 		return response;
@@ -111,6 +130,13 @@ public final class GameApplication {
 					.status(ResponseChessboard.StatusResponse.OFF)
 					.build();
 		}
+		//over game
+		if(this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.CHECKMATE
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_STALEMATE
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_50_MOVEMENTS
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_3_POSITIONS){
+			return this.responseCheckmateDrawValidator;
+		}		
 		//valid position and player
 		if(currentPlayerRequesting == null || pos == null)
 			return new ResponseChessboard.Builder()
@@ -144,8 +170,7 @@ public final class GameApplication {
 			} catch (CheckStateException e) {
 				//attempt away MOVED resulted state CHECK, then validate if IN_CHECK or CHECKMATE in the turn actual requesting
 				response = this.verifyCheckmateValidator();
-				//response = buildResponseChessboard(ResponseChessboard.StatusResponse.IN_CHECK);
-			}			
+			}		
 		}else{
 			response = executeClickPiece();
 		}
@@ -163,7 +188,7 @@ public final class GameApplication {
 		}
 		//process lists available and to take for piece clicked
 		squareClicked = this.chessboard.getSquareChessboard(positionSelected);
-		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayerRequesting)){
+		if(!squareClicked.isAvailable() && !PieceUtils.isPieceOfEnemy(squareClicked, currentPlayerRequesting.getTypePlayer())){
 			pieceClicked = squareClicked.getPiece();
 			listPositionsAvailable = pieceClicked.movementAvailable(positionSelected, this.chessboard.getSquaresChessboard());
 			listPositionsToTake = pieceClicked.movementAvailableToTakePieces(positionSelected, this.chessboard.getSquaresChessboard());
@@ -183,7 +208,7 @@ public final class GameApplication {
 		return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION);
 	}
 
-	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException{
+	private ResponseChessboard executeMovePiece() throws CheckMoveException, CheckStateException {
 		if(listPositionsAvailable.contains(positionSelected)
 				|| listPositionsToTake.contains(positionSelected)){			
 			pieceGotten = this.chessboard.movePieceInTheChessboard(squareClicked.getPosition(), positionSelected, pieceClicked);			
@@ -194,7 +219,7 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
-			this.chessboard.play(turnPlayer.getTypePlayer());
+			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
 			return response;
 		}
 		return null;
@@ -240,6 +265,10 @@ public final class GameApplication {
 	public void printInfoChessboardJson() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		System.out.println(gson.toJson(chessboard.getSquaresChessboard()));
+	}
+	
+	public int getTotalMovementsGameChess(){
+		return this.chessboard.getTotalMovements();
 	}
 	
 	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status){

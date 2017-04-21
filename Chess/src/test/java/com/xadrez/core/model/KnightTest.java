@@ -33,7 +33,7 @@ public class KnightTest {
 		player1 = new Player("Joao", 100L, TypePlayer.W);
 		player2 = new Player("Maria", 100L, TypePlayer.B);
 		chessboard = new Chessboard(player1, player2);
-		knight = new Knight(TypeColor.WHITE, player1);
+		knight = new Knight(TypeColor.WHITE, player1.getTypePlayer());
 	}
 
 	@Test
