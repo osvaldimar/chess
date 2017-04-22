@@ -1,57 +1,20 @@
 package com.chess.core.model;
 
+import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.TypePlayer;
 
-public class Player {
-
-	private String nome;
-	private Long score;
-	private TypePlayer typePlayer;
-	private int quantityMovement;
+public class Player extends PlayerMode{
 	
 	public Player(TypePlayer typePlayer){
-		this.typePlayer = typePlayer;
-		this.quantityMovement = 0;
+		super(typePlayer);
 	}
 	
 	public Player(String nome, Long score, TypePlayer typePlayer) {
-		this.nome = nome;
-		this.score = score;
-		this.typePlayer = typePlayer;
-		this.quantityMovement = 0;
-	}
-
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public Long getScore() {
-		return score;
-	}
-	public void setScore(Long score) {
-		this.score = score;
-	}
-	
-	public TypePlayer getTypePlayer() {
-		return typePlayer;
-	}
-	
-	public int getQuantityMovement() {
-		return quantityMovement;
-	}
-
-	public void setQuantityMovement(int quantityMovement) {
-		this.quantityMovement = quantityMovement;
-	}
-	
-	public void incrementMovements() {
-		this.quantityMovement++;
+		super(nome, score, typePlayer);
 	}
 
 	@Override
-	public String toString() {
-		return this.typePlayer.toString();
+	public boolean isAI() {
+		return false;
 	}
 }

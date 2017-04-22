@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
@@ -31,8 +32,8 @@ import com.chess.core.util.CheckmateValidator;
 public class Chessboard {
 
 	private Square[][] squares;
-	private Player player1;
-	private Player player2;
+	private PlayerMode player1;
+	private PlayerMode player2;
 	private List<Piece> listGraveyard;
 	private Square lastSquarePiceMoved;
 	private PositionChessboard positionPromotionPawn;
@@ -40,7 +41,7 @@ public class Chessboard {
 	private ChessboardMemory chessMemory;
 	private int totalMovements;
 	
-	public Chessboard(Player player1, Player player2){
+	public Chessboard(PlayerMode player1, PlayerMode player2){
 		this.player1 = player1;
 		this.player2 = player2;
 		this.listGraveyard = new ArrayList<>();
@@ -110,13 +111,13 @@ public class Chessboard {
 		this.squares[pos.getLetter()][pos.getNumber()].addPiece(piece);
 	}
 	
-	public void processValidateDraw(Player player) throws DrawStalemateException, Draw50MovementsException, Draw3PositionsException {
+	public void processValidateDraw(PlayerMode player) throws DrawStalemateException, Draw50MovementsException, Draw3PositionsException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		if(!CheckmateValidator.isKingInCheck(clone, player.getTypePlayer()))
 			CheckmateValidator.processValidatesDraw(clone, player.getTypePlayer(), lastSquarePiceMoved, player1, player2, chessMemory);
 	}
 	
-	public void processValidateCheckmate(Player player) throws CheckmateException, CheckStateException {
+	public void processValidateCheckmate(PlayerMode player) throws CheckmateException, CheckStateException {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		if(CheckmateValidator.isKingInCheck(clone, player.getTypePlayer()))
 			CheckmateValidator.processValidatesCheckmate(clone, player.getTypePlayer(), lastSquarePiceMoved);
@@ -127,7 +128,7 @@ public class Chessboard {
 		this.positionPromotionPawn = null;
 	}
 	
-	public List<Piece> getPiecesEnemyDoCheck(Player player) {
+	public List<Piece> getPiecesEnemyDoCheck(PlayerMode player) {
 		Square[][] clone = ChessboardPieceFactory.buildCloneSquares(squares);
 		return CheckmateValidator.getPiecesEnemyDoCheck(clone, player.getTypePlayer());
 	}
@@ -213,7 +214,7 @@ public class Chessboard {
 		}
 	}
 	
-	public Player getPlayerByType(String type){
+	public PlayerMode getPlayerByType(String type){
 		if(player1.getTypePlayer() == TypePlayer.getEnum(type)){
 			return player1;
 		}else if(player2.getTypePlayer() == TypePlayer.getEnum(type)){
@@ -270,19 +271,19 @@ public class Chessboard {
 		return str;
 	}
 
-	public Player getPlayer1() {
+	public PlayerMode getPlayer1() {
 		return player1;
 	}
 
-	public void setPlayer1(Player player1) {
+	public void setPlayer1(PlayerMode player1) {
 		this.player1 = player1;
 	}
 
-	public Player getPlayer2() {
+	public PlayerMode getPlayer2() {
 		return player2;
 	}
 
-	public void setPlayer2(Player player2) {
+	public void setPlayer2(PlayerMode player2) {
 		this.player2 = player2;
 	}
 

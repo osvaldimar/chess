@@ -19,6 +19,7 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	private Chessboard chessboard;
 	private GameApplication game;
 	private UUID uuidChess = UUID.randomUUID();
+	private UUID uuidChess2 = UUID.randomUUID();
 	
 	@Override
 	public String startChess(){
@@ -85,5 +86,10 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	@Override
 	public UUID getUuidChess() {
 		return uuidChess;
+	}
+
+	@Override
+	public int getTotaMovementsGameChess() {
+		return this.chessboard.getTotalMovements();
 	}
 }

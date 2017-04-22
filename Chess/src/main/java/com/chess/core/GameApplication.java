@@ -3,6 +3,7 @@ package com.chess.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.exception.CheckMoveException;
@@ -24,8 +25,8 @@ import com.google.gson.GsonBuilder;
 public final class GameApplication {
 
 	private Chessboard chessboard;
-	private Player turnPlayer;
-	private Player currentPlayerRequesting;
+	private PlayerMode turnPlayer;
+	private PlayerMode currentPlayerRequesting;
 	private Square squareClicked;
 	private Piece pieceClicked;
 	private Piece pieceGotten;
@@ -50,7 +51,7 @@ public final class GameApplication {
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 	}
 	
-	public ResponseChessboard executePromotion(TypePiece type, Player currentPlayerRequesting){
+	public ResponseChessboard executePromotion(TypePiece type, PlayerMode currentPlayerRequesting){
 		if(!this.playing) {
 			return new ResponseChessboard.Builder()
 					.status(ResponseChessboard.StatusResponse.OFF)
@@ -124,7 +125,7 @@ public final class GameApplication {
 		return response;
 	}
 	
-	public ResponseChessboard selectAndMove(PositionChessboard pos, Player currentPlayerRequesting) {
+	public ResponseChessboard selectAndMove(PositionChessboard pos, PlayerMode currentPlayerRequesting) {
 		if(!this.playing) {
 			return new ResponseChessboard.Builder()
 					.status(ResponseChessboard.StatusResponse.OFF)
@@ -265,10 +266,6 @@ public final class GameApplication {
 	public void printInfoChessboardJson() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		System.out.println(gson.toJson(chessboard.getSquaresChessboard()));
-	}
-	
-	public int getTotalMovementsGameChess(){
-		return this.chessboard.getTotalMovements();
 	}
 	
 	public ResponseChessboard buildResponseChessboard(ResponseChessboard.StatusResponse status){

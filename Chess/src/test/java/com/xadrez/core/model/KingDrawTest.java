@@ -296,6 +296,6 @@ public class KingDrawTest {
 		
 		response = game.selectAndMove(F3, player1);
 		Assert.assertEquals(response.getStatusResponse(), ResponseChessboard.StatusResponse.CLICKED);		
-		Assert.assertEquals(game.getTotalMovementsGameChess(), 10);
+		Assert.assertEquals(chessboard.getTotalMovements(), 10);
 	}
 }

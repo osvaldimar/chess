@@ -22,5 +22,7 @@ public interface ChessServiceRemote {
 	
 	void printLayoutChessboard();
 	
+	int getTotaMovementsGameChess();
+	
 	UUID getUuidChess();
 }

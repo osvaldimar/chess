@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
@@ -141,7 +142,7 @@ public class CheckmateValidator {
 	}
 	
 	public static void processValidatesDraw(Square[][] clone, TypePlayer typePlayerTurn, 
-			Square lastSquarePiceMoved, Player player1, Player player2, ChessboardMemory chessMemory) 
+			Square lastSquarePiceMoved, PlayerMode player1, PlayerMode player2, ChessboardMemory chessMemory) 
 					throws DrawStalemateException, Draw50MovementsException, Draw3PositionsException {		
 		//stalemate
 		try {

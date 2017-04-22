@@ -2,6 +2,7 @@ package com.chess.core;
 
 import java.util.List;
 
+import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Player;
@@ -10,7 +11,7 @@ import com.chess.core.model.Square;
 public class ResponseChessboard {
 
 	private StatusResponse statusResponse;
-	private Player currentPlayer;
+	private PlayerMode currentPlayer;
 	private Square squareClicked;
 	private PositionChessboard positionSelected;
 	private Piece pieceClicked;
@@ -18,8 +19,8 @@ public class ResponseChessboard {
 	private List<PositionChessboard> listPositionsToTake;
 	private List<Piece> listPiecesEnemyDoCheck;
 	private Piece pieceGotten;
-	private Player winner;
-	private Player turn;
+	private PlayerMode winner;
+	private PlayerMode turn;
 	
 	public enum StatusResponse{
 		START, OFF, NONE_ACTION, OPPONENT_TURN, CLICKED, MOVED, PAWN_PROMOTION, MARK_OFF, 
@@ -28,7 +29,7 @@ public class ResponseChessboard {
 	
 	private ResponseChessboard(){}
 
-	public Player getCurrentPlayer() {
+	public PlayerMode getCurrentPlayer() {
 		return currentPlayer;
 	}
 	public Square getSquareClicked() {
@@ -55,10 +56,10 @@ public class ResponseChessboard {
 	public StatusResponse getStatusResponse() {
 		return statusResponse;
 	}
-	public Player getWinner() {
+	public PlayerMode getWinner() {
 		return winner;
 	}
-	public Player getTurn() {
+	public PlayerMode getTurn() {
 		return turn;
 	}
 	
@@ -85,7 +86,7 @@ public class ResponseChessboard {
 			response.statusResponse = status;
 			return this;
 		}
-		public Builder currentPlayer(Player currentPlayer){
+		public Builder currentPlayer(PlayerMode currentPlayer){
 			response.currentPlayer = currentPlayer;
 			return this;
 		}
@@ -117,7 +118,7 @@ public class ResponseChessboard {
 			response.pieceGotten = pieceGotten;
 			return this;
 		}		
-		public Builder turn(Player turnPlayer) {
+		public Builder turn(PlayerMode turnPlayer) {
 			response.turn = turnPlayer;
 			return this;
 		}
