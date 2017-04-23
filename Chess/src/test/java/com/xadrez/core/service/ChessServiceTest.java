@@ -21,6 +21,7 @@ public class ChessServiceTest {
 	public void testChessServiceMethodsFacade(){
 		
 		ChessServiceImpl service = new ChessServiceImpl();
+		//service.choosePromotion("queen", "w");
 		String responseJson = service.startChess();
 		service.printInfoResponseJson(responseJson);
 		

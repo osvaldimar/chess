@@ -2,6 +2,8 @@ package com.chess.core.client;
 
 import java.util.UUID;
 
+import com.chess.core.GameApplication;
+
 public interface ChessServiceRemote {
 
 	String startChess();
@@ -25,4 +27,6 @@ public interface ChessServiceRemote {
 	int getTotaMovementsGameChess();
 	
 	UUID getUuidChess();
+
+	void play(GameApplication game);
 }

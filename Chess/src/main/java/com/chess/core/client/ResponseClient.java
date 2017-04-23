@@ -11,7 +11,7 @@ public class ResponseClient {
 	private String pieceGotten;
 	private String winner;
 	private String turn;
-	private String uuid;
+	private KeyClient keyClient;
 	
 	private ResponseClient(){}
 	
@@ -42,8 +42,8 @@ public class ResponseClient {
 	public String getTurn() {
 		return turn;
 	}
-	public String getUuid() {
-		return uuid;
+	public KeyClient getKeyClient() {
+		return keyClient;
 	}
 
 	public static class Builder{
@@ -85,8 +85,8 @@ public class ResponseClient {
 			response.turn = turn;
 			return this;
 		}
-		public Builder uuid(String uuid){
-			response.uuid = uuid;
+		public Builder keyClient(KeyClient keyClient){
+			response.keyClient = keyClient;
 			return this;
 		}
 		public ResponseClient build(){

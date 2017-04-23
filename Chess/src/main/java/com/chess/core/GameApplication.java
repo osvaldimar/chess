@@ -282,4 +282,8 @@ public final class GameApplication {
 				.turn(turnPlayer)
 				.build();
 	}
+
+	public Chessboard getChessboard() {
+		return this.chessboard;
+	}
 }

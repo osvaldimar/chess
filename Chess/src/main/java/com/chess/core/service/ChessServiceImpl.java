@@ -19,8 +19,8 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	private Chessboard chessboard;
 	private GameApplication game;
 	private UUID uuidChess = UUID.randomUUID();
-	private UUID uuidChess2 = UUID.randomUUID();
 	
+	@Deprecated
 	@Override
 	public String startChess(){
 		this.chessboard = new Chessboard(new Player(TypePlayer.W), new Player(TypePlayer.B));
@@ -30,11 +30,17 @@ public class ChessServiceImpl implements ChessServiceRemote{
 				.status(ResponseChessboard.StatusResponse.START.toString())
 				.currentPlayer(new Player(TypePlayer.W).getTypePlayer().toString())
 				.turn(new Player(TypePlayer.W).getTypePlayer().toString())
-				.uuid(uuidChess.toString())
+				.keyClient(null)
 				.build();
 		return TransformJson.createResponseJson(convert);
 	}
 
+	@Override
+	public void play(GameApplication game){
+		this.game = game;
+		this.chessboard = game.getChessboard();
+	}
+	
 	@Override
 	public String selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting){
 		return TransformJson.createResponseJson(

@@ -2,10 +2,10 @@ package com.chess.core.service;
 
 import com.chess.core.Chessboard;
 import com.chess.core.GameApplication;
-import com.chess.core.client.ChessPlayerOffline;
+import com.chess.core.client.ChessMultiplayer;
 import com.chess.core.model.Player;
 
-public class ChessPlayerOfflineCommon implements ChessPlayerOffline<Player> {
+public class ChessMultiplayerOnline implements ChessMultiplayer<Player> {
 
 	@Override
 	public GameApplication startChess(Player player1, Player player2) {
@@ -14,5 +14,5 @@ public class ChessPlayerOfflineCommon implements ChessPlayerOffline<Player> {
 		return new GameApplication(chessboard);
 	}
 
-	
+
 }
