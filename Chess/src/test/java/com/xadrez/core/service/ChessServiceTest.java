@@ -37,30 +37,26 @@ public class ChessServiceTest {
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.START);
 		
-		responseJson = service.selectAndMovePiece("A2", "W");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.selectAndMovePiece("A2", "W");
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.CLICKED);
 		service.printInfoResponseJson(responseJson);
 		
-		responseJson = service.selectAndMovePiece("A4", "W");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.selectAndMovePiece("A4", "W");
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.MOVED);
 		Assert.assertEquals(TypePlayer.getEnum(resClient.getCurrentPlayer()), TypePlayer.W);
 		Assert.assertEquals(TypePlayer.getEnum(resClient.getTurn()), TypePlayer.B);
 		service.printInfoResponseJson(responseJson);
 		
-		responseJson = service.verifyCheckmateTurn();
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.verifyCheckmateTurn();
 		Assert.assertEquals("Expected NONE_CHECK", ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.NONE_CHECK);
 		
 		service.printInfoResponseJson(responseJson);
 		service.printLayoutChessboard();
 		
-		responseJson = service.selectAndMovePiece("A7", "B");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.selectAndMovePiece("A7", "B");
 		Assert.assertEquals(TypePlayer.getEnum(resClient.getCurrentPlayer()), TypePlayer.B);
 		Assert.assertEquals(TypePlayer.getEnum(resClient.getTurn()), TypePlayer.B);
 		Assert.assertEquals(TypePiece.getEnum(resClient.getPieceClicked()), TypePiece.PAWN);
@@ -73,20 +69,17 @@ public class ChessServiceTest {
 				ResponseChessboard.StatusResponse.CLICKED);
 		service.printInfoResponseJson(responseJson);
 		
-		responseJson = service.selectAndMovePiece("A5", "B");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.selectAndMovePiece("A5", "B");
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.MOVED);
 		service.printInfoResponseJson(responseJson);
 		service.printLayoutChessboard();
 		
 		
-		responseJson = service.choosePromotion("queen", "B");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.choosePromotion("queen", "B");
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.OPPONENT_TURN);
-		responseJson = service.choosePromotion("queen", "W");
-		resClient = new Gson().fromJson(responseJson, ResponseClient.class);
+		resClient = service.choosePromotion("queen", "W");
 		Assert.assertEquals(ResponseChessboard.StatusResponse.valueOf(resClient.getStatus()), 
 				ResponseChessboard.StatusResponse.NONE_ACTION);
 	}

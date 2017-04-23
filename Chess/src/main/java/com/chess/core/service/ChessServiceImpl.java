@@ -18,7 +18,6 @@ public class ChessServiceImpl implements ChessServiceRemote{
 
 	private Chessboard chessboard;
 	private GameApplication game;
-	private UUID uuidChess = UUID.randomUUID();
 	
 	@Deprecated
 	@Override
@@ -42,26 +41,23 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	}
 	
 	@Override
-	public String selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting){
-		return TransformJson.createResponseJson(
-				ResponseClientConverter.convert(
+	public ResponseClient selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting){
+		return ResponseClientConverter.convert(
 				this.game.selectAndMove(PositionChessboard.getEnum(positionOriginOrDestiny), 
-						this.chessboard.getPlayerByType(currentPlayerRequesting))));
+						this.chessboard.getPlayerByType(currentPlayerRequesting)));
 	}
 	
 	@Override
-	public String verifyCheckmateTurn(){
-		return TransformJson.createResponseJson(
-				ResponseClientConverter.convert(
-				this.game.verifyCheckmateValidator()));
+	public ResponseClient verifyCheckmateTurn(){
+		return ResponseClientConverter.convert(
+				this.game.verifyCheckmateValidator());
 	}
 	
 	@Override
-	public String choosePromotion(String promotedPiece, String currentPlayerRequesting){
-		return TransformJson.createResponseJson(
-				ResponseClientConverter.convert(
+	public ResponseClient choosePromotion(String promotedPiece, String currentPlayerRequesting){
+		return ResponseClientConverter.convert(
 				this.game.executePromotion(TypePiece.getEnum(promotedPiece), 
-						this.chessboard.getPlayerByType(currentPlayerRequesting))));
+						this.chessboard.getPlayerByType(currentPlayerRequesting)));
 	}
 	
 	@Override
@@ -87,11 +83,6 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	@Override
 	public void printLayoutChessboard(){
 		this.chessboard.printLayoutChessboard();
-	}
-	
-	@Override
-	public UUID getUuidChess() {
-		return uuidChess;
 	}
 
 	@Override

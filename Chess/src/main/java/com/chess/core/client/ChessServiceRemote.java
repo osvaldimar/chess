@@ -1,18 +1,16 @@
 package com.chess.core.client;
 
-import java.util.UUID;
-
 import com.chess.core.GameApplication;
 
 public interface ChessServiceRemote {
 
 	String startChess();
 
-	String selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting);
+	ResponseClient selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting);
 	
-	String verifyCheckmateTurn();
+	ResponseClient verifyCheckmateTurn();
 	
-	String choosePromotion(String promotedPiece, String currentPlayerRequesting);
+	ResponseClient choosePromotion(String promotedPiece, String currentPlayerRequesting);
 	
 	void printInfoResponseJson(String response);
 	
@@ -25,8 +23,6 @@ public interface ChessServiceRemote {
 	void printLayoutChessboard();
 	
 	int getTotaMovementsGameChess();
-	
-	UUID getUuidChess();
 
 	void play(GameApplication game);
 }

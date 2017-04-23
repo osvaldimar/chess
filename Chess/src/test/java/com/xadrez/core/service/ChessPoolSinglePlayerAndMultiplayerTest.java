@@ -30,9 +30,8 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		ChessServiceRemote remote = new ChessServiceImpl();
 		remote.play(game);
 		
-		String response = remote.selectAndMovePiece("A2", "W");
-		ResponseClient fromJson = TransformJson.fromJson(response);
-		Assert.assertEquals(fromJson.getStatus(), StatusResponse.CLICKED.toString());
+		ResponseClient response = remote.selectAndMovePiece("A2", "W");
+		Assert.assertEquals(response.getStatus(), StatusResponse.CLICKED.toString());
 	}
 	
 	@Test
@@ -46,9 +45,8 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		ChessServiceRemote remote = new ChessServiceImpl();
 		remote.play(game);
 		
-		String response = remote.selectAndMovePiece("A2", "W");
-		ResponseClient fromJson = TransformJson.fromJson(response);
-		Assert.assertEquals(fromJson.getStatus(), StatusResponse.CLICKED.toString());
+		ResponseClient response = remote.selectAndMovePiece("A2", "W");
+		Assert.assertEquals(response.getStatus(), StatusResponse.CLICKED.toString());
 	}
 	
 	@Test
@@ -79,14 +77,12 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		
 		ChessServiceRemote remote = new ChessServiceImpl();
 		remote.play(game1);		
-		String response = remote.selectAndMovePiece("A2", "W");
-		ResponseClient fromJson = TransformJson.fromJson(response);
-		Assert.assertEquals(fromJson.getStatus(), StatusResponse.CLICKED.toString());
+		ResponseClient response = remote.selectAndMovePiece("A2", "W");
+		Assert.assertEquals(response.getStatus(), StatusResponse.CLICKED.toString());
 		
 		remote.play(game2);
 		response = remote.selectAndMovePiece("A2", "W");
-		fromJson = TransformJson.fromJson(response);
-		Assert.assertEquals(fromJson.getStatus(), StatusResponse.MARK_OFF.toString());
+		Assert.assertEquals(response.getStatus(), StatusResponse.MARK_OFF.toString());
 	}
 	
 	@Test
