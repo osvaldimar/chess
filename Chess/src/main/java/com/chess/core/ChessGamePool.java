@@ -34,11 +34,17 @@ public class ChessGamePool {
 		return null;
 	}
 
-	public KeyClient joinPlayerOnlineCommmonChessPool() {
-		return null;
+	public ResponseClient joinSinglePlayerOnlineChessPool() {
+		UUID singleUuid = UUID.randomUUID();
+		KeyClient keyClientW = new KeyClient(singleUuid, TypePlayer.W);	
+		KeyClient keyClientB = new KeyClient(singleUuid, TypePlayer.B);			
+		ChessMultiplayerOnline chessOnline = new ChessMultiplayerOnline();
+		GameApplication game = chessOnline.startChess(new Player(TypePlayer.W), new Player(TypePlayer.B));
+		map.put(new KeyUUIDChess(keyClientW.getKey(), keyClientB.getKey()), game);
+		return this.buildResponseClientStartAdequateForThePlayer(keyClientW);
 	}
 	
-	public ResponseClient joinPlayerOnlineMultiChessPool() {
+	public ResponseClient joinMultiPlayerOnlineChessPool() {
 		KeyClient keyClient = this.joinPoolGameMultiAddQueue();
 		while(true){
 			try {
@@ -53,7 +59,6 @@ public class ChessGamePool {
 	}
 	
 	private ResponseClient buildResponseClientStartAdequateForThePlayer(KeyClient keyClient){
-		System.out.println("keyclient method build: " + keyClient);
 		return new ResponseClient.Builder()
 				.status(ResponseChessboard.StatusResponse.START.toString())
 				.currentPlayer(TypePlayer.W.toString())
@@ -81,8 +86,6 @@ public class ChessGamePool {
 	
 	private synchronized boolean isJoinPoolGameMulti(KeyClient keyClient){
 		GameApplication findGameApp = this.findGameApp(keyClient.getKey().toString(), keyClient.getType().toString());
-		//System.out.println("Method isJoinPoolGameMulti:  - Thread name: " + Thread.currentThread().getName() + " - " + keyClient);
-		//System.out.println("Map games: " + map + " - achou game = " + (findGameApp != null));
 		return findGameApp != null;
 	}
 

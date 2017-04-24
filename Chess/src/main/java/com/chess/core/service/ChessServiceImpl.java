@@ -1,7 +1,5 @@
 package com.chess.core.service;
 
-import java.util.UUID;
-
 import com.chess.core.Chessboard;
 import com.chess.core.GameApplication;
 import com.chess.core.ResponseChessboard;

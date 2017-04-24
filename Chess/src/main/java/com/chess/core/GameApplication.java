@@ -36,7 +36,7 @@ public final class GameApplication {
 	
 	private boolean playing;
 	private ResponseChessboard responseCheckmateDrawValidator;
-
+	
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
 		init();
