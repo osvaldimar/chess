@@ -15,7 +15,6 @@ import com.chess.core.exception.DrawStalemateException;
 import com.chess.core.model.King;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
-import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 import com.chess.core.util.ChessboardPieceFactory;
 import com.chess.core.util.PieceUtils;
@@ -37,7 +36,7 @@ public final class GameApplication {
 	
 	private boolean playing;
 	private ResponseChessboard responseCheckmateDrawValidator;
-
+	
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
 		init();

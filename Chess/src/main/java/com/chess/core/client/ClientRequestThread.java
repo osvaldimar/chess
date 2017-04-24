@@ -13,7 +13,7 @@ public class ClientRequestThread extends Thread {
 
 	@Override
 	public void run() {
-		this.response = this.pool.joinPlayerOnlineMultiChessPool();		
+		this.response = this.pool.joinMultiPlayerOnlineChessPool();		
 	}
 
 	public ResponseClient getResponseClient() {
