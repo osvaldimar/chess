@@ -15,7 +15,6 @@ import com.chess.core.exception.DrawStalemateException;
 import com.chess.core.model.King;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
-import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 import com.chess.core.util.ChessboardPieceFactory;
 import com.chess.core.util.PieceUtils;
@@ -75,11 +74,18 @@ public final class GameApplication {
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
 			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
+			this.executeTurnAI();
 			return response;
 		}
 		return buildResponseChessboard(ResponseChessboard.StatusResponse.PAWN_PROMOTION);
 	}
 	
+	private void executeTurnAI() {
+		if(this.chessboard.getPlayerByType(turnPlayer.getTypePlayer().toString()).isAI()){
+			this.chessboard.getPlayerByType(turnPlayer.getTypePlayer().toString()).play(this);
+		}
+	}
+
 	public ResponseChessboard verifyCheckmateValidator() {
 		return responseCheckmateDrawValidator;
 	}
@@ -221,6 +227,7 @@ public final class GameApplication {
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
 			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
+			this.executeTurnAI();
 			return response;
 		}
 		return null;

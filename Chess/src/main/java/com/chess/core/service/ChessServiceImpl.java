@@ -12,6 +12,7 @@ import com.chess.core.client.TransformJson;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
+import com.chess.core.memory.ChessboardMemory;
 import com.chess.core.model.Player;
 
 public class ChessServiceImpl implements ChessServiceRemote{
@@ -88,5 +89,10 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	@Override
 	public int getTotaMovementsGameChess() {
 		return this.chessboard.getTotalMovements();
+	}
+
+	@Override
+	public ChessboardMemory getChessboardMemory() {
+		return this.chessboard.getChessMemory();
 	}
 }

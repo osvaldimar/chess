@@ -1,5 +1,6 @@
 package com.chess.core.client;
 
+import com.chess.core.GameApplication;
 import com.chess.core.enums.TypePlayer;
 
 public abstract class PlayerMode {
@@ -56,4 +57,6 @@ public abstract class PlayerMode {
 	}
 
 	public abstract boolean isAI();
+
+	public abstract void play(GameApplication gameApplication);
 }

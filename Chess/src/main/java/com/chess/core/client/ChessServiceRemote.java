@@ -1,6 +1,7 @@
 package com.chess.core.client;
 
 import com.chess.core.GameApplication;
+import com.chess.core.memory.ChessboardMemory;
 
 public interface ChessServiceRemote {
 
@@ -25,4 +26,6 @@ public interface ChessServiceRemote {
 	int getTotaMovementsGameChess();
 
 	void play(GameApplication game);
+	
+	ChessboardMemory getChessboardMemory();
 }

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
+import com.chess.core.model.Piece;
 
 public class ChessboardMemory {
 
@@ -49,4 +50,10 @@ public class ChessboardMemory {
 		return false;
 	}
 	
+	public Piece getLastPieceMovedByPlayer(TypePlayer type){
+		List<PositionMemory> collect = mapQueue.get(type).stream().collect(Collectors.toList());
+		if(collect.size() >= 1)
+			return collect.get(collect.size()-1).getPieceMoved();
+		return null;
+	}
 }

@@ -1,5 +1,6 @@
 package com.chess.core.model;
 
+import com.chess.core.GameApplication;
 import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.TypePlayer;
 
@@ -17,4 +18,9 @@ public class Player extends PlayerMode{
 	public boolean isAI() {
 		return false;
 	}
+
+	@Override
+	public void play(GameApplication gameApplication) {
+	}
+	
 }
