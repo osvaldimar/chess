@@ -14,6 +14,7 @@ import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
+import com.chess.core.model.LastMovement;
 import com.chess.core.model.Player;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -46,6 +47,13 @@ public class PawnPassantTest {
 		assertEquals(chessboard.getLastSquarePiceMoved().getPosition(), B5);
 		assertEquals(chessboard.getLastSquarePiceMoved().getPiece().getTypePiece(), TypePiece.PAWN);
 		
+		//last movement
+		chessboard.printDebugChessboard(chessboard, "Test last movement with passant");
+		assertEquals(response.getLastMovement().getName(), LastMovement.NameMovement.MOVED);
+		assertEquals(response.getLastMovement().getMovedFrom(), B7);
+		assertEquals(response.getLastMovement().getMovedTo(), B5);
+		assertNull(response.getLastMovement().getDestroyed());
+		
 		//player1
 		response = game.nextMove(A5);
 		assertEquals(response.getListPositionsAvailable().size(), 1);
@@ -54,6 +62,12 @@ public class PawnPassantTest {
 		response = game.nextMove(B6);
 		assertTrue(chessboard.getSquareChessboard(B5).isAvailable());
 		assertFalse(chessboard.getSquareChessboard(B6).isAvailable());
+		
+		//last movement
+		assertEquals(response.getLastMovement().getName(), LastMovement.NameMovement.PASSANT);
+		assertEquals(response.getLastMovement().getMovedFrom(), A5);
+		assertEquals(response.getLastMovement().getMovedTo(), B6);
+		assertEquals(response.getLastMovement().getDestroyed(), B5);
 	}
 	
 	@Test

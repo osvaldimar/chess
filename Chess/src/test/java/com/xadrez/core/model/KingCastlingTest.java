@@ -2,6 +2,7 @@ package com.xadrez.core.model;
 
 import static com.chess.core.enums.PositionChessboard.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.model.King;
 import com.chess.core.model.Knight;
+import com.chess.core.model.LastMovement;
 import com.chess.core.model.Player;
 
 
@@ -177,7 +179,16 @@ public class KingCastlingTest {
 		res = game.nextMove(C1);
 		assertEquals(chessboard.getSquareChessboard(C1).getPiece().getTypePiece(), TypePiece.KING);
 		assertEquals(chessboard.getSquareChessboard(D1).getPiece().getTypePiece(), TypePiece.ROOK);
-		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);		
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		
+		//last movement
+		chessboard.printDebugChessboard(chessboard, "Test last movement with castling");
+		assertEquals(res.getLastMovement().getName(), LastMovement.NameMovement.CASTLING);
+		assertEquals(res.getLastMovement().getMovedFrom(), E1);
+		assertEquals(res.getLastMovement().getMovedTo(), C1);
+		assertEquals(res.getLastMovement().getCastlingFrom(), A1);
+		assertEquals(res.getLastMovement().getCastlingTo(), D1);
+		assertNull(res.getLastMovement().getDestroyed());
 	}
 	
 	@Test

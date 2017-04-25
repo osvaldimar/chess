@@ -188,10 +188,7 @@ public final class GameApplication {
 		pieceClicked = null;
 		if(squareClicked != null && squareClicked.getPosition() == positionSelected){
 			//same piece clicked again? then ignore lists and clear all, mark off piece
-			this.clearAllLists();
-			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MARK_OFF);
-			squareClicked = null;
-			return response;
+			return clearPieceClickedMarkOff();
 		}
 		//process lists available and to take for piece clicked
 		squareClicked = this.chessboard.getSquareChessboard(positionSelected);
@@ -231,6 +228,13 @@ public final class GameApplication {
 			return response;
 		}
 		return null;
+	}
+	
+	public ResponseChessboard clearPieceClickedMarkOff() {
+		this.clearAllLists();
+		ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MARK_OFF);
+		squareClicked = null;
+		return response;
 	}
 	
 	private void clearAllFields() {
@@ -287,6 +291,7 @@ public final class GameApplication {
 				.listPiecesEnemyDoCheck(listPiecesEnemyDoCheck)
 				.pieceGotten(pieceGotten)
 				.turn(turnPlayer)
+				.lastMovement(chessboard.getLastMovement())
 				.build();
 	}
 

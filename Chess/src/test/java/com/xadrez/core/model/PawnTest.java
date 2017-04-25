@@ -1,5 +1,6 @@
 package com.xadrez.core.model;
 
+import static com.chess.core.enums.PositionChessboard.A1;
 import static com.chess.core.enums.PositionChessboard.A2;
 import static com.chess.core.enums.PositionChessboard.A5;
 import static com.chess.core.enums.PositionChessboard.A6;
@@ -8,14 +9,19 @@ import static com.chess.core.enums.PositionChessboard.B2;
 import static com.chess.core.enums.PositionChessboard.B3;
 import static com.chess.core.enums.PositionChessboard.B4;
 import static com.chess.core.enums.PositionChessboard.B7;
+import static com.chess.core.enums.PositionChessboard.C1;
 import static com.chess.core.enums.PositionChessboard.C2;
+import static com.chess.core.enums.PositionChessboard.D1;
 import static com.chess.core.enums.PositionChessboard.D3;
 import static com.chess.core.enums.PositionChessboard.D7;
+import static com.chess.core.enums.PositionChessboard.E1;
 import static com.chess.core.enums.PositionChessboard.E2;
 import static com.chess.core.enums.PositionChessboard.G3;
 import static com.chess.core.enums.PositionChessboard.G4;
 import static com.chess.core.enums.PositionChessboard.G7;
 import static com.chess.core.enums.PositionChessboard.H2;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -31,6 +37,7 @@ import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
+import com.chess.core.model.LastMovement;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Player;
 
@@ -65,7 +72,7 @@ public class PawnTest {
 		Assert.assertEquals(listMovement.get(1), B4);
 		Assert.assertEquals(listMovement.size(), 2);
 		chessboard.printDebugChessboard(chessboard, "movement to front for pawn");		
-				
+		
 	}
 	
 	/**
@@ -83,7 +90,7 @@ public class PawnTest {
 		List<PositionChessboard> listTakes = pawn.movementAvailableToTakePieces(C2, chessboard.getSquaresChessboard());
 		System.out.println("\n" + listTakes);
 		Assert.assertEquals(listTakes.size(), 2);
-		chessboard.printDebugChessboard(chessboard, "movement to takes for pawn");	
+		chessboard.printDebugChessboard(chessboard, "movement to takes for pawn");
 	}
 	
 	@Test
@@ -136,6 +143,14 @@ public class PawnTest {
 		Assert.assertEquals(response.getListPositionsToTake().size(), 1);
 		Assert.assertEquals(response.getPieceGotten().getTypePiece(), TypePiece.PAWN);
 		Assert.assertEquals(response.getPieceGotten().getPlayer(), TypePlayer.B);
+		
+		//last movement
+		chessboard.printDebugChessboard(chessboard, "Test last movement with pawn taken");
+		assertEquals(response.getLastMovement().getName(), LastMovement.NameMovement.TAKEN);
+		assertEquals(response.getLastMovement().getMovedFrom(), H2);
+		assertEquals(response.getLastMovement().getMovedTo(), G3);
+		assertEquals(response.getLastMovement().getDestroyed(), G3);
+		assertEquals(response.getLastMovement().getIdMovement(), 1);
 		
 		//click piece A7, turn player2, first movement then available 2 square to front
 		response = game.nextMove(A7);

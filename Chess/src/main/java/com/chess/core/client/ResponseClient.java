@@ -1,5 +1,7 @@
 package com.chess.core.client;
 
+import com.chess.core.model.LastMovement;
+
 public class ResponseClient {
 
 	private String status;
@@ -12,6 +14,7 @@ public class ResponseClient {
 	private String winner;
 	private String turn;
 	private KeyClient keyClient;
+	private LastMovement lastMovement;
 	
 	private ResponseClient(){}
 	
@@ -44,6 +47,9 @@ public class ResponseClient {
 	}
 	public KeyClient getKeyClient() {
 		return keyClient;
+	}
+	public LastMovement getLastMovement() {
+		return lastMovement;
 	}
 
 	public static class Builder{
@@ -87,6 +93,10 @@ public class ResponseClient {
 		}
 		public Builder keyClient(KeyClient keyClient){
 			response.keyClient = keyClient;
+			return this;
+		}
+		public Builder lastMovement(LastMovement lastMovement){
+			response.lastMovement = lastMovement;
 			return this;
 		}
 		public ResponseClient build(){

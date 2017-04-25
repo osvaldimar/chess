@@ -44,9 +44,10 @@ public final class ResponseClientConverter {
 				.status(res.getStatusResponse().toString())
 				.currentPlayer(res.getCurrentPlayer().getTypePlayer().toString())
 				.turn(res.getTurn().getTypePlayer().toString())
+				.lastMovement(res.getLastMovement())
 				.build();
 		}		
-		return responseClient;		
+		return responseClient;
 	}
 	
 }

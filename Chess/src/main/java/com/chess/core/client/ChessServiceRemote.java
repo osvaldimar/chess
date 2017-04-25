@@ -13,6 +13,8 @@ public interface ChessServiceRemote {
 	
 	ResponseClient choosePromotion(String promotedPiece, String currentPlayerRequesting);
 	
+	ResponseClient clearPieceClickedMarkOff();
+	
 	void printInfoResponseJson(String response);
 	
 	String getSquaresChessboardJson();

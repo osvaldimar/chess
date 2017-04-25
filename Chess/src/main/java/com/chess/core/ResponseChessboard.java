@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
+import com.chess.core.model.LastMovement;
 import com.chess.core.model.Piece;
-import com.chess.core.model.Player;
 import com.chess.core.model.Square;
 
 public class ResponseChessboard {
@@ -21,10 +21,11 @@ public class ResponseChessboard {
 	private Piece pieceGotten;
 	private PlayerMode winner;
 	private PlayerMode turn;
+	private LastMovement lastMovement;
 	
 	public enum StatusResponse{
 		START, OFF, NONE_ACTION, OPPONENT_TURN, CLICKED, MOVED, PAWN_PROMOTION, MARK_OFF, 
-		NONE_CHECK, EXPOSED_CHECK, IN_CHECK, CHECKMATE, DRAW_STALEMATE, DRAW_50_MOVEMENTS, DRAW_3_POSITIONS;
+		NONE_CHECK, EXPOSED_CHECK, IN_CHECK, CHECKMATE, DRAW_STALEMATE, DRAW_50_MOVEMENTS, DRAW_3_POSITIONS, INVALID;
 	}
 	
 	private ResponseChessboard(){}
@@ -61,6 +62,9 @@ public class ResponseChessboard {
 	}
 	public PlayerMode getTurn() {
 		return turn;
+	}
+	public LastMovement getLastMovement() {
+		return lastMovement;
 	}
 	
 	@Override
@@ -120,6 +124,10 @@ public class ResponseChessboard {
 		}		
 		public Builder turn(PlayerMode turnPlayer) {
 			response.turn = turnPlayer;
+			return this;
+		}
+		public Builder lastMovement(LastMovement lastMovement) {
+			response.lastMovement = lastMovement;
 			return this;
 		}
 		public ResponseChessboard build(){

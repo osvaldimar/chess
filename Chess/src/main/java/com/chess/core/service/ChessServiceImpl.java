@@ -60,6 +60,12 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	}
 	
 	@Override
+	public ResponseClient clearPieceClickedMarkOff() {
+		return ResponseClientConverter.convert(
+				this.game.clearPieceClickedMarkOff());
+	}
+	
+	@Override
 	public void printInfoResponseJson(String response){
 		System.out.println(response);
 	}

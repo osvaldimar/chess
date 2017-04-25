@@ -20,16 +20,20 @@ public class ChessGamePool {
 	private Queue<KeyClient> queue = new LinkedList<>();
 	
 	public GameApplication findGameApp(String uuid, String typePlayer) {
-		if(TypePlayer.getEnum(typePlayer) == TypePlayer.W){
-			KeyUUIDChess key = new KeyUUIDChess(UUID.fromString(uuid), null);
-			Optional<KeyUUIDChess> findFirst = map.keySet().stream().filter(k -> k.equals(key)).findFirst();
-			if(findFirst.isPresent()) 
-				return map.get(findFirst.get());
-		}else if(TypePlayer.getEnum(typePlayer) == TypePlayer.B){
-			KeyUUIDChess key = new KeyUUIDChess(null, UUID.fromString(uuid));
-			Optional<KeyUUIDChess> findFirst = map.keySet().stream().filter(k -> k.equals(key)).findFirst();
-			if(findFirst.isPresent()) 
-				return map.get(findFirst.get());
+		try{
+			if(TypePlayer.getEnum(typePlayer) == TypePlayer.W){
+				KeyUUIDChess key = new KeyUUIDChess(UUID.fromString(uuid), null);
+				Optional<KeyUUIDChess> findFirst = map.keySet().stream().filter(k -> k.equals(key)).findFirst();
+				if(findFirst.isPresent()) 
+					return map.get(findFirst.get());
+			}else if(TypePlayer.getEnum(typePlayer) == TypePlayer.B){
+				KeyUUIDChess key = new KeyUUIDChess(null, UUID.fromString(uuid));
+				Optional<KeyUUIDChess> findFirst = map.keySet().stream().filter(k -> k.equals(key)).findFirst();
+				if(findFirst.isPresent()) 
+					return map.get(findFirst.get());
+			}
+		} catch(NumberFormatException e) {
+			return null;
 		}
 		return null;
 	}
