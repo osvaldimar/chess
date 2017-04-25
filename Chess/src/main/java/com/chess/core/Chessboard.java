@@ -22,12 +22,12 @@ import com.chess.core.model.King;
 import com.chess.core.model.Knight;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
-import com.chess.core.model.Player;
 import com.chess.core.model.Queen;
 import com.chess.core.model.Rook;
 import com.chess.core.model.Square;
-import com.chess.core.util.ChessboardPieceFactory;
+import com.chess.core.model.TurnMovementMemory;
 import com.chess.core.util.CheckmateValidator;
+import com.chess.core.util.ChessboardPieceFactory;
 
 public class Chessboard {
 
@@ -39,6 +39,7 @@ public class Chessboard {
 	private PositionChessboard positionPromotionPawn;
 	
 	private ChessboardMemory chessMemory;
+	private TurnMovementMemory turnMemory;
 	private int totalMovements;
 	
 	public Chessboard(PlayerMode player1, PlayerMode player2){
@@ -160,6 +161,7 @@ public class Chessboard {
 		//after simulation check
 		CheckmateValidator.validateKingExposedInCheckAfterSimulation(clone, piece.getPlayer());			//you can't expose king in check
 		
+		this.turnMemory = new TurnMovementMemory();
 		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifySpecialMovementPassant(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifyPromotionPawn(destiny, piece);
@@ -179,6 +181,9 @@ public class Chessboard {
 		}
 		
 		//memory queue
+		if(this.turnMemory.getDestroyed() == null) this.turnMemory.setDestroyed(origin);
+		this.turnMemory.setFrom(origin);
+		this.turnMemory.setTo(destiny);
 		this.chessMemory.addPositionQueue(new PositionMemory(origin, destiny, piece, gotten), piece.getPlayer());
 		this.totalMovements++;
 		return gotten;
@@ -198,6 +203,7 @@ public class Chessboard {
 		if(pawn.isPositionDestinyTakeElPassant(destiny)){
 			//take pawn in passant and put on destiny that my pawn will go take it
 			walkPieceInTheChessboard(pawn.getSquarePassantToTakePawnEnemy().getPosition(), destiny);
+			this.turnMemory.setDestroyed(pawn.getSquarePassantToTakePawnEnemy().getPosition());
 		}
 	}
 
@@ -205,12 +211,20 @@ public class Chessboard {
 		//moves rook if king is doing castling
 		if(origin == PositionChessboard.E1 && destiny == PositionChessboard.C1){
 			walkPieceInTheChessboard(PositionChessboard.A1, PositionChessboard.D1);
+			this.turnMemory.setCastlingFrom( PositionChessboard.A1);
+			this.turnMemory.setCastlingTo( PositionChessboard.D1);
 		}else if(origin == PositionChessboard.E1 && destiny == PositionChessboard.G1){
 			walkPieceInTheChessboard(PositionChessboard.H1, PositionChessboard.F1);
+			this.turnMemory.setCastlingFrom( PositionChessboard.H1);
+			this.turnMemory.setCastlingTo( PositionChessboard.F1);
 		}else if(origin == PositionChessboard.E8 && destiny == PositionChessboard.C8){
 			walkPieceInTheChessboard(PositionChessboard.A8, PositionChessboard.D8);
+			this.turnMemory.setCastlingFrom( PositionChessboard.A8);
+			this.turnMemory.setCastlingTo( PositionChessboard.D8);
 		}else if(origin == PositionChessboard.E8 && destiny == PositionChessboard.G8){
 			walkPieceInTheChessboard(PositionChessboard.H8, PositionChessboard.F8);
+			this.turnMemory.setCastlingFrom( PositionChessboard.H8);
+			this.turnMemory.setCastlingTo( PositionChessboard.F8);
 		}
 	}
 	
