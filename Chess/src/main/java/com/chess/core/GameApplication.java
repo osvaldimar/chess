@@ -262,12 +262,6 @@ public final class GameApplication {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		System.out.println(gson.toJson(response));
 	}
-	
-	@Deprecated
-	public void printInfoChessboard(Chessboard chessboard) {
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		System.out.println(gson.toJson(chessboard.getSquaresChessboard()));
-	}
 
 	public String getInfoChessboardJson() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -156,7 +156,7 @@ public class KingCastlingTest {
 	}
 	
 	@Test
-	public void testDoingCastlingKingAndRook(){
+	public void testDoingCastlingKingAndRookWhite(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		chessboard.startGame();
 		chessboard.getSquareChessboard(F1).removePiece();
@@ -182,12 +182,56 @@ public class KingCastlingTest {
 		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
 		
 		//last movement
-		chessboard.printDebugChessboard(chessboard, "Test last movement with castling");
+		chessboard.printDebugChessboard(chessboard, "Test last movement with castling white");
 		assertEquals(res.getLastMovement().getName(), LastMovement.NameMovement.CASTLING);
 		assertEquals(res.getLastMovement().getMovedFrom(), E1);
 		assertEquals(res.getLastMovement().getMovedTo(), C1);
 		assertEquals(res.getLastMovement().getCastlingFrom(), A1);
 		assertEquals(res.getLastMovement().getCastlingTo(), D1);
+		assertNull(res.getLastMovement().getDestroyed());
+	}
+	
+	@Test
+	public void testDoingCastlingKingAndRookBlack(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.getSquareChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(G8).removePiece();
+		GameApplication game = new GameApplication(chessboard);		
+		
+		//player 1
+		game.nextMove(A2);
+		game.nextMove(A3);
+		//player 2
+		ResponseChessboard res = game.nextMove(E8);
+		res = game.nextMove(G8);
+		assertEquals(chessboard.getSquareChessboard(G8).getPiece().getTypePiece(), TypePiece.KING);
+		assertEquals(chessboard.getSquareChessboard(F8).getPiece().getTypePiece(), TypePiece.ROOK);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		
+		chessboard.startGame();
+		chessboard.getSquareChessboard(B8).removePiece();
+		chessboard.getSquareChessboard(C8).removePiece();
+		chessboard.getSquareChessboard(D8).removePiece();
+		game = new GameApplication(chessboard);		
+		
+		//player 1
+		game.nextMove(A2);
+		game.nextMove(A3);
+		//player 2
+		res = game.nextMove(E8);
+		res = game.nextMove(C8);
+		assertEquals(chessboard.getSquareChessboard(C8).getPiece().getTypePiece(), TypePiece.KING);
+		assertEquals(chessboard.getSquareChessboard(D8).getPiece().getTypePiece(), TypePiece.ROOK);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.MOVED);
+		
+		//last movement
+		chessboard.printDebugChessboard(chessboard, "Test last movement with castling black");
+		assertEquals(res.getLastMovement().getName(), LastMovement.NameMovement.CASTLING);
+		assertEquals(res.getLastMovement().getMovedFrom(), E8);
+		assertEquals(res.getLastMovement().getMovedTo(), C8);
+		assertEquals(res.getLastMovement().getCastlingFrom(), A8);
+		assertEquals(res.getLastMovement().getCastlingTo(), D8);
 		assertNull(res.getLastMovement().getDestroyed());
 	}
 	
@@ -202,10 +246,69 @@ public class KingCastlingTest {
 		GameApplication game = new GameApplication(chessboard);		
 		
 		ResponseChessboard res = game.nextMove(E1);
+		assertEquals(res.getListPositionsAvailable().size(), 1);
 		res = game.nextMove(G1);
 		assertEquals(chessboard.getSquareChessboard(E1).getPiece().getTypePiece(), TypePiece.KING);
 		assertEquals(chessboard.getSquareChessboard(H1).getPiece().getTypePiece(), TypePiece.ROOK);
-		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.EXPOSED_CHECK);		
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);		
+	}
+	
+	@Test
+	public void testCantDoCastlingBecauseExposedCheckSquaresJumpKingAndRookWhite(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.getSquareChessboard(F1).removePiece();
+		chessboard.getSquareChessboard(G1).removePiece();
+		chessboard.getSquareChessboard(B8).removePiece();
+		chessboard.positionPiece(G3, new Knight(TypeColor.BLACK, player2.getTypePlayer()));
+		GameApplication game = new GameApplication(chessboard);		
+		
+		ResponseChessboard res = game.nextMove(E1);
+		assertEquals(res.getListPositionsAvailable().size(), 1);
+		res = game.nextMove(G1);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
+		assertEquals(chessboard.getSquareChessboard(E1).getPiece().getTypePiece(), TypePiece.KING);
+		assertEquals(chessboard.getSquareChessboard(H1).getPiece().getTypePiece(), TypePiece.ROOK);
+		
+		chessboard.getSquareChessboard(D1).removePiece();
+		chessboard.getSquareChessboard(C1).removePiece();
+		chessboard.getSquareChessboard(B1).removePiece();
+		chessboard.walkPieceInTheChessboard(G3, C3);
+		res = game.nextMove(E1);
+		assertEquals(res.getListPositionsAvailable().size(), 3);	//castling just side G1, castling C1 threatened
+		res = game.nextMove(C1);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
+	}
+	
+	@Test
+	public void testCantDoCastlingBecauseExposedCheckSquaresJumpKingAndRookBlack(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		chessboard.startGame();
+		chessboard.getSquareChessboard(D8).removePiece();
+		chessboard.getSquareChessboard(C8).removePiece();
+		chessboard.getSquareChessboard(B8).removePiece();
+		chessboard.getSquareChessboard(B1).removePiece();
+		chessboard.positionPiece(C6, new Knight(TypeColor.WHITE, player1.getTypePlayer()));
+		GameApplication game = new GameApplication(chessboard);
+		
+		//player 1
+		ResponseChessboard res = game.nextMove(A2);
+		game.nextMove(A3);
+		//player 2
+		res = game.nextMove(E8);
+		assertEquals(res.getListPositionsAvailable().size(), 1);
+		res = game.nextMove(C8);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
+		assertEquals(chessboard.getSquareChessboard(E1).getPiece().getTypePiece(), TypePiece.KING);
+		assertEquals(chessboard.getSquareChessboard(H1).getPiece().getTypePiece(), TypePiece.ROOK);
+		
+		chessboard.getSquareChessboard(F8).removePiece();
+		chessboard.getSquareChessboard(G8).removePiece();
+		chessboard.walkPieceInTheChessboard(C6, G6);
+		res = game.nextMove(E8);
+		assertEquals(res.getListPositionsAvailable().size(), 3);	//castling just side C8, castling G8 threatened
+		res = game.nextMove(G8);
+		assertEquals(res.getStatusResponse(), ResponseChessboard.StatusResponse.NONE_ACTION);
 	}
 	
 	@Test

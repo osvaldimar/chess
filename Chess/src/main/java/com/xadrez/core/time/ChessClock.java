@@ -7,26 +7,18 @@ import com.chess.core.enums.TypePlayer;
 
 public class ChessClock {
 
-	private ChessTime time;
+	private int time;
 	private Timer timeWhite;
 	private Timer timeBlack;
 	private TimerTask task;
+	private int minute;
+	private int second;
 	
-	public enum ChessTime{
-		FIVE_MINUTES(5);
-		private int time;
-		
-		ChessTime(int time){
-			this.time = time;			
-		}
-		public int getTime() {
-			return time;
-		}
-	}
 	
-	public ChessClock(ChessTime time) {
+	
+	/*public ChessClock(ChessTime time) {
 		this.time = time;
-		task = TimerTask
+		this.minute = time.time;
 	}
 	
 	public resumePlayerStopOpponent(TypePlayer typePlayerResume){
@@ -36,5 +28,5 @@ public class ChessClock {
 		}else{
 			timeBlack.resume();
 		}
-	}
+	}*/
 }

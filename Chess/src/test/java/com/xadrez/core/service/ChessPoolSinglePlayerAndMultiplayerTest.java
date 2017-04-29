@@ -7,9 +7,9 @@ import com.chess.core.ChessGamePool;
 import com.chess.core.GameApplication;
 import com.chess.core.ResponseChessboard.StatusResponse;
 import com.chess.core.client.ChessServiceRemote;
-import com.chess.core.client.ClientRequestThread;
+import com.chess.core.client.ClientRequestThreadMulti;
+import com.chess.core.client.ClientRequestThreadSingle;
 import com.chess.core.client.ResponseClient;
-import com.chess.core.client.TransformJson;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.model.Player;
 import com.chess.core.model.PlayerAI;
@@ -50,21 +50,47 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 	}
 	
 	@Test
-	public void testStartChessWithMultiplayerOnline(){
+	public void testStartChessWithSinglePlayerCommonOnline(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		ChessGamePool pool = new ChessGamePool();
-		ClientRequestThread client1 = new ClientRequestThread(pool);
-		client1.start();
-		ClientRequestThread client2 = new ClientRequestThread(pool);
-		client2.start();		
+		ClientRequestThreadSingle client1 = new ClientRequestThreadSingle(pool);
+		client1.start();	
 		try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		
-		ResponseClient responseClient1 = client1.getResponseClient();
-		ResponseClient responseClient2 = client2.getResponseClient();
+		ResponseClient responseClient1 = client1.getResponseClientSingleplayerOnline();
+		Assert.assertEquals(responseClient1.getKeyClient().getType(), TypePlayer.W);
+		
+		GameApplication game1 = pool.findGameApp(responseClient1.getKeyClient().getKey().toString(), 
+				responseClient1.getKeyClient().getType().toString());
+		Assert.assertEquals(pool.getTotalChessPool(), 1);
+		
+		ChessServiceRemote remote = new ChessServiceImpl();
+		remote.play(game1);	
+		
+		ResponseClient response = remote.selectAndMovePiece("A2", "W");
+		Assert.assertEquals(response.getStatus(), StatusResponse.CLICKED.toString());
+	}
+	
+	@Test
+	public void testStartChessWithMultiplayerOnline(){
+		System.out.println("\n------------------------------------------------------------------------------");		
+		ChessGamePool pool = new ChessGamePool();
+		ClientRequestThreadMulti client1 = new ClientRequestThreadMulti(pool);
+		client1.start();
+		ClientRequestThreadMulti client2 = new ClientRequestThreadMulti(pool);
+		client2.start();		
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		ResponseClient responseClient1 = client1.getResponseClientMultiplayerOnline();
+		ResponseClient responseClient2 = client2.getResponseClientMultiplayerOnline();
 		Assert.assertEquals(responseClient1.getKeyClient().getType(), TypePlayer.W);
 		Assert.assertEquals(responseClient2.getKeyClient().getType(), TypePlayer.B);
 		
@@ -89,11 +115,11 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 	public void testStartChessWithMultiplayerOnline2(){
 		System.out.println("\n------------------------------------------------------------------------------");		
 		ChessGamePool pool = new ChessGamePool();
-		ClientRequestThread client1 = new ClientRequestThread(pool);
-		ClientRequestThread client2 = new ClientRequestThread(pool);
-		ClientRequestThread client3 = new ClientRequestThread(pool);
-		ClientRequestThread client4 = new ClientRequestThread(pool);
-		ClientRequestThread client5 = new ClientRequestThread(pool);
+		ClientRequestThreadMulti client1 = new ClientRequestThreadMulti(pool);
+		ClientRequestThreadMulti client2 = new ClientRequestThreadMulti(pool);
+		ClientRequestThreadMulti client3 = new ClientRequestThreadMulti(pool);
+		ClientRequestThreadMulti client4 = new ClientRequestThreadMulti(pool);
+		ClientRequestThreadMulti client5 = new ClientRequestThreadMulti(pool);
 		client1.start();
 		client2.start();
 		client3.start();
@@ -110,11 +136,11 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 			e.printStackTrace();
 		}
 		
-		ResponseClient responseClient1 = client1.getResponseClient();
-		ResponseClient responseClient2 = client2.getResponseClient();
-		ResponseClient responseClient3 = client2.getResponseClient();
-		ResponseClient responseClient4 = client2.getResponseClient();
-		ResponseClient responseClient5 = client2.getResponseClient();
+		ResponseClient responseClient1 = client1.getResponseClientMultiplayerOnline();
+		ResponseClient responseClient2 = client2.getResponseClientMultiplayerOnline();
+		ResponseClient responseClient3 = client2.getResponseClientMultiplayerOnline();
+		ResponseClient responseClient4 = client2.getResponseClientMultiplayerOnline();
+		ResponseClient responseClient5 = client2.getResponseClientMultiplayerOnline();
 		
 		Assert.assertEquals(pool.getTotalChessPool(), 2);
 		Assert.assertEquals(pool.getTotalChessQueuePending(), 1);
