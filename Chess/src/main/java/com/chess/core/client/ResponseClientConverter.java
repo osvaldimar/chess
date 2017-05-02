@@ -2,6 +2,7 @@ package com.chess.core.client;
 
 import com.chess.core.ResponseChessboard;
 import com.chess.core.client.ResponseClient;
+import com.chess.core.client.ResponseClient.Builder;
 
 public final class ResponseClientConverter {
 
@@ -40,12 +41,23 @@ public final class ResponseClientConverter {
 				.turn(res.getTurn().getTypePlayer().toString())
 				.build();
 		}else{
-			responseClient = new ResponseClient.Builder()
+			Builder build = new ResponseClient.Builder()
 				.status(res.getStatusResponse().toString())
 				.currentPlayer(res.getCurrentPlayer().getTypePlayer().toString())
-				.turn(res.getTurn().getTypePlayer().toString())
-				.lastMovement(res.getLastMovement())
-				.build();
+				.turn(res.getTurn().getTypePlayer().toString());
+				if(res.getLastMovement() != null){
+					build.idMovement(res.getLastMovement().getIdMovement())
+					.nameMovement(res.getLastMovement().getName().toString())
+					.movedFrom(res.getLastMovement().getMovedFrom().toString())
+					.movedTo(res.getLastMovement().getMovedTo().toString());
+					if(res.getLastMovement().getDestroyed() != null)
+						build.destroyed(res.getLastMovement().getDestroyed().toString());
+					if(res.getLastMovement().getCastlingFrom() != null)
+						build.castlingFrom(res.getLastMovement().getCastlingFrom().toString());
+					if(res.getLastMovement().getCastlingTo() != null)
+						build.castlingTo(res.getLastMovement().getCastlingTo().toString());
+				}
+				responseClient = build.build();
 		}		
 		return responseClient;
 	}

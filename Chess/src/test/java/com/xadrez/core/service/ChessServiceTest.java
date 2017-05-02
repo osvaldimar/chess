@@ -3,11 +3,14 @@ package com.xadrez.core.service;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.chess.core.GameApplication;
 import com.chess.core.ResponseChessboard;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.service.ChessServiceImpl;
+import com.chess.core.service.ChessSinglePlayerCommon;
+import com.chess.core.client.ChessServiceRemote;
 import com.chess.core.client.ResponseClient;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -20,9 +23,12 @@ public class ChessServiceTest {
 	@Test
 	public void testChessServiceMethodsFacade(){
 		
-		ChessServiceImpl service = new ChessServiceImpl();
-		//service.choosePromotion("queen", "w");
-		String responseJson = service.startChess();
+		ChessSinglePlayerCommon chessPlayer = new ChessSinglePlayerCommon();
+		GameApplication game = chessPlayer.startChess();		
+		ChessServiceRemote service = new ChessServiceImpl();
+		service.play(game);
+		
+		String responseJson = service.startChessOfflineCommon();
 		service.printInfoResponseJson(responseJson);
 		
 		//json as json element java
@@ -86,8 +92,10 @@ public class ChessServiceTest {
 	
 	@Test
 	public void testCallMethodsGetsOfChessService(){
-		ChessServiceImpl service = new ChessServiceImpl();
-		service.startChess();
+		ChessSinglePlayerCommon chessPlayer = new ChessSinglePlayerCommon();
+		GameApplication game = chessPlayer.startChess();		
+		ChessServiceRemote service = new ChessServiceImpl();
+		service.play(game);
 		service.printSquaresChessboardJson();
 	}
 }

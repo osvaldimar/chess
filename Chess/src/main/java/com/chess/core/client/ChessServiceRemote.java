@@ -5,8 +5,8 @@ import com.chess.core.memory.ChessboardMemory;
 
 public interface ChessServiceRemote {
 
-	String startChess();
-
+	String startChessOfflineCommon();
+	
 	ResponseClient selectAndMovePiece(String positionOriginOrDestiny, String currentPlayerRequesting);
 	
 	ResponseClient verifyCheckmateTurn();

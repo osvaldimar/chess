@@ -10,7 +10,7 @@ public class ConsoleServiceChess {
 	public static void main(String[] args) {
 		
 		ChessServiceImpl service = new ChessServiceImpl();	
-		service.startChess();
+		service.startChessOfflineCommon();
 		Scanner scanner = new Scanner(System.in);		
 		while(true){
 			String[] input = scanner.nextLine().split(" ");

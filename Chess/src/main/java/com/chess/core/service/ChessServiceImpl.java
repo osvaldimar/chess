@@ -18,9 +18,8 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	private Chessboard chessboard;
 	private GameApplication game;
 	
-	@Deprecated
 	@Override
-	public String startChess(){
+	public String startChessOfflineCommon(){
 		this.chessboard = new Chessboard(new Player(TypePlayer.W), new Player(TypePlayer.B));
 		this.chessboard.startGame();
 		this.game = new GameApplication(chessboard);
@@ -28,7 +27,8 @@ public class ChessServiceImpl implements ChessServiceRemote{
 				.status(ResponseChessboard.StatusResponse.START.toString())
 				.currentPlayer(new Player(TypePlayer.W).getTypePlayer().toString())
 				.turn(new Player(TypePlayer.W).getTypePlayer().toString())
-				.keyClient(null)
+				.keyClientID(null)
+				.keyClientType(null)
 				.build();
 		return TransformJson.createResponseJson(convert);
 	}

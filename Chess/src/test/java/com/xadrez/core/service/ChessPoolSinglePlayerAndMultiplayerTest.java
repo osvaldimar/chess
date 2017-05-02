@@ -62,10 +62,10 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		}
 		
 		ResponseClient responseClient1 = client1.getResponseClientSingleplayerOnline();
-		Assert.assertEquals(responseClient1.getKeyClient().getType(), TypePlayer.W);
+		Assert.assertEquals(responseClient1.getKeyClientType(), TypePlayer.W.toString());
 		
-		GameApplication game1 = pool.findGameApp(responseClient1.getKeyClient().getKey().toString(), 
-				responseClient1.getKeyClient().getType().toString());
+		GameApplication game1 = pool.findGameApp(responseClient1.getKeyClientID().toString(), 
+				responseClient1.getKeyClientType().toString());
 		Assert.assertEquals(pool.getTotalChessPool(), 1);
 		
 		ChessServiceRemote remote = new ChessServiceImpl();
@@ -91,13 +91,13 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		
 		ResponseClient responseClient1 = client1.getResponseClientMultiplayerOnline();
 		ResponseClient responseClient2 = client2.getResponseClientMultiplayerOnline();
-		Assert.assertEquals(responseClient1.getKeyClient().getType(), TypePlayer.W);
-		Assert.assertEquals(responseClient2.getKeyClient().getType(), TypePlayer.B);
+		Assert.assertEquals(responseClient1.getKeyClientType(), TypePlayer.W.toString());
+		Assert.assertEquals(responseClient2.getKeyClientType(), TypePlayer.B.toString());
 		
-		GameApplication game1 = pool.findGameApp(responseClient1.getKeyClient().getKey().toString(), 
-				responseClient1.getKeyClient().getType().toString());
-		GameApplication game2 = pool.findGameApp(responseClient2.getKeyClient().getKey().toString(), 
-				responseClient2.getKeyClient().getType().toString());
+		GameApplication game1 = pool.findGameApp(responseClient1.getKeyClientID().toString(), 
+				responseClient1.getKeyClientType().toString());
+		GameApplication game2 = pool.findGameApp(responseClient2.getKeyClientID().toString(), 
+				responseClient2.getKeyClientType().toString());
 		Assert.assertEquals(pool.getTotalChessPool(), 1);
 		Assert.assertEquals(game1, game2);
 		

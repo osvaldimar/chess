@@ -1,11 +1,11 @@
 package com.chess.core;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.chess.core.client.KeyClient;
 import com.chess.core.client.KeyUUIDChess;
@@ -16,7 +16,7 @@ import com.chess.core.service.ChessMultiplayerOnline;
 
 public class ChessGamePool {
 	
-	private Map<KeyUUIDChess, GameApplication> map = new HashMap<>();
+	private Map<KeyUUIDChess, GameApplication> map = new ConcurrentHashMap<>();
 	private Queue<KeyClient> queue = new LinkedList<>();
 	
 	public GameApplication findGameApp(String uuid, String typePlayer) {
@@ -67,7 +67,8 @@ public class ChessGamePool {
 				.status(ResponseChessboard.StatusResponse.START.toString())
 				.currentPlayer(TypePlayer.W.toString())
 				.turn(TypePlayer.W.toString())
-				.keyClient(keyClient)
+				.keyClientID(keyClient.getKey().toString())
+				.keyClientType(keyClient.getType().toString())
 				.build();
 	}
 	
