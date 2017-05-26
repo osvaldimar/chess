@@ -100,8 +100,11 @@ public class Chessboard {
 	}
 	
 	public Square[][] getSquaresChessboard() {
-		final Square[][] squares = this.squares.clone();
 		return squares;
+	}
+	
+	public void setSquares(Square[][] squares) {
+		this.squares = squares;
 	}
 	
 	public Square getSquareChessboard(PositionChessboard position) {

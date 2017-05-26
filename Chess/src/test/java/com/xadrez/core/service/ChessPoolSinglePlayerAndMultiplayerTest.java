@@ -11,9 +11,6 @@ import com.chess.core.client.ClientRequestThreadMulti;
 import com.chess.core.client.ClientRequestThreadSingle;
 import com.chess.core.client.ResponseClient;
 import com.chess.core.enums.TypePlayer;
-import com.chess.core.model.Player;
-import com.chess.core.model.PlayerAI;
-import com.chess.core.service.ChessMultiplayerAI;
 import com.chess.core.service.ChessServiceImpl;
 import com.chess.core.service.ChessSinglePlayerCommon;
 
@@ -26,21 +23,6 @@ public class ChessPoolSinglePlayerAndMultiplayerTest {
 		System.out.println("\n------------------------------------------------------------------------------");		
 		ChessSinglePlayerCommon chessPlayer = new ChessSinglePlayerCommon();
 		GameApplication game = chessPlayer.startChess();
-		
-		ChessServiceRemote remote = new ChessServiceImpl();
-		remote.play(game);
-		
-		ResponseClient response = remote.selectAndMovePiece("A2", "W");
-		Assert.assertEquals(response.getStatus(), StatusResponse.CLICKED.toString());
-	}
-	
-	@Test
-	public void testStartChessWithMultiplayerAI(){
-		System.out.println("\n------------------------------------------------------------------------------");		
-		Player p1 = new Player(TypePlayer.W);
-		PlayerAI p2 = new PlayerAI(TypePlayer.B);
-		ChessMultiplayerAI chessPlayer = new ChessMultiplayerAI();
-		GameApplication game = chessPlayer.startChess(p1, p2);
 		
 		ChessServiceRemote remote = new ChessServiceImpl();
 		remote.play(game);

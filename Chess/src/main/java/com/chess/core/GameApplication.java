@@ -48,6 +48,7 @@ public final class GameApplication {
 		currentPlayerRequesting = chessboard.getPlayer1();
 		this.responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
 		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
+		this.executeTurnAI();
 	}
 	
 	public ResponseChessboard executePromotion(TypePiece type, PlayerMode currentPlayerRequesting){

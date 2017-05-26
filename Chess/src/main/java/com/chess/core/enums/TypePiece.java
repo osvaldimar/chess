@@ -8,7 +8,7 @@ public enum TypePiece {
 	
 	private double value;
 	
-	TypePiece(int value){
+	TypePiece(double value){
 		this.value = value;
 	}
 	
