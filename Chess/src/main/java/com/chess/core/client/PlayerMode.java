@@ -1,6 +1,10 @@
 package com.chess.core.client;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
+import com.chess.core.Chessboard;
 import com.chess.core.GameApplication;
+import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
 
 public abstract class PlayerMode {
@@ -58,5 +62,5 @@ public abstract class PlayerMode {
 
 	public abstract boolean isAI();
 
-	public abstract void play(GameApplication gameApplication);
+	public abstract ImmutablePair<PositionChessboard, PositionChessboard> play(Chessboard chessboard);
 }

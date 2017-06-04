@@ -1,5 +1,8 @@
 package com.chess.core.client;
 
+import java.util.Objects;
+import java.util.Optional;
+
 import com.chess.core.ResponseChessboard;
 import com.chess.core.client.ResponseClient;
 import com.chess.core.client.ResponseClient.Builder;
@@ -37,7 +40,7 @@ public final class ResponseClientConverter {
 			responseClient = new ResponseClient.Builder()
 				.status(res.getStatusResponse().toString())
 				.currentPlayer(res.getCurrentPlayer().getTypePlayer().toString())
-				.pieceClicked(res.getPieceClicked().getTypePiece().name())
+				.pieceClicked(Objects.nonNull(res.getPieceClicked()) ? res.getPieceClicked().getTypePiece().name() : null)
 				.turn(res.getTurn().getTypePlayer().toString())
 				.build();
 		}else{

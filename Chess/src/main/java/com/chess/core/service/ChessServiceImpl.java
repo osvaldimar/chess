@@ -53,6 +53,12 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	}
 	
 	@Override
+	public ResponseClient verifyCheckmateTurn(String typePlayer){
+		return ResponseClientConverter.convert(
+				this.game.verifyCheckmateValidator(TypePlayer.getEnum(typePlayer)));
+	}
+	
+	@Override
 	public ResponseClient choosePromotion(String promotedPiece, String currentPlayerRequesting){
 		return ResponseClientConverter.convert(
 				this.game.executePromotion(TypePiece.getEnum(promotedPiece), 

@@ -11,6 +11,8 @@ public interface ChessServiceRemote {
 	
 	ResponseClient verifyCheckmateTurn();
 	
+	ResponseClient verifyCheckmateTurn(String typePlayer);
+	
 	ResponseClient choosePromotion(String promotedPiece, String currentPlayerRequesting);
 	
 	ResponseClient clearPieceClickedMarkOff();

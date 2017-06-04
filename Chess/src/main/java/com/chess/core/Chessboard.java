@@ -15,6 +15,7 @@ import com.chess.core.exception.CheckmateException;
 import com.chess.core.exception.Draw3PositionsException;
 import com.chess.core.exception.Draw50MovementsException;
 import com.chess.core.exception.DrawStalemateException;
+import com.chess.core.helper.PieceHelper;
 import com.chess.core.memory.ChessboardMemory;
 import com.chess.core.memory.PositionMemory;
 import com.chess.core.model.Bishop;
@@ -254,6 +255,14 @@ public class Chessboard {
 		}		
 	}
 	
+	public void removePiece(List<PositionChessboard> listPositions){
+		listPositions.forEach(p -> getSquareChessboard(p).removePiece());
+	}
+	
+	public void addPiece(PositionChessboard pos, Piece piece) {
+		this.getSquareChessboard(pos).addPiece(piece);
+	}
+	
 	public void printLayoutChessboard() {
 		System.out.print(getLayoutChessboard());
 	}
@@ -277,6 +286,7 @@ public class Chessboard {
 			}
 			System.out.println();
 		}
+		resultScoreChessboardPlayers(this.squares);
 	}
 	
 	public static void printCloneDebugChessboard(Square[][] clone, String message){
@@ -287,6 +297,13 @@ public class Chessboard {
 			}
 			System.out.println();
 		}
+		resultScoreChessboardPlayers(clone);
+	}
+
+	private static void resultScoreChessboardPlayers(Square[][] squares) {
+		Double w = PieceHelper.getTotalScoreChessboardPiecesByPlayer(squares, TypePlayer.W);
+		Double b = PieceHelper.getTotalScoreChessboardPiecesByPlayer(squares, TypePlayer.B);
+		System.out.println("Result Score - W: " + w + " - B: " + b);
 	}
 
 	@Override
@@ -339,4 +356,5 @@ public class Chessboard {
 	public LastMovement getLastMovement() {
 		return lastMovement;
 	}
+
 }

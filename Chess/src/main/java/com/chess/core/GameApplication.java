@@ -3,9 +3,12 @@ package com.chess.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
 import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePiece;
+import com.chess.core.enums.TypePlayer;
 import com.chess.core.exception.CheckMoveException;
 import com.chess.core.exception.CheckStateException;
 import com.chess.core.exception.CheckmateException;
@@ -36,6 +39,8 @@ public final class GameApplication {
 	
 	private boolean playing;
 	private ResponseChessboard responseCheckmateDrawValidator;
+	private ResponseChessboard responseCheckmateDrawValidatorWhite;
+	private ResponseChessboard responseCheckmateDrawValidatorBlack;
 	
 	public GameApplication(Chessboard chessboard) {
 		this.chessboard = chessboard;
@@ -47,7 +52,9 @@ public final class GameApplication {
 		turnPlayer = chessboard.getPlayer1();
 		currentPlayerRequesting = chessboard.getPlayer1();
 		this.responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
-		chessboard.printDebugChessboard(chessboard, "Game Chess start...");
+		this.responseCheckmateDrawValidatorWhite = responseCheckmateDrawValidator;
+		this.responseCheckmateDrawValidatorBlack = responseCheckmateDrawValidator;
+		//chessboard.printDebugChessboard(chessboard, "Game Chess start...");
 		this.executeTurnAI();
 	}
 	
@@ -66,6 +73,7 @@ public final class GameApplication {
 					.currentPlayer(currentPlayerRequesting)
 					.turn(turnPlayer)
 					.build();
+		this.currentPlayerRequesting = currentPlayerRequesting;
 		if(chessboard.getPositionPromotionPawn() == null){
 			return buildResponseChessboard(ResponseChessboard.StatusResponse.NONE_ACTION);
 		}
@@ -74,7 +82,7 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
-			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
+			this.saveLastVerifyCheckmateValidatorByPlayer(this.verifyCheckmateValidatorFull());
 			this.executeTurnAI();
 			return response;
 		}
@@ -83,12 +91,39 @@ public final class GameApplication {
 	
 	private void executeTurnAI() {
 		if(this.chessboard.getPlayerByType(turnPlayer.getTypePlayer().toString()).isAI()){
-			this.chessboard.getPlayerByType(turnPlayer.getTypePlayer().toString()).play(this);
+			if(!this.overGame()){
+				new Thread(new Runnable() {			
+					@Override
+					public void run() {
+						ImmutablePair<PositionChessboard, PositionChessboard> pairPositions = chessboard.getPlayerByType(turnPlayer.getTypePlayer().toString()).play(chessboard);
+						if(pairPositions != null){
+							selectAndMove(pairPositions.getLeft(), turnPlayer);
+							selectAndMove(pairPositions.getRight(), turnPlayer);
+						}
+					}
+				}).start();
+			}
 		}
 	}
 
 	public ResponseChessboard verifyCheckmateValidator() {
 		return responseCheckmateDrawValidator;
+	}
+	public ResponseChessboard verifyCheckmateValidator(TypePlayer type) {
+		if(type == TypePlayer.W)
+			return responseCheckmateDrawValidatorWhite;
+		else if(type == TypePlayer.B)
+			return responseCheckmateDrawValidatorBlack;
+		return responseCheckmateDrawValidator;
+	}
+	
+	private void saveLastVerifyCheckmateValidatorByPlayer(ResponseChessboard saveResponse){
+		if(this.currentPlayerRequesting.getTypePlayer() == TypePlayer.W){
+			this.responseCheckmateDrawValidatorWhite = saveResponse;
+		}else{
+			this.responseCheckmateDrawValidatorBlack = saveResponse;
+		}
+		this.responseCheckmateDrawValidator = saveResponse;
 	}
 	
 	private ResponseChessboard verifyCheckmateValidatorFull() {
@@ -123,6 +158,16 @@ public final class GameApplication {
 		return response;
 	}
 
+	public boolean overGame(){
+		if(this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.CHECKMATE
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_STALEMATE
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_50_MOVEMENTS
+				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_3_POSITIONS){
+			return true;
+		}
+		return false;
+	}
+	
 	@Deprecated
 	public ResponseChessboard nextMove(PositionChessboard pos) {
 		ResponseChessboard response = selectAndMove(pos, turnPlayer);
@@ -139,10 +184,7 @@ public final class GameApplication {
 					.build();
 		}
 		//over game
-		if(this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.CHECKMATE
-				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_STALEMATE
-				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_50_MOVEMENTS
-				|| this.responseCheckmateDrawValidator.getStatusResponse() == ResponseChessboard.StatusResponse.DRAW_3_POSITIONS){
+		if(this.overGame()){
 			return this.responseCheckmateDrawValidator;
 		}		
 		//valid position and player
@@ -224,7 +266,7 @@ public final class GameApplication {
 			this.changeTurnPlayer();
 			ResponseChessboard response = buildResponseChessboard(ResponseChessboard.StatusResponse.MOVED);
 			this.clearAllFields();
-			responseCheckmateDrawValidator = this.verifyCheckmateValidatorFull();
+			this.saveLastVerifyCheckmateValidatorByPlayer(this.verifyCheckmateValidatorFull());
 			this.executeTurnAI();
 			return response;
 		}
@@ -293,4 +335,13 @@ public final class GameApplication {
 	public Chessboard getChessboard() {
 		return this.chessboard;
 	}
+
+	public PlayerMode getTurnPlayer() {
+		return turnPlayer;
+	}
+
+	public void setTurnPlayer(PlayerMode turnPlayer) {
+		this.turnPlayer = turnPlayer;
+	}
+	
 }
