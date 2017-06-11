@@ -1,12 +1,16 @@
 package com.chess.core.model;
 
+import java.io.Serializable;
+
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.movement.BehaviorChess;
 
-public abstract class Piece implements BehaviorChess {
+public abstract class Piece implements BehaviorChess, Serializable {
 
+	private static final long serialVersionUID = 8969772025960660892L;
+	
 	private TypePiece typePiece;
 	private TypeColor color;
 	private TypePlayer player;

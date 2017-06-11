@@ -1,9 +1,13 @@
 package com.chess.core.model;
 
+import java.io.Serializable;
+
 import com.chess.core.enums.PositionChessboard;
 
-public class LastMovement {
+public class LastMovement implements Serializable {
 
+	private static final long serialVersionUID = 6736865738507588400L;
+	
 	private int idMovement;
 	private NameMovement name;
 	private PositionChessboard destroyed;

@@ -1,14 +1,17 @@
 package com.chess.core.client;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.chess.core.Chessboard;
-import com.chess.core.GameApplication;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
 
-public abstract class PlayerMode {
+public abstract class PlayerMode implements Serializable {
 
+	private static final long serialVersionUID = -8871506825016951192L;
+	
 	private String nome;
 	private Long score;
 	private TypePlayer typePlayer;

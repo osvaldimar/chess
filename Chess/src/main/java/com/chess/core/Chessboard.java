@@ -19,6 +19,7 @@ import com.chess.core.helper.PieceHelper;
 import com.chess.core.memory.ChessboardMemory;
 import com.chess.core.memory.PositionMemory;
 import com.chess.core.model.Bishop;
+import com.chess.core.model.ChessboardModel;
 import com.chess.core.model.King;
 import com.chess.core.model.Knight;
 import com.chess.core.model.Pawn;
@@ -33,6 +34,10 @@ import com.chess.core.util.ChessboardPieceFactory;
 public class Chessboard {
 
 	private ChessboardModel model = new ChessboardModel();
+
+	public Chessboard(ChessboardModel model) {
+		this.model = model;
+	}
 
 	public Chessboard(PlayerMode player1, PlayerMode player2){
 		this.model.setPlayer1(player1);
@@ -160,8 +165,15 @@ public class Chessboard {
 		if(piece.getTypePiece() == TypePiece.KING) verifySpecialMovementCastling(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifySpecialMovementPassant(origin, destiny, piece);
 		if(piece.getTypePiece() == TypePiece.PAWN) verifyPromotionPawn(destiny, piece);
+		if(origin == PositionChessboard.H8 && destiny == PositionChessboard.E8){
+			System.out.println("here");
+		}
 		Piece gotten = walkPieceInTheChessboard(origin, destiny);
-		getSquareChessboard(destiny).getPiece().incrementMovements();
+		try{
+			getSquareChessboard(destiny).getPiece().incrementMovements();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 				
 		this.model.setLastSquarePiceMoved(getSquareChessboard(destiny));		
 		if(gotten != null) model.getListGraveyard().add(gotten);
@@ -347,5 +359,10 @@ public class Chessboard {
 	public LastMovement getLastMovement() {
 		return model.getLastMovement();
 	}
-
+	public ChessboardModel getModel() {
+		return model;
+	}
+	public void setModel(ChessboardModel model) {
+		this.model = model;
+	}
 }

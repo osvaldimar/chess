@@ -3,14 +3,14 @@ package com.chess.core.model;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.chess.core.Chessboard;
-import com.chess.core.GameApplication;
 import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
 
 public class Player extends PlayerMode{
 	
-	
+	private static final long serialVersionUID = -1984094323086984495L;
+
 	public Player(TypePlayer typePlayer){
 		super(typePlayer);
 	}

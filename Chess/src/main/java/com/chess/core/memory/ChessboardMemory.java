@@ -1,5 +1,6 @@
 package com.chess.core.memory;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +12,9 @@ import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.model.Piece;
 
-public class ChessboardMemory {
+public class ChessboardMemory implements Serializable {
+
+	private static final long serialVersionUID = 6594470114021239151L;
 
 	private Map<TypePlayer, Queue<PositionMemory>> mapQueue;
 	

@@ -31,14 +31,6 @@ public class PieceHelper {
 		return sumOnChessboard + sumOnGraveyard;
 	}
 	
-	/*public static Double getTotalScoreChessboardPiecesByPlayer(List<Piece> listPieces){
-		return listPieces.stream().mapToDouble(m -> m.getTypePiece().getValue()).sum();
-	}
-	
-	public static Double getTotalScoreChessboardPiecesGraveyardByPlayer(List<Piece> listPieces, TypePlayer type){
-		return listPieces.stream().filter(p -> p.getPlayer().equals(type)).mapToDouble(m -> m.getTypePiece().getValue()).sum();
-	}*/
-	
 	public static Double getTotalScorePiecesGameStart(){
 		return (TypePiece.PAWN.getValue() * 8) + (TypePiece.ROOK.getValue() * 2) +
 				(TypePiece.KNIGHT.getValue() * 2) + (TypePiece.BISHOP.getValue() * 2) +

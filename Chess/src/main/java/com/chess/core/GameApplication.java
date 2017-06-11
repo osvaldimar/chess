@@ -18,6 +18,7 @@ import com.chess.core.exception.DrawStalemateException;
 import com.chess.core.model.King;
 import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
+import com.chess.core.model.Queen;
 import com.chess.core.model.Square;
 import com.chess.core.util.ChessboardPieceFactory;
 import com.chess.core.util.PieceUtils;
@@ -99,6 +100,10 @@ public final class GameApplication {
 						if(pairPositions != null){
 							selectAndMove(pairPositions.getLeft(), turnPlayer);
 							selectAndMove(pairPositions.getRight(), turnPlayer);
+							//validate promotion pawn
+							if(chessboard.getPositionPromotionPawn() != null){
+								executePromotion(TypePiece.QUEEN, turnPlayer);
+							}
 						}
 					}
 				}).start();

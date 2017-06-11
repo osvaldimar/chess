@@ -1,10 +1,14 @@
 package com.chess.core.memory;
 
+import java.io.Serializable;
+
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.model.Piece;
 
-public class PositionMemory {
+public class PositionMemory implements Serializable {
 
+	private static final long serialVersionUID = -5922564502754308502L;
+	
 	private PositionChessboard actualPosition;
 	private PositionChessboard destinyPosition;
 	private Piece pieceMoved;

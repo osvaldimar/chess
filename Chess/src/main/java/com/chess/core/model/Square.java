@@ -1,11 +1,15 @@
 package com.chess.core.model;
 
+import java.io.Serializable;
+
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypeWalk;
 
-public class Square {
+public class Square implements Serializable {
 
+	private static final long serialVersionUID = -2977076638220889762L;
+	
 	private Piece piece;
 	private TypeColor color;
 	private PositionChessboard position;

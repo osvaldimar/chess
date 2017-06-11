@@ -1,15 +1,15 @@
-package com.chess.core;
+package com.chess.core.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.memory.ChessboardMemory;
-import com.chess.core.model.LastMovement;
-import com.chess.core.model.Piece;
-import com.chess.core.model.Square;
 
-public class ChessboardModel {
+public class ChessboardModel implements Serializable {
+	
+	private static final long serialVersionUID = 5670006805208165583L;
 	
 	private Square[][] squares;
 	private PlayerMode player1;
