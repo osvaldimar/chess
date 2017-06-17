@@ -24,7 +24,7 @@ public class Difficulty implements Serializable{
 	}
 	
 	public enum SimpleDifficulty {
-		ONE(1, 1), TWO(2, 1), THREE(3, 1), FOUR(2, 2), FIVE(4, 1), SIX(3, 2), SEVEN(4, 2);
+		ONE(1, 1), TWO(2, 1), THREE(3, 1), FOUR(2, 2), FIVE(4, 1), SIX(3, 2), SEVEN(4, 2), EIGTH(3, 3);
 		private int level;
 		private int deduction;
 		SimpleDifficulty(int level, int deduction){
@@ -32,7 +32,7 @@ public class Difficulty implements Serializable{
 			this.deduction = deduction;			
 		}
 		public static SimpleDifficulty getEnum(int value){
-			SimpleDifficulty[] simple = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN};
+			SimpleDifficulty[] simple = {ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGTH};
 			if(value >= 1 && value <= simple.length)
 				return simple[value-1];
 			else
@@ -61,7 +61,7 @@ public class Difficulty implements Serializable{
 	}
 	
 	public enum Deduction{
-		LEVEL_DEDUCTION_1(1), LEVEL_DEDUCTION_2(2);
+		LEVEL_DEDUCTION_1(1), LEVEL_DEDUCTION_2(2), LEVEL_DEDUCTION_3(3);
 		private int value;		
 		Deduction(int value){
 			this.value = value;

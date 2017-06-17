@@ -99,8 +99,8 @@ public class CheckmateValidator {
 				.stream().filter(walkPos -> !isCheckOfPiecePositionMovedInSimulation(clone, mySqu, walkPos, player))
 				.collect(Collectors.toList()).size()>=1).collect(Collectors.toList());
 		
-		System.out.println("\nlist only possible pieces to take or block the enemy check: \n" 
-				+ listPossiblePiecesPreventCheckmate);
+//		System.out.println("\nlist only possible pieces to take or block the enemy check: \n" 
+//				+ listPossiblePiecesPreventCheckmate);
 
 		if(listPossiblePiecesPreventCheckmate.isEmpty()) {
 			throw new CheckmateException();
