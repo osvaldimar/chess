@@ -7,15 +7,18 @@ import com.chess.core.client.PlayerMode;
 import com.chess.core.enums.PositionChessboard;
 import com.chess.core.enums.TypePlayer;
 
-public class Player extends PlayerMode{
-	
+public class Player extends PlayerMode {
+
 	private static final long serialVersionUID = -1984094323086984495L;
 
-	public Player(TypePlayer typePlayer){
+	public Player() {
+	}
+
+	public Player(final TypePlayer typePlayer) {
 		super(typePlayer);
 	}
-	
-	public Player(String nome, Long score, TypePlayer typePlayer) {
+
+	public Player(final String nome, final Long score, final TypePlayer typePlayer) {
 		super(nome, score, typePlayer);
 	}
 
@@ -25,8 +28,8 @@ public class Player extends PlayerMode{
 	}
 
 	@Override
-	public ImmutablePair<PositionChessboard, PositionChessboard> play(Chessboard chessboard) {
+	public ImmutablePair<PositionChessboard, PositionChessboard> play(final Chessboard chessboard) {
 		return null;
 	}
-	
+
 }

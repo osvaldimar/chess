@@ -12,21 +12,27 @@ import com.chess.core.util.MovementUtils;
 
 public class Knight extends Piece implements BehaviorChess {
 
-	public Knight(TypeColor color, TypePlayer player) {
+	private static final long serialVersionUID = -2060863272593090667L;
+
+	public Knight() {
+	}
+
+	public Knight(final TypeColor color, final TypePlayer player) {
 		super(TypePiece.KNIGHT, color, player);
 	}
 
 	@Override
-	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
-		List<PositionChessboard> list = new ArrayList<>();
-		list.addAll(MovementUtils.movementAvailableKnight(position, squares, Boolean.FALSE, getPlayer()));
+	public List<PositionChessboard> movementAvailable(final PositionChessboard position, final Square[][] squares) {
+		final List<PositionChessboard> list = new ArrayList<>();
+		list.addAll(MovementUtils.movementAvailableKnight(position, squares, Boolean.FALSE, this.getPlayer()));
 		return list;
 	}
 
 	@Override
-	public List<PositionChessboard> movementAvailableToTakePieces(PositionChessboard position, Square[][] squares) {
-		List<PositionChessboard> list = new ArrayList<>();
-		list.addAll(MovementUtils.movementAvailableKnight(position, squares, Boolean.TRUE, getPlayer()));
+	public List<PositionChessboard> movementAvailableToTakePieces(final PositionChessboard position,
+			final Square[][] squares) {
+		final List<PositionChessboard> list = new ArrayList<>();
+		list.addAll(MovementUtils.movementAvailableKnight(position, squares, Boolean.TRUE, this.getPlayer()));
 		return list;
 	}
 

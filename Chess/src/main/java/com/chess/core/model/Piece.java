@@ -6,57 +6,62 @@ import com.chess.core.enums.TypeColor;
 import com.chess.core.enums.TypePiece;
 import com.chess.core.enums.TypePlayer;
 import com.chess.core.movement.BehaviorChess;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class Piece implements BehaviorChess, Serializable {
 
 	private static final long serialVersionUID = 8969772025960660892L;
-	
+
 	private TypePiece typePiece;
 	private TypeColor color;
 	private TypePlayer player;
 	private int countMovements;
-	
-	public Piece(TypePiece typePiece, TypeColor color, TypePlayer player){
+
+	public Piece() {
+	}
+
+	public Piece(final TypePiece typePiece, final TypeColor color, final TypePlayer player) {
 		this.typePiece = typePiece;
 		this.color = color;
 		this.player = player;
 		this.countMovements = 0;
 	}
 
-	public void incrementMovements(){
-		countMovements++;
-	}
-	
-	public TypePiece getTypePiece() {
-		return typePiece;
+	public void incrementMovements() {
+		this.countMovements++;
 	}
 
-	public void setTypePiece(TypePiece typePiece) {
+	public TypePiece getTypePiece() {
+		return this.typePiece;
+	}
+
+	public void setTypePiece(final TypePiece typePiece) {
 		this.typePiece = typePiece;
 	}
 
 	public TypeColor getColor() {
-		return color;
+		return this.color;
 	}
 
-	public void setColor(TypeColor color) {
+	public void setColor(final TypeColor color) {
 		this.color = color;
 	}
 
 	public TypePlayer getPlayer() {
-		return player;
+		return this.player;
 	}
 
-	public void setPlayer(TypePlayer player) {
+	public void setPlayer(final TypePlayer player) {
 		this.player = player;
 	}
-	
+
 	public int getCountMovements() {
-		return countMovements;
+		return this.countMovements;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.typePiece.toString();
-	}	
+	}
 }

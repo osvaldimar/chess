@@ -12,35 +12,41 @@ import com.chess.core.util.MovementUtils;
 
 public class Queen extends Piece implements BehaviorChess {
 
-	public Queen(TypeColor color, TypePlayer player) {
+	private static final long serialVersionUID = 2290026372370097501L;
+
+	public Queen() {
+	}
+
+	public Queen(final TypeColor color, final TypePlayer player) {
 		super(TypePiece.QUEEN, color, player);
 	}
 
 	@Override
-	public List<PositionChessboard> movementAvailable(PositionChessboard position, Square[][] squares) {
-		List<PositionChessboard> list = new ArrayList<>();
-		list.addAll(MovementUtils.movementAvailableFront(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.FALSE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.FALSE, getPlayer()));
+	public List<PositionChessboard> movementAvailable(final PositionChessboard position, final Square[][] squares) {
+		final List<PositionChessboard> list = new ArrayList<>();
+		list.addAll(MovementUtils.movementAvailableFront(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.FALSE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.FALSE, this.getPlayer()));
 		return list;
 	}
 
 	@Override
-	public List<PositionChessboard> movementAvailableToTakePieces(PositionChessboard position, Square[][] squares) {
-		List<PositionChessboard> list = new ArrayList<>();
-		list.addAll(MovementUtils.movementAvailableFront(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.TRUE, getPlayer()));
-		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.TRUE, getPlayer()));
+	public List<PositionChessboard> movementAvailableToTakePieces(final PositionChessboard position,
+			final Square[][] squares) {
+		final List<PositionChessboard> list = new ArrayList<>();
+		list.addAll(MovementUtils.movementAvailableFront(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableBack(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeft(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRight(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftUp(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightUp(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableLeftDown(8, position, squares, Boolean.TRUE, this.getPlayer()));
+		list.addAll(MovementUtils.movementAvailableRightDown(8, position, squares, Boolean.TRUE, this.getPlayer()));
 		return list;
 	}
 
