@@ -1,6 +1,7 @@
 package com.chess.core;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -20,6 +21,7 @@ import com.chess.core.model.Pawn;
 import com.chess.core.model.Piece;
 import com.chess.core.model.Queen;
 import com.chess.core.model.Square;
+import com.chess.core.model.SquareSimple;
 import com.chess.core.util.ChessboardPieceFactory;
 import com.chess.core.util.PieceUtils;
 import com.google.gson.Gson;
@@ -314,6 +316,21 @@ public final class GameApplication {
 	public String getInfoChessboardJson() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(chessboard.getSquaresChessboard());
+	}
+	
+	public String getInfoChessboardJsonSimple() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
+		List<SquareSimple> list = new ArrayList<>();
+		Square[][] squares = chessboard.getSquaresChessboard();
+		Arrays.stream(squares).forEach(s ->{
+			Arrays.stream(s).forEach(x -> {
+				if(x.getPiece() != null)
+					list.add(new SquareSimple(x.getPiece().getTypePiece().name(), x.getPiece().getColor().toString(), x.getPosition().toString()));
+				else
+					list.add(new SquareSimple(x.getPosition().toString()));
+			});
+		});
+		return gson.toJson(list);
 	}
 	
 	public void printInfoChessboardJson() {

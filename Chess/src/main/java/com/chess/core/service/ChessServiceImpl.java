@@ -80,6 +80,11 @@ public class ChessServiceImpl implements ChessServiceRemote{
 	public String getSquaresChessboardJson(){
 		return this.game.getInfoChessboardJson();
 	}
+	
+	@Override
+	public String getSquaresChessboardJsonSimple(){
+		return this.game.getInfoChessboardJsonSimple();
+	}
 
 	@Override
 	public void printSquaresChessboardJson(){

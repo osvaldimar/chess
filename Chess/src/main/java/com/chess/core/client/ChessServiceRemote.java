@@ -20,6 +20,8 @@ public interface ChessServiceRemote {
 	void printInfoResponseJson(String response);
 	
 	String getSquaresChessboardJson();
+	
+	String getSquaresChessboardJsonSimple();
 
 	void printSquaresChessboardJson();
 	
