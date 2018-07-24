@@ -1,5 +1,9 @@
 package com.chess.core.client;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class ResponseClient {
 
 	private String status;
@@ -53,6 +57,9 @@ public class ResponseClient {
 		return turn;
 	}
 	
+	public void inserirKeyClientID(String id) {
+		keyClientID = id;
+	}
 
 	public String getKeyClientID() {
 		return keyClientID;
